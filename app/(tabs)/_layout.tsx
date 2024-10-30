@@ -20,14 +20,21 @@ export default function TabLayout() {
                 title: 'Home', 
                 tabBarIcon: ({ color, focused }) => 
                     ( <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} /> ),  
-                    }} 
+            }} 
         />
         <Tabs.Screen name="about" 
             options={{ 
                 title: 'About',
                 tabBarIcon: ({ color, focused }) =>
                 ( <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24} /> ),
-                    }} 
+            }} 
+        />
+        <Tabs.Screen name="Sign-up" 
+            options={{ 
+                title: 'Register',
+                tabBarIcon: ({ color, focused }) =>
+                ( <Ionicons name={focused ? 'key' : 'key-outline'} color={color} size={24} /> ),
+            }} 
         />
     </Tabs>
   );
