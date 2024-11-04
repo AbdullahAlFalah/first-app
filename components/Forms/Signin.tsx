@@ -1,12 +1,17 @@
 import React from "react";
 import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { useRouter, Link } from "expo-router";
+
+import { useUserinfo } from "@/hooks/UserContext";
 
 export default function Signin () {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const router = useRouter();
+
+    const { setGlobalemail } = useUserinfo();
 
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
@@ -32,14 +37,14 @@ export default function Signin () {
         // Simple Email validation: Ensures the email has a "username@domain.extension" structure
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            Alert.alert("Invalid Email", "Please enter a valid email address.");
+            showMsg("Invalid Email", "Please enter a valid email address.");
             return;
         }
 
         // Password validation: Ensures the password has at least 8 characters, with at least one letter and one number
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         if (!passwordRegex.test(password)) {
-            Alert.alert("Invalid Password", "Password must be at least 8 characters, including a number and a letter.");
+            showMsg("Invalid Password", "Password must be at least 8 characters, including a number and a letter.");
             return;
         }
 
@@ -59,11 +64,11 @@ export default function Signin () {
 
             const data = await response.json();
 
-            // Check response status and provide feedback to the user
             if (response.ok) {
                 console.log("Response data:", data);
                 showMsg("Login Successful", data.ServerNote);
-
+                setGlobalemail(email);
+                router.push('../../(tabs)/MainAccount');
             } else {
                 console.log("Response data:", data);
                 showMsg("Login Failed", data.ServerNote);
@@ -86,7 +91,7 @@ export default function Signin () {
             </Pressable>
             <View style={ { flexDirection: 'row' } }>
                 <Text style={styles.secondarytext}>Forgot your password?</Text>
-                <Link href="../../Reset" style={styles.clickabletext}>Reset password</Link> 
+                <Link href="../../(tabs)/Reset" style={styles.clickabletext}>Reset password</Link> 
             </View>            
         </View>
     );
@@ -110,7 +115,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     submitbutton: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 1,

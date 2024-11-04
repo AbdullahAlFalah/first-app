@@ -96,7 +96,7 @@ export default function Signup () {
             </Pressable>
             <View style={ { flexDirection: 'row' } } >
                 <Text style={styles.secondarytext}>Already have an account?</Text>
-                <Link href="../../Sign-in" style={styles.clickabletext}>Sign-in</Link>
+                <Link href="../../(tabs)/Sign-in" style={styles.clickabletext}>Sign-in</Link>
             </View>            
         </View>
     );

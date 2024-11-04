@@ -36,6 +36,25 @@ export default function TabLayout() {
                 ( <Ionicons name={focused ? 'key' : 'key-outline'} color={color} size={24} /> ),
             }} 
         />
+        <Tabs.Screen name="Sign-in"
+            options={{
+                title: 'Login',
+                tabBarButton: () => null,  // Hides from tab bar
+                /* tabBarStyle: { display: 'none' },  Keeps the entire tab bar hidden */
+            }}
+        />
+        <Tabs.Screen name='MainAccount'
+            options={{
+                title: 'Main Page',
+                tabBarButton: () => null,                 
+            }}
+        />
+        <Tabs.Screen name='Reset'
+            options={{
+                title: 'Password Reset',
+                tabBarButton: () => null,
+            }}
+        />    
     </Tabs>
   );
 }
