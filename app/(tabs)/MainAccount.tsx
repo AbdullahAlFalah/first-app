@@ -12,9 +12,9 @@ export default function MainAccount() {
 
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
-            return 'http://192.168.1.2:3000/api/users/getuserinfo';
+            return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodeURIComponent(globalemail)}`;
         } else if (Platform.OS === 'android') {
-            return 'http://10.0.2.2:3000/api/users/getuserinfo';
+            return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodeURIComponent(globalemail)}`;
         };
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
     };
@@ -37,13 +37,10 @@ export default function MainAccount() {
 
                 //Request data from express server
                 const response = await fetch(url, {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify ({
-                        globalemail,
-                    }),
                 }); 
 
                 const result = await response.json();
@@ -51,7 +48,7 @@ export default function MainAccount() {
                 if (response.ok) {
                     console.log("Response data:", result);
                     showMsg("Fetch Successful", result.ServerNote);
-                    setData(result);
+                    setData(result.data);
                 } else {
                     console.log("Response data:", result);
                     showMsg("Fetch Failed", result.ServerNote);
@@ -80,8 +77,9 @@ export default function MainAccount() {
         <View style={styles.container}>
             {data ? (
                 <Text style={styles.text}>Fetched Data: {JSON.stringify(data)}</Text>
+
             ) : (
-                <Text style={styles.text}>No data available!!!</Text>
+                <Text style={styles.text}>No data available: Error fetching data on the front-end side</Text>
             )}
         </View>
 

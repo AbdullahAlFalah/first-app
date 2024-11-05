@@ -15,9 +15,9 @@ export default function Signin () {
 
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
-            return 'http://192.168.1.2:3000/api/users/login';
+            return `http://192.168.1.2:3000/api/users/login`;
         } else if (Platform.OS === 'android') {
-            return 'http://10.0.2.2:3000/api/users/login';
+            return `http://10.0.2.2:3000/api/users/login`;
         };
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
     };

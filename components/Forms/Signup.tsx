@@ -11,9 +11,9 @@ export default function Signup () {
 
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
-            return 'http://192.168.1.2:3000/api/users/signup';
+            return `http://192.168.1.2:3000/api/users/signup`;
         } else if (Platform.OS === 'android') {
-            return 'http://10.0.2.2:3000/api/users/signup';
+            return `http://10.0.2.2:3000/api/users/signup`;
         };
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
     };
