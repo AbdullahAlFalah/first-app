@@ -1,16 +1,20 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
 
 import Signup from "@/components/Forms/Signup";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import takeScreenshotAndSave from '@/Utilities/ScreenshotUtil';
 
 export default function signUp() {
 
+    const LongPressGesture = Gesture.LongPress().minDuration(800).onEnd(async () => {
+        console.log("Long press gesture completed successfully!");
+        const uri = await takeScreenshotAndSave();
+    });
+
     return (
-
-        <View>
+        <GestureDetector gesture={LongPressGesture}>
             <Signup />
-        </View>
-
+        </GestureDetector>
     );
 }
 
