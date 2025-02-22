@@ -2,19 +2,32 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
+
   return (
-    <Tabs screenOptions={{ 
+
+    <Tabs 
+    // initialRouteName='about'
+    screenOptions={{ 
         tabBarActiveTintColor: '#ffd700', 
         tabBarInactiveTintColor: '#fff',
         tabBarStyle: {
-            backgroundColor: '#25292e'
-        }, 
+            backgroundColor: '#25292e',
+            height: 50,           
+        },
+        tabBarItemStyle: {
+            
+        },
+        tabBarLabelStyle: {
+            fontSize: 12, 
+            textAlign: 'center',               
+        },
         headerShadowVisible: false,
         headerTintColor: '#fff',
         headerStyle: {
             backgroundColor: '#25292e',
-        },
+        },        
     }}>
+
         <Tabs.Screen name="index" 
             options={{ 
                 title: 'Home', 
@@ -36,6 +49,7 @@ export default function TabLayout() {
                 ( <Ionicons name={focused ? 'key' : 'key-outline'} color={color} size={24} /> ),
             }} 
         />
+
         <Tabs.Screen name="Sign-in"
             options={{
                 title: 'Login',
@@ -54,8 +68,11 @@ export default function TabLayout() {
                 title: 'Password Reset',
                 tabBarButton: () => null,
             }}
-        />    
+        /> 
+
     </Tabs>
+
   );
+
 }
 

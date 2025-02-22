@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 
-export default function first() {
+export default function About() {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
