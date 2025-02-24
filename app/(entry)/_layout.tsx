@@ -1,12 +1,12 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function TabLayout() {
+export default function EntryLayout() {
 
   return (
 
     <Tabs 
-    // initialRouteName='about'
     screenOptions={{ 
         tabBarActiveTintColor: '#ffd700', 
         tabBarInactiveTintColor: '#fff',
@@ -30,26 +30,24 @@ export default function TabLayout() {
         },        
     }}>
 
-        <Tabs.Screen name="index" 
+        <Tabs.Screen name="MainAccount" 
             options={{ 
-                title: 'Home', 
+                title: 'Main Account', 
                 tabBarIcon: ({ color, focused }) => 
-                    ( <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} /> ),  
+                    ( <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} /> ),  
             }} 
         />
-        <Tabs.Screen name="about" 
+        <Tabs.Screen name="Reset" 
             options={{ 
-                title: 'About',
+                title: 'Reset Password',
                 tabBarIcon: ({ color, focused }) =>
-                ( <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24} /> ),
+                ( <MaterialIcons name={focused ? 'password' : 'lock-reset'} color={color} size={24} /> ),
             }} 
         />
-        <Tabs.Screen name="Sign-up" 
-            options={{ 
-                title: 'Register',
-                tabBarIcon: ({ color, focused }) =>
-                ( <Ionicons name={focused ? 'key' : 'key-outline'} color={color} size={24} /> ),
-            }} 
+        <Tabs.Screen name="Sign-in"
+            options={{
+                tabBarButton: () => null,
+            }}
         />
 
     </Tabs>
@@ -57,4 +55,3 @@ export default function TabLayout() {
   );
 
 }
-

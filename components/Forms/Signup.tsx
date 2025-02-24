@@ -1,13 +1,14 @@
 import React from "react";
 import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { useRouter, Link } from "expo-router";
 
 export default function Signup () {
 
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const router = useRouter();
 
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
@@ -72,7 +73,7 @@ export default function Signup () {
             if (response.ok) {
                 console.log("Response data:", data);
                 showMsg("Signup Successful", data.ServerNote);
-
+                router.push('/(entry)/MainAccount');
             } else {
                 console.log("Response data:", data);
                 showMsg("Signup Failed", data.ServerNote);
@@ -96,7 +97,7 @@ export default function Signup () {
             </Pressable>
             <View style={ { flexDirection: 'row' } } >
                 <Text style={styles.secondarytext}>Already have an account?</Text>
-                <Link href="../../(tabs)/Sign-in" style={styles.clickabletext}>Sign-in</Link>
+                <Link href="/(entry)/Sign-in" style={styles.clickabletext}>Sign-in</Link>
             </View>            
         </View>
     );

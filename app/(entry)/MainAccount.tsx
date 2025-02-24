@@ -11,10 +11,11 @@ export default function MainAccount() {
     const { globalemail } = useUserinfo();
 
     const getApiUrl = () => {
+        const encodedEmail = encodeURIComponent(globalemail);
         if (Platform.OS === 'web') {
-            return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodeURIComponent(globalemail)}`;
+            return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
         } else if (Platform.OS === 'android') {
-            return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodeURIComponent(globalemail)}`;
+            return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
         };
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
     };

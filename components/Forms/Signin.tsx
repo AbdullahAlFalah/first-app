@@ -62,13 +62,21 @@ export default function Signin () {
                 }),
             });
 
-            const data = await response.json();
+            // const data = await response.json();
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                data = await response.json();
+            } else {
+                const text = await response.text();
+                throw new Error(`Unexpected response format: ${text}`);
+            }
 
             if (response.ok) {
                 console.log("Response data:", data);
                 showMsg("Login Successful", data.ServerNote);
                 setGlobalemail(email);
-                router.push('../../(tabs)/MainAccount');
+                router.push('/(entry)/MainAccount');
             } else {
                 console.log("Response data:", data);
                 showMsg("Login Failed", data.ServerNote);
@@ -91,7 +99,7 @@ export default function Signin () {
             </Pressable>
             <View style={ { flexDirection: 'row' } }>
                 <Text style={styles.secondarytext}>Forgot your password?</Text>
-                <Link href="../../(tabs)/Reset" style={styles.clickabletext}>Reset password</Link> 
+                <Link href="/(entry)/Reset" style={styles.clickabletext}>Reset password</Link> 
             </View>            
         </View>
     );
