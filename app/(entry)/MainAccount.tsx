@@ -70,7 +70,11 @@ export default function MainAccount() {
     }, []);
     
       if (loading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
+        return (
+            <View style={styles.loadContainer}>
+                <ActivityIndicator style={styles.load} size="large" color="#ff0000" />
+            </View>    
+        );
       }
 
     return (
@@ -88,6 +92,21 @@ export default function MainAccount() {
 }
 
 const styles = StyleSheet.create({
+    loadContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    load: {
+        padding: 20,
+        borderRadius: 10,
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        elevation: 5, // Android shadow
+        shadowColor: "#000", // iOS shadow
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
     container: {
       justifyContent: 'center',
       alignItems: 'center',

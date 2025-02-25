@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function EntryLayout() {
 
@@ -46,8 +47,17 @@ export default function EntryLayout() {
         />
         <Tabs.Screen name="Sign-in"
             options={{
-                tabBarButton: () => null,
+                title: 'Login',
+                // tabBarButton: () => null, // Only hides the button but it still exists
+                href: null, // This removes the button completely now
             }}
+        />
+        <Tabs.Screen name='HomeButton'
+            options={{
+                title: 'Home',
+                tabBarIcon: ({ color, focused }) => 
+                ( <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} /> ),
+            }}           
         />
 
     </Tabs>
@@ -55,3 +65,5 @@ export default function EntryLayout() {
   );
 
 }
+
+
