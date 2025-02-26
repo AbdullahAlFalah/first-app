@@ -3,9 +3,16 @@ import { View, Text, StyleSheet, ActivityIndicator, Alert, Platform } from "reac
 
 import { useUserinfo } from "@/hooks/UserContext";
 
+type UserData = {
+    email: string;
+    idUsers: number;
+    password: string;
+    username: string;
+};
+
 export default function MainAccount() {
 
-    const [data, setData] = useState(null); // No type for data bc it's null as a default
+    const [data, setData] = useState<UserData[] | null>(null); // No type for data bc it's null as a default so created type
     const [loading, setLoading] = useState<Boolean>(true);
 
     const { globalemail } = useUserinfo();
@@ -71,8 +78,8 @@ export default function MainAccount() {
     
       if (loading) {
         return (
-            <View style={styles.loadContainer}>
-                <ActivityIndicator style={styles.load} size="large" color="#ff0000" />
+            <View style={styles.loadContainer}>                 
+                <ActivityIndicator style={styles.loadWrapper} size="large" color="#ff0000" />              
             </View>    
         );
       }
@@ -80,9 +87,25 @@ export default function MainAccount() {
     return (
 
         <View style={styles.container}>
-            {data ? (
-                <Text style={styles.text}>Fetched Data: {JSON.stringify(data)}</Text>
-
+            {data && data.length > 0 ? (
+                // <Text style={styles.text}>Fetched Data: {JSON.stringify(data)}</Text>
+                <View style={styles.tableContainer}>
+                    <Text style={styles.tableTitle}>User Information</Text>
+                    <View style={styles.table}>
+                        {Object.entries(data[0]).map(([key, value], index, array) => (
+                            <View 
+                                key={key} 
+                                style={[
+                                    styles.row,
+                                    index !== array.length - 1 && styles.rowBorder, // Apply border only if it's NOT the last row  
+                                ]}
+                            >
+                                <Text style={styles.cellTitle}>{key}:</Text>
+                                <Text style={styles.cell}>{String(value)}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </View>
             ) : (
                 <Text style={styles.text}>No data available: Error fetching data on the front-end side</Text>
             )}
@@ -95,22 +118,63 @@ const styles = StyleSheet.create({
     loadContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',       
     },
-    load: {
-        padding: 20,
+    loadWrapper: {
+        width: 70,
+        height: 70,
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 10,
         backgroundColor: "rgba(0, 0, 0, 0.1)",
-        elevation: 5, // Android shadow
-        shadowColor: "#000", // iOS shadow
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    tableContainer: {
+        width: "90%",
+        padding: 10,
+        backgroundColor: "#fff",
+        borderRadius: 10,
+        elevation: 3,
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
     },
-    container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
+    tableTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginBottom: 10,
+    },
+    table: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 5,
+        overflow: "hidden",
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+    },
+    rowBorder: {
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+    },
+    cellTitle: {
+        fontWeight: "bold",
+        fontSize: 16,
+        color: "#333",
+    },
+    cell: {
+        fontSize: 16,
+        color: "#666",
     },
     text: {
       fontSize: 18,
