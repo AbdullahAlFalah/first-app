@@ -15,7 +15,7 @@ export default function MainAccount() {
     const [data, setData] = useState<UserData[] | null>(null); // No type for data bc it's null as a default so created type
     const [loading, setLoading] = useState<Boolean>(true);
 
-    const { globalemail } = useUserinfo();
+    const { globalemail, setGlobalId } = useUserinfo();
 
     const getApiUrl = () => {
         const encodedEmail = encodeURIComponent(globalemail);
@@ -57,6 +57,11 @@ export default function MainAccount() {
                     console.log("Response data:", result);
                     showMsg("Fetch Successful", result.ServerNote);
                     setData(result.data);
+                    // Extract and set globalId from the fetched data
+                    if (result.data && result.data.length > 0) {
+                        const userId = result.data[0].idUsers; // Assuming you want the `idUsers` of the first entry
+                        setGlobalId(userId); // Set globalId to the `idUsers` value
+                    }                   
                 } else {
                     console.log("Response data:", result);
                     showMsg("Fetch Failed", result.ServerNote);

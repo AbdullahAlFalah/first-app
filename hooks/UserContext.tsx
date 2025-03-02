@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 type Props = {
     globalemail: string;
     setGlobalemail: React.Dispatch<React.SetStateAction<string>>;
+    globalId: number | null;
+    setGlobalId: React.Dispatch<React.SetStateAction<number | null>>;
   };
 
 // Create the context with default undefined values
@@ -12,9 +14,10 @@ const UserContext = createContext<Props | undefined>(undefined);
 const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const [globalemail, setGlobalemail] = useState<string>('');
+    const [globalId, setGlobalId] = useState<number | null>(null);
   
     return (
-      <UserContext.Provider value={{ globalemail, setGlobalemail }}>
+      <UserContext.Provider value={{ globalemail, setGlobalemail, globalId, setGlobalId }}>
         {children}
       </UserContext.Provider>
     );

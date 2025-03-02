@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
-import { useState } from "react";
 import { useRouter, Link } from "expo-router";
 
 import { useUserinfo } from "@/hooks/UserContext";

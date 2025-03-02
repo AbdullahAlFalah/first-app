@@ -1,14 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
 
-export default function ResetPassword() {
+import Resetpassword from "@/components/Forms/Reset";
+
+export default function resetPassword() {
 
     return (
 
-        <View>
-            <Text>Reset Password Page</Text>
-        </View>
+        <Resetpassword />
 
     );
+    
 }
 
