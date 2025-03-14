@@ -23,15 +23,15 @@ export default function Resetpassword() {
 
         try {
 
-            const respose = await axios.put(url, { oldPassword, newPassword });
+            const response = await axios.put(url, { oldPassword, newPassword });
 
-            if (respose.status === 200) {
+            if (response.status === 200) {
                 showMsg("Password Reset", "Password has been reset successfully!");
                 setOldPassword('');
                 setNewPassword('');
             } else {
-                console.log("Response data:", respose.data);
-                showMsg("Reset Failed", respose.data.ServerNote);
+                console.log("Response data:", response.data);
+                showMsg("Reset Failed", response.data.ServerNote);
             }
 
         } catch (error) {
