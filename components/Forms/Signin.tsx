@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
 import { useRouter, Link } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useUserinfo } from "@/hooks/UserContext";
 
@@ -72,6 +73,7 @@ export default function Signin () {
             }
 
             if (response.ok) {
+                await AsyncStorage.setItem('token', data.token); // Store the JWT (for React Native)
                 console.log("Response data:", data);
                 showMsg("Login Successful", data.ServerNote);
                 setGlobalemail(email);

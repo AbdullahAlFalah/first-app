@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Alert, Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useUserinfo } from "@/hooks/UserContext";
 
@@ -40,6 +41,7 @@ export default function MainAccount() {
         const AccountData = async () => {
 
             const url = getApiUrl();
+            const token = await AsyncStorage.getItem('token'); // Get token from AsyncStorage
 
             try {
 
@@ -48,6 +50,7 @@ export default function MainAccount() {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`, // Include token in the request headers
                     },
                 }); 
 
@@ -66,8 +69,7 @@ export default function MainAccount() {
                     console.log("Response data:", result);
                     showMsg("Fetch Failed", result.ServerNote);
                 }
-                 
-            
+                             
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 showMsg("Network Error", "Unable to connect to the server. Please try again later.");
@@ -105,7 +107,7 @@ export default function MainAccount() {
                                     index !== array.length - 1 && styles.rowBorder, // Apply border only if it's NOT the last row  
                                 ]}
                             >
-                                <Text style={styles.cellTitle}>{key}:</Text>
+                                <Text style={styles.cellTitle}>{key}: </Text>
                                 <Text style={styles.cell}>{String(value)}</Text>
                             </View>
                         ))}
@@ -180,6 +182,8 @@ const styles = StyleSheet.create({
     cell: {
         fontSize: 16,
         color: "#666",
+        flex: 1,
+        flexWrap: "wrap",
     },
     text: {
       fontSize: 18,
