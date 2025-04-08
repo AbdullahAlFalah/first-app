@@ -1,92 +1,34 @@
 import React, { useState } from "react";
-import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
-import { useRouter, Link } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, TextInput, Pressable, View, StyleSheet } from "react-native";
+import { Link } from "expo-router";
 
+import { showMsg, validateEmail, validatePassword } from "@/Utilities/ApiUtils";
 import { useUserinfo } from "@/hooks/UserContext";
+import { signin } from "@/api/Signin";
 
 export default function Signin () {
 
     const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const router = useRouter();
-
-    const { setGlobalemail } = useUserinfo();
-
-    const getApiUrl = () => {
-        if (Platform.OS === 'web') {
-            return `http://192.168.1.2:3000/api/users/login`;
-        } else if (Platform.OS === 'android') {
-            return `http://10.0.2.2:3000/api/users/login`;
-        };
-        throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
-    };
-
-    const showMsg = (title: any, msg: any) => {
-        if (Platform.OS === 'web') {
-            window.alert(title + ':\n' + msg);
-        } else if (Platform.OS === 'android') {
-            Alert.alert(title, msg);
-        };
-    };
+    const [password, setPassword] = useState<string>('');    
 
     const onSubmit = async () => {
 
-        const url = getApiUrl();
+        const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
 
         // Simple Email validation: Ensures the email has a "username@domain.extension" structure
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!validateEmail(email)) {
             showMsg("Invalid Email", "Please enter a valid email address.");
             return;
         }
 
         // Password validation: Ensures the password has at least 8 characters, with at least one letter and one number
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        if (!passwordRegex.test(password)) {
+        if (!validatePassword(password)) {
             showMsg("Invalid Password", "Password must be at least 8 characters, including a number and a letter.");
             return;
         }
 
-        try {
-
-            // Send data to express server
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            });
-
-            // const data = await response.json();
-            const contentType = response.headers.get('content-type');
-            let data;
-            if (contentType && contentType.indexOf('application/json') !== -1) {
-                data = await response.json();
-            } else {
-                const text = await response.text();
-                throw new Error(`Unexpected response format: ${text}`);
-            }
-
-            if (response.ok) {
-                await AsyncStorage.setItem('token', data.token); // Store the JWT (for React Native)
-                console.log("Response data:", data);
-                showMsg("Login Successful", data.ServerNote);
-                setGlobalemail(email);
-                router.push('/(entry)/MainAccount');
-            } else {
-                console.log("Response data:", data);
-                showMsg("Login Failed", data.ServerNote);
-            }
-
-        } catch (error) {
-            console.error("Error submitting login data:", error);
-            showMsg("Network Error", "Unable to connect to the server. Please try again later.");
-        }
+        setGlobalemail(email); // Set the global email in context
+        await signin(email, password); // Call the signin function with the email and password
 
       };
 

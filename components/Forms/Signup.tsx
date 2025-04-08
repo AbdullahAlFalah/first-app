@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
 import { useRouter, Link } from "expo-router";
 
+import { useUserinfo } from "@/hooks/UserContext";
+import { signin } from "@/api/Signin";
+
 export default function Signup () {
 
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const router = useRouter();
-
+    // const router = useRouter();
+    
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
             return `http://192.168.1.2:3000/api/users/signup`;
@@ -29,6 +32,7 @@ export default function Signup () {
     const onSubmit = async () => {
 
         const url = getApiUrl();
+        const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
 
         // Username validation: Ensures the username has a 3-25 alphanumeric characters 
         const usernameRegex = /^[a-zA-Z0-9]{3,25}$/;
@@ -72,7 +76,9 @@ export default function Signup () {
             if (response.ok) {
                 console.log("Response data:", data);
                 showMsg("Signup Successful", data.ServerNote);
-                router.push('/(entry)/MainAccount');
+                setGlobalemail(email); // Set the global email in context
+                await signin(email, password); // Call signin function after successful signup
+                // router.push('/(entry)/MainAccount'); not needed here, as signin will handle navigation
             } else {
                 console.log("Response data:", data);
                 showMsg("Signup Failed", data.ServerNote);
