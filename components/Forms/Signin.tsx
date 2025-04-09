@@ -9,11 +9,11 @@ import { signin } from "@/api/Signin";
 export default function Signin () {
 
     const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');    
+    const [password, setPassword] = useState<string>('');  
+    
+    const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
 
     const onSubmit = async () => {
-
-        const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
 
         // Simple Email validation: Ensures the email has a "username@domain.extension" structure
         if (!validateEmail(email)) {

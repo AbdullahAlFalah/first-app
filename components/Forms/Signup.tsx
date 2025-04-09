@@ -10,7 +10,9 @@ export default function Signup () {
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const router = useRouter();
+    // const router = useRouter();
+
+    const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
     
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
@@ -31,10 +33,7 @@ export default function Signup () {
 
     const onSubmit = async () => {
 
-        showMsg("Test", "Test message"); // Test message to check if the function works
-
         const url = getApiUrl();
-        const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
 
         // Username validation: Ensures the username has a 3-25 alphanumeric characters 
         const usernameRegex = /^[a-zA-Z0-9]{3,25}$/;
@@ -56,6 +55,8 @@ export default function Signup () {
             showMsg("Invalid Password", "Password must be at least 8 characters, including a number and a letter.");
             return;
         }
+
+        console.log("Regex validation passed");
 
         try {
 
@@ -79,8 +80,8 @@ export default function Signup () {
                 console.log("Response data:", data);
                 showMsg("Signup Successful", data.ServerNote);
                 setGlobalemail(email); // Set the global email in context
-                // await signin(email, password); // Call signin function after successful signup
-                router.push('/(entry)/MainAccount'); // not needed here, as signin will handle navigation
+                await signin(email, password); // Call signin function after successful signup
+                // router.push('/(entry)/MainAccount'); // not needed here, as signin will handle navigation
             } else {
                 console.log("Response data:", data);
                 showMsg("Signup Failed", data.ServerNote);
@@ -90,6 +91,8 @@ export default function Signup () {
             console.error("Error submitting signup data:", error);
             showMsg("Network Error", "Server error... Please try again later.");
         }
+
+        console.log("End of onSubmit function");
 
       };
 
