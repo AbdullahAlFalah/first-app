@@ -41,7 +41,7 @@ export default function Signin () {
                 <Text style={styles.submitbuttontext}>Submit</Text>
             </Pressable>
             <View style={ { flexDirection: 'row' } }>
-                <Text style={styles.secondarytext}>Forgot your password?</Text>
+                <Text style={styles.secondarytext}>Forgot your password? </Text>
                 <Link href="/(entry)/Reset" style={styles.clickabletext}>Reset password</Link> 
             </View>            
         </View>
@@ -58,6 +58,8 @@ const styles = StyleSheet.create({
         color: '#000000',
         fontSize: 18,
         fontWeight: 'bold',
+        marginLeft: 12,
+        marginTop: 12,
     },
     input: {
         height: 40,
@@ -68,8 +70,10 @@ const styles = StyleSheet.create({
     submitbutton: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 1,
+        borderRadius: 5,
         backgroundColor: '#1e90ff',
+        margin: 12, // Affects outer spacing
+        padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
         color: '#fff',
@@ -79,14 +83,14 @@ const styles = StyleSheet.create({
     },
     secondarytext: {
         color: '#000000',
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 13,
-        marginRight: 5,
+        marginLeft: 12,
+        marginBottom: 12,
     },
     clickabletext: {
         color:'#ff0000',
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: 'medium',
         fontStyle: 'italic',
         textDecorationLine: 'underline',

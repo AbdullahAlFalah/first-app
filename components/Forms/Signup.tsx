@@ -10,7 +10,7 @@ export default function Signup () {
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    // const router = useRouter();
+    const router = useRouter();
     
     const getApiUrl = () => {
         if (Platform.OS === 'web') {
@@ -30,6 +30,8 @@ export default function Signup () {
     };
 
     const onSubmit = async () => {
+
+        showMsg("Test", "Test message"); // Test message to check if the function works
 
         const url = getApiUrl();
         const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
@@ -77,8 +79,8 @@ export default function Signup () {
                 console.log("Response data:", data);
                 showMsg("Signup Successful", data.ServerNote);
                 setGlobalemail(email); // Set the global email in context
-                await signin(email, password); // Call signin function after successful signup
-                // router.push('/(entry)/MainAccount'); not needed here, as signin will handle navigation
+                // await signin(email, password); // Call signin function after successful signup
+                router.push('/(entry)/MainAccount'); // not needed here, as signin will handle navigation
             } else {
                 console.log("Response data:", data);
                 showMsg("Signup Failed", data.ServerNote);
@@ -101,7 +103,7 @@ export default function Signup () {
                 <Text style={styles.submitbuttontext}>Submit</Text>
             </Pressable>
             <View style={ { flexDirection: 'row' } } >
-                <Text style={styles.secondarytext}>Already have an account?</Text>
+                <Text style={styles.secondarytext}>Already have an account? </Text>
                 <Link href="/(entry)/Sign-in" style={styles.clickabletext}>Sign-in</Link>
             </View>            
         </View>
@@ -118,6 +120,8 @@ const styles = StyleSheet.create({
         color: '#000000',
         fontSize: 18,
         fontWeight: 'bold',
+        marginLeft: 12,
+        marginTop: 12,
     },
     input: {
         height: 40,
@@ -128,8 +132,10 @@ const styles = StyleSheet.create({
     submitbutton: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: 5,
         backgroundColor: '#1e90ff',
+        margin: 12, // Affects outer spacing
+        padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
         color: '#fff',
@@ -139,14 +145,14 @@ const styles = StyleSheet.create({
     },
     secondarytext: {
         color: '#000000',
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 13,
-        marginRight: 5,
+        marginLeft: 12,
+        marginBottom: 12,
     },
     clickabletext: {
         color:'#ff0000',
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: 'medium',
         fontStyle: 'italic',
         textDecorationLine: 'underline',
