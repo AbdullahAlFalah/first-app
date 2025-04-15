@@ -11,6 +11,17 @@ export const getApiUrl = (path: string) => {
     return `${baseUrl}${path}`;
 };
 
+export const getFilmApiUrl = (path: string) => {
+
+    const baseUrl = Platform.OS === 'web'
+        ? `http://192.168.1.2:3000/api/films/`
+        : Platform.OS === 'android'
+            ? `http://10.0.2.2:3000/api/films/`
+            : (() => { throw new Error("Platform Unsupported!"); })();
+    
+    return `${baseUrl}${path}`;        
+};
+
 export const showMsg = (title: string, msg: any) => {
     if (Platform.OS === 'web') {
         window.alert(`${title}:\n${msg}`);
