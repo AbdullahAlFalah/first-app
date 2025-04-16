@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Alert, Platform } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Alert, Platform, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from 'expo-router';
 
 import { useUserinfo } from "@/hooks/UserContext";
 
@@ -116,6 +117,9 @@ export default function MainAccount() {
             ) : (
                 <Text style={styles.text}>No data available: Error fetching data on the front-end side</Text>
             )}
+            <Pressable style={styles.Filmsbutton} onPress={() => router.push('../films/Films')}>
+                <Text style={styles.Filmsbuttontext}>Open Films</Text>
+            </Pressable>
         </View>
 
     );
@@ -188,6 +192,20 @@ const styles = StyleSheet.create({
     text: {
       fontSize: 18,
       color: '#333',
+    },
+    Filmsbutton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        backgroundColor: '#1e90ff',
+        margin: 12, // Affects outer spacing
+        padding: 12, // Affects inner spacing
+    },
+    Filmsbuttontext: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
   });
 

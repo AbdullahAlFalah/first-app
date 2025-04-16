@@ -12,3 +12,4 @@ export default function HomeButton() {
       return <View />; // Render an empty view 
 
 }
+
