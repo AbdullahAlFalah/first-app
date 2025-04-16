@@ -198,7 +198,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         backgroundColor: '#1e90ff',
+        width: '45%',
         margin: 12, // Affects outer spacing
+        marginTop: 24, // Affects outer spacing on top of the button
         padding: 12, // Affects inner spacing
     },
     Filmsbuttontext: {

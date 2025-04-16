@@ -13,3 +13,4 @@ export default function Films() {
 const styles = StyleSheet.create({
 
 });
+
