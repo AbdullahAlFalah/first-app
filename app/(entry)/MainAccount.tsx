@@ -117,7 +117,7 @@ export default function MainAccount() {
             ) : (
                 <Text style={styles.text}>No data available: Error fetching data on the front-end side</Text>
             )}
-            <Pressable style={styles.Filmsbutton} onPress={() => router.push('../films/Films')}>
+            <Pressable style={styles.Filmsbutton} onPress={() => router.push('/(films)/Films')}>
                 <Text style={styles.Filmsbuttontext}>Open Films</Text>
             </Pressable>
         </View>

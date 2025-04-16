@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function Films () {
+export default function Films() {
 
     return (
         <View>
