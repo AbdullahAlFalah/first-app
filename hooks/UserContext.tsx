@@ -5,6 +5,8 @@ type Props = {
     setGlobalemail: React.Dispatch<React.SetStateAction<string>>;
     globalId: number | null;
     setGlobalId: React.Dispatch<React.SetStateAction<number | null>>;
+    globalFilmId: number | null;
+    setGlobalFilmId: React.Dispatch<React.SetStateAction<number | null>>;
   };
 
 // Create the context with default undefined values
@@ -15,9 +17,10 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const [globalemail, setGlobalemail] = useState<string>('');
     const [globalId, setGlobalId] = useState<number | null>(null);
+    const [globalFilmId, setGlobalFilmId] = useState<number | null>(null);
   
     return (
-      <UserContext.Provider value={{ globalemail, setGlobalemail, globalId, setGlobalId }}>
+      <UserContext.Provider value={{ globalemail, setGlobalemail, globalId, setGlobalId, globalFilmId, setGlobalFilmId }}>
         {children}
       </UserContext.Provider>
     );
