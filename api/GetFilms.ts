@@ -20,7 +20,7 @@ interface ApiResponse {
         title: string;
         description: string;
         length: number;
-        cost: number;
+        replacement_cost: number;
         rating: string;
     }[];
     ServerNote: string;
@@ -52,7 +52,7 @@ export const getfilms = async (): Promise<Film[]> => {
                 title: film.title,
                 description: film.description,
                 length: film.length,
-                cost: film.cost,
+                cost: film.replacement_cost,
                 rating: film.rating,
             })); // Return the list of films
         } else {

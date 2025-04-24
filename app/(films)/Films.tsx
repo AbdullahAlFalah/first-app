@@ -48,6 +48,7 @@ export default function Films() {
             {films.map((film) => (
                 <FilmsCard
                     key={film.id} // Use a unique key for each card
+                    id={film.id} // Pass the film ID to the card is needed here
                     title={film.title}
                     description={film.description}
                     length={film.length}
