@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 
 import { useUserinfo } from "@/hooks/UserContext";
+import { getApiUrl } from "@/Utilities/ApiUtils";
 
 type UserData = {
     email: string;
@@ -19,15 +20,15 @@ export default function MainAccount() {
 
     const { globalemail, setGlobalId } = useUserinfo();
 
-    const getApiUrl = () => {
-        const encodedEmail = encodeURIComponent(globalemail);
-        if (Platform.OS === 'web') {
-            return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
-        } else if (Platform.OS === 'android') {
-            return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
-        };
-        throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
-    };
+    // const getApiUrl = () => {
+    //     const encodedEmail = encodeURIComponent(globalemail);
+    //     if (Platform.OS === 'web') {
+    //         return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
+    //     } else if (Platform.OS === 'android') {
+    //         return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
+    //     };
+    //     throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
+    // };
 
     const showMsg = (title: any, msg: any) => {
         if (Platform.OS === 'web') {
@@ -41,7 +42,8 @@ export default function MainAccount() {
 
         const AccountData = async () => {
 
-            const url = getApiUrl();
+            const encodedEmail = encodeURIComponent(globalemail);
+            const url = getApiUrl(`getuserinfo?email=${encodedEmail}`); // Use the global email to fetch user data
             const token = await AsyncStorage.getItem('token'); // Get token from AsyncStorage
 
             try {
