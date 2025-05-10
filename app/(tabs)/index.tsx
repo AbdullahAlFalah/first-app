@@ -20,7 +20,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [pickedEmoji, setPickedEmoji] = useState<string | undefined>(undefined);
+  const [stickers, setStickers] = useState<{ id: number; emoji: string }[]>([]);
 
   const imageRef = useRef<View>(null);
 
@@ -40,10 +40,15 @@ export default function Home() {
 
   const onReset = () => {
     setShowAppOptions(false);
+    setStickers([]); // Clear all stickers when resetting
   };
 
-  const onAddSticker = () => {
-    setIsModalVisible(true);
+  const onAddSticker = (emoji: string) => {
+    setStickers((prevStickers) => [
+        ...prevStickers,
+        { id: Date.now(), emoji }, // Use a unique ID for each sticker
+    ]);
+    setIsModalVisible(false); // Close the modal after adding a sticker
   };
 
   const onModalClose = () => {
@@ -59,14 +64,16 @@ export default function Home() {
       <View style={styles.imageContainer}>
         <View ref={imageRef} collapsable={false}>
           <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage}/>
-          {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+          {stickers.map((sticker) => (
+            <EmojiSticker key={sticker.id} imageSize={40} stickerSource={sticker.emoji} />
+          ))} 
         </View>        
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            <CircleButton onPress={onAddSticker} />
+            <CircleButton onPress={() => setIsModalVisible(true)} />
             <IconButton icon="save-alt" label="Save" onPress={handleSave} />
           </View>
         </View>
@@ -77,7 +84,7 @@ export default function Home() {
         </View>
       )}
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+        <EmojiList onSelect={(emoji) => onAddSticker(emoji)} onCloseModal={onModalClose} />
       </EmojiPicker>
     </GestureHandlerRootView>
   );

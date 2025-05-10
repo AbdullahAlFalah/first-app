@@ -27,7 +27,7 @@ export default function EmojiList({ onSelect, onCloseModal }: Props) {
       renderItem={({ item, index }) => (
         <Pressable
           onPress={() => {
-            onSelect(item);
+            onSelect(item); // Pass the selected emoji
             onCloseModal();
           }}>
           <Image source={item} key={index} style={styles.image} />
