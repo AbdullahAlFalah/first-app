@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useCallback } from "react";
+import { View, Text, StyleSheet, ImageSourcePropType } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -19,10 +19,10 @@ export default function Home() {
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [stickers, setStickers] = useState<{ id: number; emoji: string }[]>([]);
+  const [stickers, setStickers] = useState<{ id: number; emoji: ImageSourcePropType }[]>([]);
 
   const imageRef = useRef<View>(null);
+  const emojiPickerRef = useRef<{ open: () => void }>(null); // Ref for EmojiPicker
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,22 +38,18 @@ export default function Home() {
     }
   };
 
-  const onReset = () => {
+  const onReset = useCallback(() => {
     setShowAppOptions(false);
     setStickers([]); // Clear all stickers when resetting
-  };
+  }, []);
 
-  const onAddSticker = (emoji: string) => {
+  const onAddSticker = useCallback((emoji: ImageSourcePropType) => {
+    console.log("Adding sticker:", emoji);
     setStickers((prevStickers) => [
         ...prevStickers,
         { id: Date.now(), emoji }, // Use a unique ID for each sticker
     ]);
-    setIsModalVisible(false); // Close the modal after adding a sticker
-  };
-
-  const onModalClose = () => {
-    setIsModalVisible(false);
-  };
+  }, []);
 
   const handleSave = async () => {
     await ScreenshotUtil.captureAndSave(imageRef.current);
@@ -64,27 +60,37 @@ export default function Home() {
       <View style={styles.imageContainer}>
         <View ref={imageRef} collapsable={false}>
           <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage}/>
-          {stickers.map((sticker) => (
-            <EmojiSticker key={sticker.id} imageSize={40} stickerSource={sticker.emoji} />
-          ))} 
+          {stickers.map((sticker) => {
+            console.log(sticker.emoji); // Log the emoji for debugging
+            console.log(typeof sticker.emoji); // Log the type of emoji
+            return (
+              <EmojiSticker key={sticker.id} imageSize={40} stickerSource={sticker.emoji} />
+            );
+          })} 
         </View>        
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            <CircleButton onPress={() => setIsModalVisible(true)} />
-            <IconButton icon="save-alt" label="Save" onPress={handleSave} />
+            {/* Replace CircleButton temporarily */}
+            {/*<Button label="Open Emoji Picker" onPress={() => emojiPickerRef.current?.open() } /> {/* Open EmojiPicker with Button firing error; also this makes it in a way that 'Use this photo' Button doesn't fire the text error*/}
+            <CircleButton onPress={() => emojiPickerRef.current?.open() } /> {/* Open EmojiPicker with CircleButton firing error; also this makes it in a way that 'Use this photo' Button does fire the text error*/}            
+            <IconButton icon="save-alt" label="Save" onPress={handleSave} /> 
           </View>
         </View>
       ) : (
-        <View style={styles.footerContainer}>
+        <View style={styles.footerContainer}>         
           <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
           <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
         </View>
       )}
-      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-        <EmojiList onSelect={(emoji) => onAddSticker(emoji)} onCloseModal={onModalClose} />
+      <EmojiPicker ref={emojiPickerRef} onClose={() => console.log("Emoji Picker closed")}> {/* Notify parent when modal closes; here you can any logic you need on close*/}
+        <EmojiList 
+          onSelect={(emoji) => {
+           onAddSticker(emoji); // Add the selected emoji as a sticker                     
+          }}
+        />
       </EmojiPicker>
     </GestureHandlerRootView>
   );

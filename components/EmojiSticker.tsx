@@ -1,15 +1,16 @@
+import React, { memo } from 'react';
 import { ImageSourcePropType } from 'react-native'; 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 type Props = {
   imageSize: number;
-  stickerSource: string;
+  stickerSource: ImageSourcePropType;
 };
 
-export default function EmojiSticker({ imageSize, stickerSource }: Props) {
+const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource }: Props) {
 
-  const imageSource: ImageSourcePropType = typeof stickerSource === 'string' ? { uri: stickerSource } : stickerSource;
+  const imageSource = stickerSource;
 
   const scaleImage = useSharedValue(imageSize);
   const translateX = useSharedValue(0);
@@ -21,6 +22,7 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
     } else {
       scaleImage.value = Math.round(scaleImage.value/2);
     }
+    console.log("Double tap detected for sticker");
   });
 
   const imageStyle = useAnimatedStyle(() => {
@@ -33,6 +35,8 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
   const drag = Gesture.Pan().onChange(event => {
     translateX.value += event.changeX;
     translateY.value += event.changeY;
+  }).onEnd(() => {
+    console.log("Drag ended for sticker");
   });
 
   const containerStyle = useAnimatedStyle(() => {
@@ -56,5 +60,7 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
 
   );
   
-}
+});
+
+export default EmojiSticker;
 
