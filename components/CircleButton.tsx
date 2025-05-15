@@ -6,10 +6,15 @@ type Props = {
 };
 
 export default function CircleButton({ onPress }: Props) {
+  console.log("Rendering CircleButton");
+
   return (
     <View style={styles.circleButtonContainer}>
-      <Pressable style={styles.circleButton} onPress={onPress}>
-        <MaterialIcons name="add" size={38} color="#25292e" />
+      <Pressable style={styles.circleButton} onPress={() => {
+          console.log("CircleButton pressed");
+          onPress();
+      }}>
+          <MaterialIcons name="add" size={38} color="#25292e" />
       </Pressable>
     </View>
   );

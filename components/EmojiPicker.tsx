@@ -44,6 +44,8 @@ const EmojiPicker = memo(
 
     if (!isVisible) return null; // Don't render if not visible
 
+    console.log("EmojiPicker children:", children, "type:", typeof children);
+
     return (
       <View style={styles.overlay} pointerEvents="box-none">
         <Animated.View style={[styles.pickerContainer, { transform: [{ translateY: slideAnim }] } ]}>
@@ -52,7 +54,7 @@ const EmojiPicker = memo(
             <Pressable onPress={handleClose}>
               <MaterialIcons name="close" color="#fff" size={22} />
             </Pressable>
-          </View>
+          </View>          
           {children}
         </Animated.View>
       </View>

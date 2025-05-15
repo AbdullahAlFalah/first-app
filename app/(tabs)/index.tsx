@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import { View, Text, StyleSheet, ImageSourcePropType } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { View, StyleSheet, ImageSourcePropType } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -72,24 +72,31 @@ export default function Home() {
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
-            <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            {/* Replace CircleButton temporarily */}
-            {/*<Button label="Open Emoji Picker" onPress={() => emojiPickerRef.current?.open() } /> {/* Open EmojiPicker with Button firing error; also this makes it in a way that 'Use this photo' Button doesn't fire the text error*/}
-            <CircleButton onPress={() => emojiPickerRef.current?.open() } /> {/* Open EmojiPicker with CircleButton firing error; also this makes it in a way that 'Use this photo' Button does fire the text error*/}            
+            <IconButton icon="refresh" label="Reset" onPress={onReset} />            
+            <CircleButton 
+              onPress={() => {
+                console.log("ref:", emojiPickerRef.current);
+                console.log("ref.open:", emojiPickerRef.current?.open);
+                setTimeout(() => {
+                  emojiPickerRef.current?.open();
+                }, 100);                
+              }}
+            />            
             <IconButton icon="save-alt" label="Save" onPress={handleSave} /> 
           </View>
         </View>
       ) : (
         <View style={styles.footerContainer}>         
           <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
-          <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
+          <Button label="Use this photo" onPress={() => setShowAppOptions(true) } />
         </View>
       )}
-      <EmojiPicker ref={emojiPickerRef} onClose={() => console.log("Emoji Picker closed")}> {/* Notify parent when modal closes; here you can any logic you need on close*/}
+      {/* Notify parent when modal closes; here you can any logic you need on close; never use these on the same line as JSX components */}
+      <EmojiPicker ref={emojiPickerRef} onClose={() => console.log("Emoji Picker closed")}> 
         <EmojiList 
-          onSelect={(emoji) => {
-           onAddSticker(emoji); // Add the selected emoji as a sticker                     
-          }}
+          onSelect={(emoji) => { 
+            onAddSticker(emoji); 
+          }} 
         />
       </EmojiPicker>
     </GestureHandlerRootView>
