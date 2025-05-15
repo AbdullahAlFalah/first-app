@@ -1,22 +1,25 @@
 import React, { memo, useState } from 'react';
-import { StyleSheet, FlatList, Platform, Pressable, Image, ImageSourcePropType } from 'react-native';
+import { StyleSheet, FlatList, Platform, Pressable, Text, Image, ImageSourcePropType } from 'react-native';
 
 type Props = {
   onSelect: (image: ImageSourcePropType) => void;
 };
 
+const emojiImages = Platform.select({
+  web: ['😀', '😁', '😂', '🤣', '😃', '😄', '😍'],
+  default: [
+    require('../assets/images/emoji1.png'),
+    require('../assets/images/emoji2.png'),
+    require('../assets/images/emoji3.png'),
+    require('../assets/images/emoji4.png'),
+    require('../assets/images/emoji5.png'),
+    require('../assets/images/emoji6.png'),
+  ]
+});
+
 const EmojiList = memo(function EmojiList({ onSelect }: Props) {
     
-  const [emoji] = useState<ImageSourcePropType[]>(
-    [
-      require('../assets/images/emoji1.png'),
-      require('../assets/images/emoji2.png'),
-      require('../assets/images/emoji3.png'),
-      require('../assets/images/emoji4.png'),
-      require('../assets/images/emoji5.png'),
-      require('../assets/images/emoji6.png'),
-    ]
-);
+  const [emoji] = useState<ImageSourcePropType[]>(emojiImages);
 
   console.log("emoji array:", emoji);
 
@@ -29,11 +32,14 @@ const EmojiList = memo(function EmojiList({ onSelect }: Props) {
       contentContainerStyle={styles.listContainer}
       renderItem={({ item, index }) => (
         <Pressable
-          onPress={() => {
-            // const resolvedUri = Image.resolveAssetSource(item).uri; // Resolve to URI            
+          onPress={() => {            
             onSelect(item); // Pass the selected emoji
           }}>
-          <Image source={item} key={index} style={styles.image} />
+          {typeof item === 'string' ? (
+            <Text style={styles.textEmote}>{item}</Text>
+          ) : (
+            <Image source={item} style={styles.image} />
+          )}         
         </Pressable>
       )}
       initialNumToRender={3} // Render only a few items initially
@@ -52,6 +58,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  textEmote: {
+    fontSize: 80,
+    width: 100,
+    height: 100,
+    marginRight: 20,
   },
   image: {
     width: 100,

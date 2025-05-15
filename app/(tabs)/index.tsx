@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { View, StyleSheet, ImageSourcePropType } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from "react";
