@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mish Mash",
-    "slug": "Mish Mash",
+    "slug": "first-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/appicon.png",
@@ -57,6 +57,7 @@
       "eas": {
         "projectId": "db8f1635-b100-4057-a4c5-e790db9c9eff"
       }
-    }
+    },
+    "owner": "abdullah33"
   }
 }
