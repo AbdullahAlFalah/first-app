@@ -1,12 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import { useCart } from "@/hooks/CartContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showMsg } from "@/Utilities/ApiUtils";
+import { router } from "expo-router";
+import { purchaseItems } from "@/api/PurchasingFullCart";
 
-export default function Cart() {
+export default async function Cart() {
     
     const { cart, totalCost } = useCart();
+    const token = await AsyncStorage.getItem('token'); // Get token from AsyncStorage
 
     const handleCheckout = () => {
+        if (!token) {
+            console.error("Auth Token is not available; You must Login again!");
+            showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
+            router.push("/(entry)/Sign-in");
+            return;
+        }
+        purchaseItems(cart, token);
         console.log("Checkout button pressed");
     };
 
