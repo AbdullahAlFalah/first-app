@@ -28,6 +28,14 @@ export const getFilmApiUrl = (path: string) => {
 
 };
 
+export const getWalletApiUrl = (path: string) => {
+    const baseUrl = `http://52.59.130.11:3000/api/wallet/`;
+    if (!baseUrl) {
+        throw new Error("Platform Unsupported!"); 
+    }
+    return `${baseUrl}${path}`;
+};
+
 export const getPurchaseApiUrl = (path: string) => {
     const baseUrl = `http://52.59.130.11:3000/api/purchase/`;
     if (!baseUrl) {

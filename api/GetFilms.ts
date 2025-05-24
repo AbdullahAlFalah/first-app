@@ -36,7 +36,7 @@ export const getfilms = async (): Promise<Film[]> => {
         // Send data to express server
         const response = await axios.get<ApiResponse>(url, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // not needed in get requests, but good practice
                 'Authorization': `Bearer ${token}`, // Include the JWT token in the headers
             },
         });

@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState, useEffect  } from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import { useCart } from "@/hooks/CartContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { showMsg } from "@/Utilities/ApiUtils";
 import { router } from "expo-router";
 import { purchaseItems } from "@/api/PurchasingFullCart";
-
-export default async function Cart() {
+import RotatingSquareButton from "@/components/RotatingSquareButton";
+ 
+export default function Cart() {
     
     const { cart, totalCost } = useCart();
-    const token = await AsyncStorage.getItem('token'); // Get token from AsyncStorage
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+
+        const fetchToken = async () => {
+            const token = await AsyncStorage.getItem('token').then(setToken); // Get token from AsyncStorage
+        };
+
+        fetchToken();
+
+    }, []);
 
     const handleCheckout = () => {
         if (!token) {
@@ -21,6 +32,16 @@ export default async function Cart() {
         purchaseItems(cart, token);
         console.log("Checkout button pressed");
     };
+
+    const openWallet = () => {
+        if (!token) {
+            console.error("Auth Token is not available; You must Login again!");
+            showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
+            router.push("/(entry)/Sign-in");
+            return;
+        }
+        router.push("/Wallet");
+    }
 
     console.log("Total Cost:", totalCost, "Type:", typeof totalCost); // Debugging totalCost
 
@@ -39,14 +60,22 @@ export default async function Cart() {
                             </View>
                         )}
                     />
-                    <Text style={styles.totalCost}>Total: ${ totalCost ? totalCost.toFixed(2) : "0.00" }</Text>
-                    <Pressable style={styles.checkoutButton} onPress={handleCheckout}>
-                        <Text style={styles.checkoutButtonText}>Checkout</Text>
-                    </Pressable>
+                    <View style={styles.checkoutContainer}>
+                        <Text style={styles.totalCostContainer}>Total: ${ totalCost ? totalCost.toFixed(2) : "0.00" }</Text>
+                        <Pressable style={styles.checkoutButton} onPress={handleCheckout}>
+                            <Text style={styles.checkoutButtonText}>Checkout</Text>
+                        </Pressable>
+                    </View>
                 </>
             ) : (
                 <Text style={styles.emptyCartText}>Your cart is empty.</Text>
             )}
+            <RotatingSquareButton 
+                icon="wallet" 
+                audioSource={require('../../assets/sounds/unlock.mp3')} 
+                style={styles.RSBposition} 
+                onPress={openWallet} 
+            />
         </View>
     );
 }
@@ -79,11 +108,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#333",
     },
-    totalCost: {
+    checkoutContainer: {
+        alignItems: "flex-start",
+        marginRight: 100, // Leaves space for the floating button
+        width: "60%",     // Or set a fixed width 
+    },
+    totalCostContainer: {
         fontSize: 20,
         fontWeight: "bold",
         marginTop: 16,
-        textAlign: "center",
+        textAlign: "center",      
     },
     checkoutButton: {
         marginTop: 16,
@@ -92,6 +126,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 5,
         alignItems: "center",
+        width: "100%",
     },
     checkoutButtonText: {
         color: "#fff",
@@ -103,6 +138,13 @@ const styles = StyleSheet.create({
         color: "#666",
         textAlign: "center",
         marginTop: 32,
+    },
+    RSBposition: {
+        position: "absolute",
+        bottom: 32,
+        right: 32,
+        zIndex: 100,
+        overflow: "visible",
     },
 });
 

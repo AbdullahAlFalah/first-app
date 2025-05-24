@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { getWallet } from "@/api/GetWallet";
+import { addFunds } from "@/api/AddFunds";
+import { showMsg } from "@/Utilities/ApiUtils";
+
+export default function Wallet() {
+
+    const [wallet, setWallet] = useState<null | { balance: number; currency: string; status: string }>(null);
+    const [amount, setAmount] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [adding, setAdding] = useState(false);
+
+    const fetchWallet = async () => {
+        setLoading(true);
+        const result = await getWallet();
+        if (result && result.walletInfo) {
+            setWallet(result.walletInfo);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchWallet();
+    }, []);
+
+    const handleAddFunds = async () => {
+        const num = parseFloat(amount);
+        if (isNaN(num) || num <= 0) {
+            showMsg("Invalid amount", "Please enter a valid number greater than 0.");
+            return;
+        }
+        setAdding(true);
+        await addFunds(num, wallet?.currency || "USD");
+        setAmount("");
+        await fetchWallet();
+        setAdding(false);
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Wallet</Text>
+            {loading ? (
+                <ActivityIndicator size="large" />
+            ) : wallet ? (
+                <>
+                    <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>
+                    <Text style={styles.info}>Status: {wallet.status}</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Amount to add"
+                        keyboardType="numeric"
+                        value={amount}
+                        onChangeText={setAmount}
+                    />
+                    <Pressable style={styles.button} onPress={handleAddFunds} disabled={adding}>
+                        <Text style={styles.buttonText}>{adding ? "Adding..." : "Add Funds"}</Text>
+                    </Pressable>
+                </>
+            ) : (
+                <Text style={styles.info}>Could not load wallet info.</Text>
+            )}
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: { 
+        flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center", 
+        padding: 24, 
+        backgroundColor: "#fafafa" 
+    },
+    title: { 
+        fontSize: 28, 
+        fontWeight: "bold", 
+        marginBottom: 24 
+    },
+    info: { 
+        fontSize: 20, 
+        marginBottom: 12 
+    },
+    input: { 
+        borderWidth: 1, 
+        borderColor: "#ccc", 
+        borderRadius: 6, 
+        padding: 10, 
+        width: 200, 
+        marginBottom: 16, 
+        fontSize: 18 
+    },
+    button: { 
+        backgroundColor: "#1e90ff", 
+        padding: 12, 
+        borderRadius: 6, 
+        marginBottom: 16, 
+        width: 200, 
+        alignItems: "center" 
+    },
+    buttonText: { color: "#fff", 
+        fontSize: 18, 
+        fontWeight: "bold" 
+    },
+});
+
