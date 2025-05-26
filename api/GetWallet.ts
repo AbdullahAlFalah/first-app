@@ -33,13 +33,21 @@ export const getWallet = async (): Promise<WalletApiResponse | null> => {
 
     try {
 
+        const source = axios.CancelToken.source();
+        const timeout = setTimeout(() => {
+            source.cancel("Request timeout: Server not responding");
+        }, 10000); // 10 seconds timeout
+
         const response = await axios.get<WalletApiResponse>(
         API_URL,
         {
             headers: {                
                 'Authorization': `Bearer ${token}`,
             },
+            cancelToken: source.token,
         });
+
+        clearTimeout(timeout); // Clear the timeout if the request completes in time
 
         if (response.status === 200 && response.data) {   
             console.log("Wallet info:", response.data.walletInfo);
