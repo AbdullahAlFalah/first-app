@@ -49,7 +49,10 @@ export const purchaseItems = async (items: CartItem[]): Promise<void> => {
     } catch (error) {
         console.error("API error:", error);
         showMsg("API Error:", error);
+    } finally {
+        console.log("Purchase API call completed.");
     }
 
 };
+
 
