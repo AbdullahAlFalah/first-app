@@ -1,8 +1,6 @@
-import React, { useState, useEffect  } from "react";
+import React from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import { useCart } from "@/hooks/CartContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { showMsg } from "@/Utilities/ApiUtils";
 import { router } from "expo-router";
 import { purchaseItems } from "@/api/PurchasingFullCart";
 import RotatingSquareButton from "@/components/RotatingSquareButton";
@@ -10,38 +8,15 @@ import RotatingSquareButton from "@/components/RotatingSquareButton";
 export default function Cart() {
     
     const { cart, totalCost } = useCart();
-    const [token, setToken] = useState<string | null>(null);
-
-    useEffect(() => {
-
-        const fetchToken = async () => {
-            const token = await AsyncStorage.getItem('token').then(setToken); // Get token from AsyncStorage
-        };
-
-        fetchToken();
-
-    }, []);
 
     const handleCheckout = () => {
-        if (!token) {
-            console.error("Auth Token is not available; You must Login again!");
-            showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
-            router.push("/(entry)/Sign-in");
-            return;
-        }
-        purchaseItems(cart, token);
+        purchaseItems(cart);
         console.log("Checkout button pressed");
     };
 
     const openWallet = () => {
-        if (!token) {
-            console.error("Auth Token is not available; You must Login again!");
-            showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
-            router.push("/(entry)/Sign-in");
-            return;
-        }
         router.push("/Wallet");
-    }
+    };
 
     console.log("Total Cost:", totalCost, "Type:", typeof totalCost); // Debugging totalCost
 

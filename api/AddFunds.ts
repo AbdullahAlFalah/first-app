@@ -42,3 +42,4 @@ export const addFunds = async (amount: number, currency: string = "USD"): Promis
   }
 };
 
+
