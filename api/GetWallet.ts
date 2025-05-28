@@ -2,6 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getWalletApiUrl, showMsg } from "@/Utilities/ApiUtils";
 import { router } from "expo-router";
+import { isTokenValid } from "@/Utilities/TokenValidation";
 
 export interface WalletInfo {
   userWalletId: number;
@@ -25,6 +26,15 @@ export const getWallet = async (): Promise<WalletApiResponse | null> => {
     if (!token) {
         console.error("Auth Token is not available; You must Login again!");
         showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
+        router.push("/(entry)/Sign-in");
+        return null;
+    }
+
+    // Validate the token before making the API call
+    if (!isTokenValid(token)) {
+        console.error("Invalid token; You must Login again!");
+        showMsg("Unauthorized", "Invalid token; You must Login again!");
+        await AsyncStorage.removeItem('token'); // Clear the invalid token
         router.push("/(entry)/Sign-in");
         return null;
     }

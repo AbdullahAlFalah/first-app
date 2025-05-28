@@ -2,6 +2,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getFilmApiUrl, showMsg } from "@/Utilities/ApiUtils";
+import { router } from "expo-router";
+import { isTokenValid } from "@/Utilities/TokenValidation";
 
 // Define the type for a film object
 interface Film {
@@ -26,10 +28,27 @@ interface ApiResponse {
     ServerNote: string;
 }
 
-export const getfilms = async (): Promise<Film[]> => {
-   
-    const url = getFilmApiUrl(`getfilmsinfo`);
+export const getfilms = async (): Promise<Film[] | null> => {
+      
     const token = await AsyncStorage.getItem('token'); // Get token from AsyncStorage
+
+    if (!token) {
+        console.error("Auth Token is not available; You must Login again!");
+        showMsg("Unauthorized", "Auth Token is not available; You must Login again!");
+        router.push("/(entry)/Sign-in");
+        return null;
+    }
+
+    // Validate the token before making the API call
+    if (!isTokenValid(token)) {
+        console.error("Invalid token; You must Login again!");
+        showMsg("Unauthorized", "Invalid token; You must Login again!");
+        await AsyncStorage.removeItem('token'); // Clear the invalid token
+        router.push("/(entry)/Sign-in");
+        return null;
+    }
+
+    const url = getFilmApiUrl(`getfilmsinfo`);
 
     try {
 
