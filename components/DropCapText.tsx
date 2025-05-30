@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextStyle } from 'react-native';
-import { splitIntoLines } from '../Utilities/textUtils'; 
+import { splitByNewlines } from '../Utilities/textUtils'; 
 
 type DropCapTextProps = {
     text: string;
@@ -12,7 +12,7 @@ const DropCapText = ({ text, dropCapStyle, textStyle }: DropCapTextProps) => {
     const firstLetter = text.charAt(0);
     const remainingText = text.slice(1);
 
-    const lines = splitIntoLines(remainingText, 40); // adjust maxCharsPerLine as needed
+    const lines = splitByNewlines(remainingText); // adjust maxCharsPerLine as needed
     if (text.length === 0 || lines.length === 0) {
         return (
             <View style={styles.outerContainer}>

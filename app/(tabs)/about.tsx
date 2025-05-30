@@ -47,9 +47,7 @@ export default function About() {
         }, 
       ]}>       
           <DropCapText 
-            text={`Welcome to Mish Mash! This app is a chaotic blend of features, each one representing different aspects of my mobile development journey.
-            It is intentionally varied and a little unpredictable, just like the creative process itself.
-            Dive in and explore this unique showcase of my skills, where each feature brings something different to the table!`}
+            text={`Welcome to Mish Mash!\nThis app is a chaotic blend of features, each\none representing different aspects of my mobile development journey.\nIt is intentionally varied and a little unpredictable, just like the creative process itself.\nDive in and explore this unique showcase of my skills, where each feature brings something different to the table!`}
             dropCapStyle={styles.DropCapText}
             textStyle={styles.ParagraphText}
           />
@@ -80,6 +78,8 @@ const styles = StyleSheet.create({
     },
     DropCapText: {
       fontFamily: 'TimesNewRoman',
+      fontSize: 96, // Override default drop cap size
+      lineHeight: 96, // Override default line height
     },
     ParagraphText: {
       fontFamily: 'TimesNewRoman',
