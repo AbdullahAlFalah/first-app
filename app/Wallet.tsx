@@ -3,10 +3,12 @@ import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert 
 import { getWallet } from "@/api/GetWallet";
 import { addFunds } from "@/api/AddFunds";
 import { showMsg } from "@/Utilities/ApiUtils";
+import CurrencyCB from "@/components/InputBoxes/CurrencyCB";
 
 export default function Wallet() {
 
     const [wallet, setWallet] = useState<null | { balance: number; currency: string; status: string }>(null);
+    const [currency, setCurrency] = useState<string>("");
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
@@ -16,6 +18,8 @@ export default function Wallet() {
         const result = await getWallet();
         if (result && result.walletInfo) {
             setWallet(result.walletInfo);
+            // Set currency only if not already set or if wallet currency changed
+            setCurrency(curr => curr || result.walletInfo.currency);
         }
         setLoading(false);
     };
@@ -31,7 +35,7 @@ export default function Wallet() {
             return;
         }
         setAdding(true);
-        await addFunds(num, wallet?.currency || "USD");
+        await addFunds(num, currency || wallet?.currency);
         setAmount("");
         await fetchWallet();
         setAdding(false);
@@ -44,8 +48,9 @@ export default function Wallet() {
                 <ActivityIndicator size="large" />
             ) : wallet ? (
                 <>
-                    <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>
+                    <Text style={styles.info}>Balance: {wallet.balance} {currency||wallet?.currency}</Text>
                     <Text style={styles.info}>Status: {wallet.status}</Text>
+                    <CurrencyCB value={currency||wallet?.currency} onChange={setCurrency} />
                     <TextInput
                         style={styles.input}
                         placeholder="Amount to add"
