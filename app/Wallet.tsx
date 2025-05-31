@@ -34,10 +34,10 @@ export default function Wallet() {
             showMsg("Invalid amount", "Please enter a valid number greater than 0.");
             return;
         }
-        setAdding(true);
-        await addFunds(num, currency || wallet?.currency);
-        setAmount("");
-        await fetchWallet();
+        setAdding(true);               
+        await addFunds(num, currency);
+        setAmount("");                 
+        await fetchWallet(); // Refresh wallet info after adding funds
         setAdding(false);
     };
 
@@ -48,7 +48,7 @@ export default function Wallet() {
                 <ActivityIndicator size="large" />
             ) : wallet ? (
                 <>
-                    <Text style={styles.info}>Balance: {wallet.balance} {currency||wallet?.currency}</Text>
+                    <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>
                     <Text style={styles.info}>Status: {wallet.status}</Text>
                     <CurrencyCB value={currency||wallet?.currency} onChange={setCurrency} />
                     <TextInput

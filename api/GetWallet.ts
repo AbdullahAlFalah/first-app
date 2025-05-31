@@ -61,15 +61,13 @@ export const getWallet = async (): Promise<WalletApiResponse | null> => {
 
         if (response.status === 200 && response.data) {   
             console.log("Wallet info:", response.data.walletInfo);
-            showMsg("Fetch Successful", response.data.ServerNote);   
+            console.log("Fetch Successful", response.data.ServerNote);   
             return response.data ; // Return the walletInfo and ServerNote
         }
-        else {
-            showMsg("Fetch Failed", response.data.ServerNote);
-        }
-    } catch (error) {
-        console.error("API error:", error);
-        showMsg("API Error:", error);       
+    } catch (error: any) {
+        console.log("API error:", error);
+        const ServerNote = error?.response?.data?.ServerNote || error.message;
+        console.log("Fetching Wallet Failed:", ServerNote);       
     }  
     return null; // Return null if the API call fails
 };

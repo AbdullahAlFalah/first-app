@@ -43,13 +43,14 @@ export const addFunds = async (amount: number, currency: string = "USD"): Promis
     );
 
     if (response.status === 200 && response.data) {
+      console.log("Funds Added:", response.data.ServerNote);
       showMsg("Funds Added", response.data.ServerNote);     
-    } else {
-      showMsg("Add Funds Failed", response.data.ServerNote);
-    }
-  } catch (error) {
-    console.error("API error:", error);
-    showMsg("API Error:", error);
+    } 
+  } catch (error: any) {
+      console.log("API error:", error);
+      // Extract backend error message if available
+      const ServerNote = error?.response?.data?.ServerNote || error.message;
+      showMsg("Failed Adding Funds", ServerNote);
   }
 };
 
