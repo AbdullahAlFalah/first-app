@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         width: 120,
     },
     pickerContainer: {  
-        backgroundColor: "#8fbc8f",
+        backgroundColor: "#8fbc8f", // Dark sea green
         borderWidth: 1,
         borderRadius: 6,
         borderColor: "#000",

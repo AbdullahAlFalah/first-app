@@ -4,11 +4,13 @@ import { getWallet } from "@/api/GetWallet";
 import { addFunds } from "@/api/AddFunds";
 import { showMsg } from "@/Utilities/ApiUtils";
 import CurrencyCB from "@/components/InputBoxes/CurrencyCB";
+import StatusRB from "@/components/InputBoxes/StatusRB";
 
 export default function Wallet() {
 
     const [wallet, setWallet] = useState<null | { balance: number; currency: string; status: string }>(null);
     const [currency, setCurrency] = useState<string>("");
+    const [status, setStatus] = useState<string>("");
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
@@ -20,6 +22,8 @@ export default function Wallet() {
             setWallet(result.walletInfo);
             // Set currency only if not already set or if wallet currency changed
             setCurrency(curr => curr || result.walletInfo.currency);
+            // Set status only if not already set or if wallet status changed
+            setStatus(stat => stat || result.walletInfo.status);           
         }
         setLoading(false);
     };
@@ -29,6 +33,10 @@ export default function Wallet() {
     }, []);
 
     const handleAddFunds = async () => {
+        if (status !== "active") {
+            showMsg("Inactive Wallet Status", "You can only add funds to an active wallet.");
+            return;
+        }
         const num = parseFloat(amount);
         if (isNaN(num) || num <= 0) {
             showMsg("Invalid amount", "Please enter a valid number greater than 0.");
@@ -50,6 +58,7 @@ export default function Wallet() {
                 <>
                     <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>
                     <Text style={styles.info}>Status: {wallet.status}</Text>
+                    <StatusRB value={status||wallet?.status} onChange={setStatus}/>
                     <CurrencyCB value={currency||wallet?.currency} onChange={setCurrency} />
                     <TextInput
                         style={styles.input}
