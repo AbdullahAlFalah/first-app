@@ -5,15 +5,17 @@ import { addFunds } from "@/api/AddFunds";
 import { showMsg } from "@/Utilities/ApiUtils";
 import CurrencyCB from "@/components/InputBoxes/CurrencyCB";
 import StatusRB from "@/components/InputBoxes/StatusRB";
+import { useWalletContext } from "@/hooks/WalletContext";
 
 export default function Wallet() {
 
     const [wallet, setWallet] = useState<null | { balance: number; currency: string; status: string }>(null);
     const [currency, setCurrency] = useState<string>("");
-    const [status, setStatus] = useState<string>("");
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
+
+    const { status, setStatus } = useWalletContext();
 
     const fetchWallet = async () => {
         setLoading(true);
@@ -21,9 +23,8 @@ export default function Wallet() {
         if (result && result.walletInfo) {
             setWallet(result.walletInfo);
             // Set currency only if not already set or if wallet currency changed
-            setCurrency(curr => curr || result.walletInfo.currency);
-            // Set status only if not already set or if wallet status changed
-            setStatus(stat => stat || result.walletInfo.status);           
+            setCurrency(curr => curr || result.walletInfo.currency);           
+            setStatus(result.walletInfo.status); // set global status here           
         }
         setLoading(false);
     };
@@ -56,8 +57,7 @@ export default function Wallet() {
                 <ActivityIndicator size="large" />
             ) : wallet ? (
                 <>
-                    <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>
-                    <Text style={styles.info}>Status: {wallet.status}</Text>
+                    <Text style={styles.info}>Balance: {wallet.balance} {wallet.currency}</Text>                   
                     <StatusRB value={status||wallet?.status} onChange={setStatus}/>
                     <CurrencyCB value={currency||wallet?.currency} onChange={setCurrency} />
                     <TextInput

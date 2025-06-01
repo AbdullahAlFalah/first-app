@@ -1,15 +1,23 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
-import { useCart } from "@/hooks/CartContext";
 import { router } from "expo-router";
 import { purchaseItems } from "@/api/PurchasingFullCart";
+import { showMsg } from "@/Utilities/ApiUtils";
 import RotatingSquareButton from "@/components/RotatingSquareButton";
- 
+
+import { useCart } from "@/hooks/CartContext"; 
+import { useWalletContext } from "@/hooks/WalletContext"; 
+
 export default function Cart() {
     
     const { cart, totalCost } = useCart();
+    const { status } = useWalletContext();
 
     const handleCheckout = () => {
+        if (status === "inactive") {
+            showMsg("Inactive Wallet Status", "You can only purchase using an active wallet.");
+            return;
+        }
         purchaseItems(cart);
         console.log("Checkout button pressed");
     };

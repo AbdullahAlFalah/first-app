@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
+import { useWalletContext } from "@/hooks/WalletContext";
+
 type statusRB_Props = {
     value: string;
     onChange: (val: string) => void;
@@ -9,9 +11,12 @@ type statusRB_Props = {
 const statuses = ["active", "inactive"];
 
 export default function StatusRB ({ value, onChange }: statusRB_Props) {
-        return (
+
+    const { status } = useWalletContext();
+
+    return (
         <View style={styles.container}>
-            <Text style={styles.label}>Status:</Text>
+            <Text style={styles.label}>Current Status: {status.charAt(0).toUpperCase() + status.slice(1)}</Text>
             <View style={styles.row}>
                 {statuses.map((status) => (
                     <Pressable
@@ -40,17 +45,19 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18,
-        marginBottom: 4,
+        marginBottom: 10,
         color: "#000000",
     },
     row: {
         flexDirection: "row",
         justifyContent: "space-around",
-        width: "100%",
+        alignItems: "center",
+        marginBottom: 5,
     },
     radioContainer: {
         flexDirection: "row",
         alignItems: "center",
+        marginHorizontal: 25, // add space between buttons
     },
     radio: {
         width: 20,
