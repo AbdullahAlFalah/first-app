@@ -16,13 +16,13 @@ interface Film {
 
 export default function Films() {
 
-    const [films, setFilms] = useState<Film[]>([]); // State to store films data
+    const [films, setFilms] = useState<Film[] | null>([]); // State to store films data
     const [loading, setLoading] = useState(true); // State to manage loading state
 
     useEffect(() => {
         const fetchFilms = async () => {
             try {
-                const data: Film[] = await getfilms(); // Fetch films data from the API
+                const data = await getfilms(); // Fetch films data from the API
                 setFilms(data); // Update the films state with the fetched data
             } catch (error) {
                 console.error("Error fetching films:", error);
@@ -45,18 +45,22 @@ export default function Films() {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            {films.map((film) => (
-                <FilmsCard
-                    key={film.id} // Use a unique key for each card
-                    id={film.id} // Pass the film ID to the card is needed here
-                    title={film.title}
-                    description={film.description}
-                    length={film.length}
-                    cost={film.cost}
-                    rating={film.rating}
-                    onPress={() => console.log(`Selected Film ID: ${film.id}`)} // Example onPress action
-                />
-            ))}
+            {films && films.length > 0 ? (
+                films.map((film) => (
+                    <FilmsCard
+                        key={film.id} // Use a unique key for each card
+                        id={film.id} // Pass the film ID to the card is needed here
+                        title={film.title}
+                        description={film.description}
+                        length={film.length}
+                        cost={film.cost}
+                        rating={film.rating}
+                        onPress={() => console.log(`Selected Film ID: ${film.id}`)} // Example onPress action
+                    />
+                ))
+            ) : (
+                <Text style={styles.text}>No films found.</Text>
+            )}
         </ScrollView>
     );
 
@@ -75,6 +79,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 16,
         color: "#666",
+    },
+    text: {
+        fontSize: 18,
+        color: "#333",
+        textAlign: "center",
+        marginTop: 20,
     },
 });
 

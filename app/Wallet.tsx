@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { getWallet } from "@/api/GetWallet";
 import { addFunds } from "@/api/AddFunds";
 import { showMsg } from "@/Utilities/ApiUtils";
