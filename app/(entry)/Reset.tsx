@@ -12,7 +12,6 @@ export default function resetPassword() {
             <Updateuser />
         </> 
 
-
     );
     
 }

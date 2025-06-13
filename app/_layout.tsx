@@ -21,6 +21,7 @@ export default function RootLayout() {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="(entry)" options={{ headerShown: false }} />
                 <Stack.Screen name="(films)" options={{ headerShown: false}} />
+                <Stack.Screen name="(adsAndrewards)" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found"  options={{ title: 'Page not found...', headerShadowVisible: false, headerTintColor: '#fff', headerStyle: {backgroundColor: '#25292e'} }} />
               </Stack> 
             </CartProvider>
