@@ -1,49 +1,54 @@
 import React, { useEffect } from 'react';
 import { View, Button, StyleSheet, ScrollView } from 'react-native';
-import { AdMobBanner, AdMobInterstitial, AdMobRewarded } from 'expo-ads-admob';
+import { BannerAd, BannerAdSize, InterstitialAd, AdEventType, RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import { claimReward } from '../../api/GetReward';
+
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+    requestNonPersonalizedAdsOnly: true,
+});
+
+const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED, {
+    requestNonPersonalizedAdsOnly: true,
+});
 
 export default function AdsScreen() {
 
     useEffect(() => {
 
-        // Load Interstitial ad
-        AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712'); // Interstitial Test ID
-        AdMobInterstitial.requestAdAsync();
+        // Load both types of ads on mount
+        interstitial.load();
+        rewardedAd.load();
 
-        // Register Rewarded Ad Listener
-        AdMobRewarded.addEventListener(
-            "rewardedVideoUserDidEarnReward",
-            async () => {
-                await claimReward(); // Call the claimReward function here
+        // Rewarded Ad Event Listener
+        const rewardedListener = rewardedAd.addAdEventListener(
+            RewardedAdEventType.EARNED_REWARD,
+            (reward) => {
+                console.log('User earned reward:', reward);
+                claimReward(); // Call your reward logic here
             }
         );
 
-        // Cleanup listeners
-        return () => {
-            AdMobRewarded.removeAllListeners();
-            AdMobInterstitial.removeAllListeners();
-        };
+        rewardedAd.addAdEventListener(AdEventType.LOADED, () => {
+            rewardedAd.show();
+        });
+
+        return () => { 
+            rewardedListener(); // Cleanup the listener on unmount          
+        }; 
 
     }, []);
 
     // Show Interstitial Ad
     const showInterstitial = async () => {
-        try {
-        await AdMobInterstitial.showAdAsync();
-        } catch (error) {
-        console.warn('Interstitial Ad Error:', error);
+        if (interstitial?.loaded) {
+            interstitial.show();
         }
     };
 
     // Show Rewarded Ad
     const showRewarded = async () => {
-        try {
-            await AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917"); // Rewarded Test ID
-            await AdMobRewarded.requestAdAsync();
-            await AdMobRewarded.showAdAsync();
-        } catch (error) {
-            console.warn("Rewarded Ad Error:", error);
+        if (rewardedAd?.loaded) {
+            rewardedAd.show();
         }
     };
 
@@ -58,11 +63,12 @@ export default function AdsScreen() {
         </View>
 
         <View style={styles.banner}>
-            <AdMobBanner
-                bannerSize="fullBanner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111" 
-                servePersonalizedAds
-                onDidFailToReceiveAdWithError={(err) => console.warn(err)}
+            <BannerAd
+                unitId={TestIds.BANNER}
+                size={BannerAdSize.FULL_BANNER}
+                requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                }}
             />
         </View>
         </ScrollView>

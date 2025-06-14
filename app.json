@@ -49,8 +49,17 @@
         "expo-build-properties",
         {
           "android": {
-            "usesCleartextTraffic": true
+            "usesCleartextTraffic": true,
+            "extraProguardRules": "-keep class com.google.android.gms.** { *; }",
+            "kotlinVersion": "1.8.22"
           }
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-9172535445214914~4795818024", 
+          "iosAppId": "ca-app-pub-9172535445214914~3820248907" 
         }
       ]
     ],
