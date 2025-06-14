@@ -51,7 +51,7 @@
           "android": {
             "usesCleartextTraffic": true,
             "extraProguardRules": "-keep class com.google.android.gms.** { *; }",
-            "kotlinVersion": "1.8.22"
+            "kotlinVersion": "1.7.20"
           }
         }
       ],
