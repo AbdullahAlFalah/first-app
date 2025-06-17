@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 
 import { useUserinfo } from "@/hooks/UserContext";
 import { getApiUrl } from "@/Utilities/ApiUtils";
+import  Ads_BTN  from "@/components/navigation/Ads_BTN";
 
 type UserData = {
     email: string;
@@ -122,6 +123,7 @@ export default function MainAccount() {
             <Pressable style={styles.Filmsbutton} onPress={() => router.push('/(films)/Films')}>
                 <Text style={styles.Filmsbuttontext}>Open Films</Text>
             </Pressable>
+            <Ads_BTN />
         </View>
 
     );

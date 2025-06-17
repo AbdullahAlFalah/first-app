@@ -19,21 +19,18 @@ export default function AdsScreen() {
         interstitial.load();
         rewardedAd.load();
 
-        // Rewarded Ad Event Listener
-        const rewardedListener = rewardedAd.addAdEventListener(
+        // Rewarded Ad Earned Event Listener
+        const rewardedEarnedListener = rewardedAd.addAdEventListener(
             RewardedAdEventType.EARNED_REWARD,
             (reward) => {
                 console.log('User earned reward:', reward);
                 claimReward(); // Call your reward logic here
             }
-        );
-
-        rewardedAd.addAdEventListener(AdEventType.LOADED, () => {
-            rewardedAd.show();
-        });
+        );  
 
         return () => { 
-            rewardedListener(); // Cleanup the listener on unmount          
+            // Cleanup listener on unmount 
+            rewardedEarnedListener();           
         }; 
 
     }, []);
@@ -42,6 +39,8 @@ export default function AdsScreen() {
     const showInterstitial = async () => {
         if (interstitial?.loaded) {
             interstitial.show();
+        } else {
+            console.log('Interstitial ad not loaded yet');
         }
     };
 
@@ -49,6 +48,8 @@ export default function AdsScreen() {
     const showRewarded = async () => {
         if (rewardedAd?.loaded) {
             rewardedAd.show();
+        } else {
+            console.log('Rewarded ad not loaded yet');
         }
     };
 
