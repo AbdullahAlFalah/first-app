@@ -5,18 +5,18 @@ import { router } from "expo-router";
 import { isTokenValid } from "@/Utilities/TokenValidation";
 
 // Define the type for the API response
-interface RewardApiResponse {
+interface RewardHistoryApiResponse {
     success: boolean;
-    message: string;
-    reward?: {
+    coinHistory?: Array<{
         rewardCoins: number;
         totalCoins: number;
-        timestamp: string;
-    }; // without a separate interface for reward
+        createdAt: string;
+    }>;
+    message?: string;
 }
 
-// Function to claim the reward
-export const claimReward = async (): Promise<RewardApiResponse | null> => {
+// Function to fetch the user's reward history
+export const getUserRewardHistory = async (): Promise<RewardHistoryApiResponse | null> => {
     const token = await AsyncStorage.getItem("token");
 
     if (!token) {
@@ -35,44 +35,38 @@ export const claimReward = async (): Promise<RewardApiResponse | null> => {
         return null;
     }
 
-    const API_URL = getRewardApiUrl("reward-claim");
+    const API_URL = getRewardApiUrl("rewards-history");
 
     try {
-
         const source = axios.CancelToken.source();
         const timeout = setTimeout(() => {
             source.cancel("Request timeout: Server not responding");
         }, 10000); // 10 seconds timeout
 
-        const response = await axios.post<RewardApiResponse>(
-            API_URL,
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                cancelToken: source.token,
-            }
-        );
+        const response = await axios.get<RewardHistoryApiResponse>(API_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            cancelToken: source.token,
+        });
 
         clearTimeout(timeout); // Clear the timeout if the request completes in time
 
         if (response.status === 200 && response.data) {
-            const { success, message, reward } = response.data;
+            const { success, coinHistory, message } = response.data;
 
             if (success) {
-                console.log("Reward Claimed:", reward);
-                showMsg("Reward Claimed!", `You earned ${reward?.rewardCoins} coins!`);
-                return response.data; // Return the reward data
+                console.log("Reward History Fetched:", coinHistory);
+                return response.data; // Return the reward history data
             } else {
-                showMsg("Reward Failed", message);
+                showMsg("Failed to Fetch History", message || "Unknown error occurred");
                 return null;
             }
         }
     } catch (error: any) {
         console.error("API error:", error);
         const message = error?.response?.data?.message || error.message;
-        showMsg("Giving Reward Failed", message);
+        showMsg("Fetching History Failed", message);
     }
 
     return null; // Return null if the API call fails

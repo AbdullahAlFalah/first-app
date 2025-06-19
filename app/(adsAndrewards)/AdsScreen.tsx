@@ -26,11 +26,29 @@ export default function AdsScreen() {
                 console.log('User earned reward:', reward);
                 claimReward(); // Call your reward logic here
             }
-        );  
+        );
+
+        // Rewarded Ad Close Event Listener
+        const rewardedCloseListener = rewardedAd.addAdEventListener(
+            AdEventType.CLOSED,
+            () => {
+                rewardedAd.load(); // Reload for next time
+            }
+        );
+
+        // Interstitial Ad Close Event Listener
+        const interstitialCloseListener = interstitial.addAdEventListener(
+            AdEventType.CLOSED,
+            () => {
+                interstitial.load(); // Reload for next time
+            }
+        );
 
         return () => { 
-            // Cleanup listener on unmount 
-            rewardedEarnedListener();           
+            // Cleanup listeners on unmount 
+            rewardedEarnedListener();
+            rewardedCloseListener(); 
+            interstitialCloseListener();          
         }; 
 
     }, []);
