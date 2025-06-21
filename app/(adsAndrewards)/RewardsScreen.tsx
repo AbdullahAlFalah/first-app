@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Pressable } from 'react-native';
 import { getUserRewardHistory } from '@/api/GetUserRewardHistory';
 import { showMsg } from '@/Utilities/ApiUtils';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import { upgradeBackground } from '@/api/UpgradingBackground';
 
 // Define the interface for a reward record object
 interface RewardRecord {
@@ -15,28 +16,35 @@ export default function RewardsScreen() {
     const [rewardHistory, setRewardHistory] = useState<RewardRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchRewardHistory = async () => {
-            setLoading(true);
-            const history = await getUserRewardHistory();
-            if (history && history.coinHistory) {
-                setRewardHistory(history.coinHistory);
-            }
-            setLoading(false);
-        };
-
-        fetchRewardHistory();
+    
+    const fetchRewardHistory = useCallback(async () => {
+        setLoading(true);
+        const history = await getUserRewardHistory();
+        if (history && history.coinHistory) {
+            setRewardHistory(history.coinHistory);
+        }
+        setLoading(false);
     }, []);
+
+    // Refresh on screen focus
+    useFocusEffect(
+        useCallback(() => {
+            fetchRewardHistory();
+        }, [fetchRewardHistory])
+    );
 
     // Get the total coins from the newest record
     const newestTotalCoins = rewardHistory.length > 0 ? rewardHistory[0].totalCoins : 0;
 
-    const handleUpgradeBackground = () => {
-        showMsg('Upgraded Background', 'Check the Ads page now!!!');
-        router.push({
-            pathname: '/(adsAndrewards)/AdsScreen',
-            params: {  }, 
-        });
+    const handleUpgradeBackground = async () => {  
+        const result = await upgradeBackground();
+        console.log('Upgrade result:', result);
+        showMsg(result?.success ? 'Upgrade Succeded' : 'Upgrade Failed', `API message: ${result?.message}`);
+        if (result?.success) {
+            router.push(
+               `/(adsAndrewards)/AdsScreen?assetLevel=${result.newLevel}&assetName=${encodeURIComponent(result.assetName ?? '')}&assetUrl=${encodeURIComponent(result.assetUrl ?? '')}&remainingCoins=${result.remainingCoins ?? ''}` 
+            );           
+        }
     };
 
     return (

@@ -52,6 +52,14 @@ export const getRewardApiUrl = (path: string) => {
     return `${baseUrl}${path}`;
 };
 
+export const getBackgroundApiUrl = (path: string) => {
+    const baseUrl = `http://52.59.130.11:3000/api/background/`;
+    if (!baseUrl) {
+        throw new Error("Platform Unsupported!"); 
+    }       
+    return `${baseUrl}${path}`;
+};
+
 export const showMsg = (title: string, msg: any) => {
     if (Platform.OS === 'web') {
         window.alert(`${title}:\n${msg}`);
