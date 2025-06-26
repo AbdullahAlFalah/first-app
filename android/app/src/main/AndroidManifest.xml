@@ -34,7 +34,6 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.abdullah33.firstapp"/>
-        <data android:scheme="exp+first-app"/>
       </intent-filter>
     </activity>
   </application>
