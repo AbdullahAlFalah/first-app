@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -8,7 +10,20 @@ import WalletProvider from "@/hooks/WalletContext";
 
 export default function RootLayout() {
 
-
+  useEffect(() => {
+      const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      // TypeScript may not recognize categoryIdentifier, so use 'as any'
+      const category = (response.notification.request.content as any).categoryIdentifier;
+        if (
+          category === 'with-button' &&
+          response.actionIdentifier === 'open'
+        ) {
+          // Handle button press here (navigate, show alert, etc.)
+          console.log("Open button pressed!");
+        }
+      });
+      return () => subscription.remove();
+    }, []);
 
   return (
     
