@@ -61,9 +61,10 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
         if (existingStatus !== 'granted') {
             const { status } = await Notifications.requestPermissionsAsync();
             finalStatus = status;
+            console.log('Notification permission status:', finalStatus);
         }
         if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
+            console.log('Failed to get push token for push notification!');
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
@@ -73,7 +74,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
             await registerRemoteNotification(token);
         }
     } else {
-        alert('Must use physical device for Push Notifications');
+        console.log('Must use physical device for Push Notifications');
         return;
     }
     return token;
