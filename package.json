@@ -49,7 +49,8 @@
     "react-native-view-shot": "~4.0.3",
     "react-native-web": "~0.19.13",
     "expo-notifications": "~0.29.14",
-    "expo-device": "~7.0.3"
+    "expo-device": "~7.0.3",
+    "expo-dev-client": "~5.0.20"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
