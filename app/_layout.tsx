@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -5,10 +7,25 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import UserProvider from "@/hooks/UserContext";
 import CartProvider from "@/hooks/CartContext";
 import WalletProvider from "@/hooks/WalletContext";
+import { registerForPushNotificationsAsync } from "@/Utilities/notificationsUtils";
 
 export default function RootLayout() {
 
+  useEffect(() => {
+    // Register for remote push notifications
+    registerForPushNotificationsAsync();
 
+    // Listen for remote sent notifications
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      // TypeScript may not recognize categoryIdentifier, so use 'as any'
+      const category = (response.notification.request.content as any).categoryIdentifier;
+      if ( category === 'with-button' && response.actionIdentifier === 'open' ) {
+          // Handle button press here (navigate, show alert, etc.)
+          console.log("Open button pressed!");
+      }
+    });
+    return () => subscription.remove();
+  }, []);
 
   return (
     
