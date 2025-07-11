@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { Platform } from 'react-native';
 import { registerRemoteNotification } from '@/api/RegisterRemoteNotification';
 
@@ -8,6 +9,11 @@ import { registerRemoteNotification } from '@/api/RegisterRemoteNotification';
  * Should be called before scheduling or registering notifications.
  */
 async function configureNotifications() {
+
+    if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+        console.log('📵 Skipping notification config — Expo Go does not support native push features.');
+        return;
+    }
     
     if (Platform.OS === 'android') {
         // Setting the notification channel for Android
@@ -52,7 +58,13 @@ async function configureNotifications() {
  * and returns the Expo push token.
  */
 export async function registerForPushNotificationsAsync(): Promise<string | undefined> {
-    await configureNotifications();
+
+    if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+        console.log('📵 Skipping push notification registration — Expo Go does not support native push features.');
+        return;
+    }
+
+    await configureNotifications(); // Ensure notifications are configured before requesting permissions
 
     let token;
     if (Device.isDevice) {
@@ -85,6 +97,12 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
  * On Android, adds a button. On iOS, simple notification.
  */
 export async function scheduleLocalNotification(title: string, body: string) {
+
+    if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+        console.log('📵 Skipping local notification scheduling — Expo Go does not support native push features.');
+        return;
+    }
+
     await configureNotifications();
 
     const content: Notifications.NotificationContentInput = {
