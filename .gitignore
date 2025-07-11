@@ -13,6 +13,9 @@ npm-debug.*
 web-build/
 .env
 
+# Ignore all PowerShell scripts
+*.ps1
+
 # macOS
 .DS_Store
 
