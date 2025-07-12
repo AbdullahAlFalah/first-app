@@ -44,14 +44,13 @@ export const upgradeBackground = async (): Promise<UpgradeBackgroundResponse | n
         );
 
         if (response.status === 200 && response.data) {
-            if (response.data.success) {
-                showMsg("Upgrade Successful", response.data.message);
+            if (response.data.success) {                
                 return response.data;
-            } else {
-                showMsg("Upgrade Failed", response.data.message);
+            } else {                
                 return response.data;
             }
         }
+        
     } catch (error: any) {
         const message =
         error?.response?.data?.message ||
