@@ -11,8 +11,6 @@ import { initializeNotificationSystem } from "@/Utilities/notificationsUtils";
 
 export default function RootLayout() {
 
-
-
   useEffect(() => {
 
     // Initialize the notification system
