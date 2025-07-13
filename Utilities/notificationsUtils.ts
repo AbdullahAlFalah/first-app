@@ -92,6 +92,30 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
     return token;
 }
 
+export async function initializeNotificationSystem(): Promise<Notifications.EventSubscription|undefined> {
+
+    if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+        console.log('📵 Skipping notification system initialization — Expo Go does not support native push features.');
+        return;
+    }
+
+    // Register for remote push notifications
+    const token = await registerForPushNotificationsAsync();
+    console.log('✅ Notification system initialized. Token:', token);
+
+    // Listen for remote sent notifications
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      // TypeScript may not recognize categoryIdentifier, so use 'as any'
+      const category = (response.notification.request.content as any).categoryIdentifier;
+      if ( category === 'with-button' && response.actionIdentifier === 'open' ) {
+          // Handle button press here (navigate, show alert, etc.)
+          console.log("Open button pressed!");
+      }
+    });
+
+    return subscription;
+}
+
 /**
  * Schedules a local notification (for testing) with custom title and message.
  * On Android, adds a button. On iOS, simple notification.

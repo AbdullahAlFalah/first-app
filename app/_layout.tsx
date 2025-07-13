@@ -7,24 +7,34 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import UserProvider from "@/hooks/UserContext";
 import CartProvider from "@/hooks/CartContext";
 import WalletProvider from "@/hooks/WalletContext";
-import { registerForPushNotificationsAsync } from "@/Utilities/notificationsUtils";
+import { initializeNotificationSystem } from "@/Utilities/notificationsUtils";
 
 export default function RootLayout() {
 
-  useEffect(() => {
-    // Register for remote push notifications
-    registerForPushNotificationsAsync();
 
-    // Listen for remote sent notifications
-    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-      // TypeScript may not recognize categoryIdentifier, so use 'as any'
-      const category = (response.notification.request.content as any).categoryIdentifier;
-      if ( category === 'with-button' && response.actionIdentifier === 'open' ) {
-          // Handle button press here (navigate, show alert, etc.)
-          console.log("Open button pressed!");
+
+  useEffect(() => {
+
+    // Initialize the notification system
+    let subscription: Notifications.EventSubscription | undefined;
+    const setupNotifications = async () => {
+      subscription = await initializeNotificationSystem();
+      if (subscription) {
+        console.log('Notification listener set up successfully.');
+      } else {
+        console.log('Failed to set up notification listener.');
       }
-    });
-    return () => subscription.remove();
+    };
+    setupNotifications();
+
+    // Cleanup subscription on unmount
+    return () => {
+      if (subscription) {
+        subscription.remove();
+        console.log('Cleaning up notification listener...');
+      }
+    };
+
   }, []);
 
   return (
