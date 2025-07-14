@@ -69,6 +69,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
     let token;
     if (Device.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        console.log('📛 Existing notification permission status:', existingStatus);
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
             const { status } = await Notifications.requestPermissionsAsync();
@@ -79,11 +80,24 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
             console.log('Failed to get push token for push notification!');
             return;
         }
-        token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log('Expo Push Token:', token);
+        
+        // Get the project ID from the app config
+        const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+        console.log('📌 Resolved projectId:', projectId);
+        if (!projectId) {
+                console.log('Project ID not found');
+        }
+
+        const pushTokenResponse = await Notifications.getExpoPushTokenAsync({ projectId });
+        console.log('📦 Full Expo push token object:', pushTokenResponse);
+        token = pushTokenResponse.data;
+        console.log('Final Expo Push Token:', token);
         // Send the token to my server
         if (token) {
+            console.log('Registering remote notification with token:', token);
             await registerRemoteNotification(token);
+        } else {
+            console.log('No token received from getExpoPushTokenAsync');
         }
     } else {
         console.log('Must use physical device for Push Notifications');
@@ -93,6 +107,8 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
 }
 
 export async function initializeNotificationSystem(): Promise<Notifications.EventSubscription|undefined> {
+
+    console.log('🔍 ENV:', Constants.executionEnvironment);
 
     if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
         console.log('📵 Skipping notification system initialization — Expo Go does not support native push features.');

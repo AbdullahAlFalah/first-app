@@ -35,7 +35,8 @@
       "package": "com.abdullah33.firstapp",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9172535445214914~4795818024" 
-      }
+      },
+      "googleServicesFile": "./Google_Config/google-services.json"
     },
     "web": {
       "bundler": "metro",

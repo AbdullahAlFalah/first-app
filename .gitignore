@@ -13,6 +13,9 @@ npm-debug.*
 web-build/
 .env
 
+#Ignore firebase private key and service account
+Google_Config/
+
 # Ignore all PowerShell scripts
 *.ps1
 
