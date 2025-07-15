@@ -19,6 +19,9 @@ Google_Config/
 # Ignore all PowerShell scripts
 *.ps1
 
+# Ignore all shell scripts
+*.sh
+
 # macOS
 .DS_Store
 
