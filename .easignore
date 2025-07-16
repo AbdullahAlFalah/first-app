@@ -1,0 +1,26 @@
+# Android build caches and outputs only
+android/app/build/
+android/.gradle/
+android/build/
+android/gradle/
+android/captures/
+
+# iOS build caches (if applicable)
+ios/build/
+ios/Pods/
+
+# Expo caches and settings
+.expo/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Git stuff
+.git/
+.gitignore
+
+# IDE config
+.vscode/
+.idea/
+
