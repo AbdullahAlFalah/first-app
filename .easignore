@@ -2,7 +2,6 @@
 android/app/build/
 android/.gradle/
 android/build/
-android/gradle/
 android/captures/
 
 # iOS build caches (if applicable)
