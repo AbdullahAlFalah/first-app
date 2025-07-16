@@ -2,11 +2,6 @@
   "name": "first-app",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "expo": {
-    "hooks": {
-      "prebuild": "bash ./eas-build-pre-entry.sh"
-    }
-  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

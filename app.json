@@ -38,6 +38,9 @@
       },
       "googleServicesFile": "./google-services.json"
     },
+    "hooks": {
+      "prebuild": "bash ./eas-build-pre-entry.sh"
+    },
     "web": {
       "bundler": "metro",
       "output": "static",
