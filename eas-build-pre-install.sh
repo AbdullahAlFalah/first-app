@@ -10,9 +10,9 @@ fi
 echo "✅ GOOGLE_SERVICES_JSON is set. Length: ${#GOOGLE_SERVICES_JSON}"
 echo "${GOOGLE_SERVICES_JSON:0:50}..."  # Print the first 50 characters for sanity check
 
-echo $GOOGLE_SERVICES_JSON | base64 --decode > android/app/google-services.json
+echo $GOOGLE_SERVICES_JSON | base64 -d > android/app/google-services.json
 
-if [ ! -f google-services.json ]; then
+if [ ! -s google-services.json ]; then
   echo "❌ Error: Failed to create google-services.json from GOOGLE_SERVICES_JSON."
   exit 1
 fi
