@@ -36,10 +36,7 @@
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-9172535445214914~4795818024" 
       },
-      "googleServicesFile": "./google-services.json"
-    },
-    "hooks": {
-      "prebuild": "bash ./eas-build-pre-entry.sh"
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "bundler": "metro",

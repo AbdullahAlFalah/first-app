@@ -1,6 +1,4 @@
 node_modules/
-android/
-ios/
 .expo/
 dist/
 npm-debug.*
@@ -18,9 +16,6 @@ Google_Config/
 
 # Ignore all PowerShell scripts
 *.ps1
-
-# Ignore all shell scripts
-*.sh
 
 # macOS
 .DS_Store
