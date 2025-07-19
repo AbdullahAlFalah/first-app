@@ -88,10 +88,16 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
                 console.log('Project ID not found');
         }
 
-        const pushTokenResponse = await Notifications.getExpoPushTokenAsync({ projectId });
-        console.log('📦 Full Expo push token object:', pushTokenResponse);
-        token = pushTokenResponse.data;
-        console.log('Final Expo Push Token:', token);
+        try {
+            const pushTokenResponse = await Notifications.getExpoPushTokenAsync({ projectId });
+            console.log('📦 Full Expo push token object:', pushTokenResponse);
+            token = pushTokenResponse.data;
+            console.log('Final Expo Push Token:', token);
+        } catch (error) {
+            console.error('Error getting Expo push token:', error);
+            return;
+        }
+
         // Send the token to my server
         if (token) {
             console.log('Registering remote notification with token:', token);
