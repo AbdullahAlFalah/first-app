@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { getRemoteNotificationApiUrl, showMsg } from '@/Utilities/ApiUtils';
-import { useUserinfo } from '@/hooks/UserContext';
-import { router } from 'expo-router';
 
 // Define the type for the API response
 interface ApiResponse {
@@ -9,21 +7,12 @@ interface ApiResponse {
 }
 
 export const registerRemoteNotification = async (token: string) => {
-    const { globalemail } = useUserinfo(); // Access the context to get the global email
-
-    if (!globalemail) {
-        console.error("Global email is not set; You must Login again!");
-        showMsg("Unauthorized", "You must Login again!");
-        router.push("/(entry)/Sign-in");
-        return;
-    }
 
     const url = getRemoteNotificationApiUrl('registerPushToken');
 
     try {       
         // Send data to express server
         const response = await axios.post<ApiResponse>(url, {
-            email: globalemail,
             expoPushToken: token,
         });
 

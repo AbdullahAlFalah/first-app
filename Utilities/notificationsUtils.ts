@@ -2,7 +2,7 @@ import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { Platform } from 'react-native';
-import { registerRemoteNotification } from '@/api/RegisterRemoteNotification';
+import { useUserinfo } from '@/hooks/UserContext';
 
 /**
  * Configures notification channels, categories, and handlers for both platforms.
@@ -66,6 +66,8 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
 
     await configureNotifications(); // Ensure notifications are configured before requesting permissions
 
+    const { setExpoPushToken } = useUserinfo(); // Access the context to set the Expo push token globally
+
     let token;
     if (Device.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -101,7 +103,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
         // Send the token to my server
         if (token) {
             console.log('Registering remote notification with token:', token);
-            await registerRemoteNotification(token);
+            setExpoPushToken(token);
         } else {
             console.log('No token received from getExpoPushTokenAsync');
         }
