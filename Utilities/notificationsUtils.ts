@@ -100,7 +100,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
             return;
         }
 
-        // Send the token to my server
+        // Set the token in the global context
         if (token) {
             console.log('Registering remote notification with token:', token);
             setExpoPushToken(token);
@@ -122,11 +122,7 @@ export async function initializeNotificationSystem(): Promise<Notifications.Even
         console.log('📵 Skipping notification system initialization — Expo Go does not support native push features.');
         return;
     }
-
-    // Register for remote push notifications
-    const token = await registerForPushNotificationsAsync();
-    console.log('✅ Notification system initialized. Token:', token);
-
+ 
     // Listen for remote sent notifications
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       // TypeScript may not recognize categoryIdentifier, so use 'as any'

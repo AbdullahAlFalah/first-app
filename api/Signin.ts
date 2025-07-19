@@ -38,6 +38,7 @@ export const signin = async ( email: string, password: string ) => {
             console.log("Token stored successfully:", data.token);
             // Register the remote notification with the Expo push token
             if (expoPushToken) {
+                // Send the Expo push token to my backed server
                 await registerRemoteNotification(expoPushToken);
             } else {
                 console.warn('No Expo push token available for registration.');
