@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 import { getApiUrl, showMsg } from "@/Utilities/ApiUtils";
+import useRegisterPushToken from "@/Utilities/useRegisterPushToken";
 
 export const signin = async ( email: string, password: string ) => {
    
@@ -31,12 +32,19 @@ export const signin = async ( email: string, password: string ) => {
         }
 
         if (response.ok) {
+
             // Store the JWT (for React Native)
-            await AsyncStorage.setItem('JWTtoken', data.token); 
+            await AsyncStorage.setItem('token', data.token); 
             console.log("JWT token stored successfully:", data.token);
             console.log("Response data:", data);
             showMsg("Login Successful", data.ServerNote);
+
+            // Register the Expo push token
+            await useRegisterPushToken();
+
+            // Navigate to the main account page
             router.push('/(entry)/MainAccount');
+
         } else {
             console.log("Response data:", data);
             showMsg("Login Failed", data.ServerNote);
