@@ -7,11 +7,15 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import UserProvider from "@/hooks/UserContext";
 import CartProvider from "@/hooks/CartContext";
 import WalletProvider from "@/hooks/WalletContext";
+import useRegisterPushToken from "@/Utilities/useRegisterPushToken";
 import { initializeNotificationSystem } from "@/Utilities/notificationsUtils";
 
 export default function RootLayout() {
 
-  useEffect(() => {
+  useEffect(() => {   
+
+    // Register the Expo push token
+    useRegisterPushToken();
 
     // Initialize the notification system
     let subscription: Notifications.EventSubscription | undefined;
@@ -24,6 +28,8 @@ export default function RootLayout() {
       }
     };
     setupNotifications();
+
+    
 
     // Cleanup subscription on unmount
     return () => {

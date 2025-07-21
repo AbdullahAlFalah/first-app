@@ -2,14 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 import { getApiUrl, showMsg } from "@/Utilities/ApiUtils";
-import { useUserinfo } from '@/hooks/UserContext';
-import { registerRemoteNotification } from '@/api/RegisterRemoteNotification';
 
 export const signin = async ( email: string, password: string ) => {
    
     const url = getApiUrl(`login`);
-    const { expoPushToken } = useUserinfo(); // Access the Expo push token from the context global state
-
+    
     try {
 
         // Send data to express server
@@ -34,15 +31,9 @@ export const signin = async ( email: string, password: string ) => {
         }
 
         if (response.ok) {
-            await AsyncStorage.setItem('token', data.token); // Store the JWT (for React Native)
-            console.log("Token stored successfully:", data.token);
-            // Register the remote notification with the Expo push token
-            if (expoPushToken) {
-                // Send the Expo push token to my backed server
-                await registerRemoteNotification(expoPushToken);
-            } else {
-                console.warn('No Expo push token available for registration.');
-            }
+            // Store the JWT (for React Native)
+            await AsyncStorage.setItem('JWTtoken', data.token); 
+            console.log("JWT token stored successfully:", data.token);
             console.log("Response data:", data);
             showMsg("Login Successful", data.ServerNote);
             router.push('/(entry)/MainAccount');
