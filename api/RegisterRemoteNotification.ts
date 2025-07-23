@@ -32,9 +32,9 @@ export const registerRemoteNotification = async (token: string) => {
             console.log("Response message:", response.data.message);
             showMsg("Notification Registration Failed", response.data.message);
         }
-    } catch (error) {
-        console.error("Error registering remote notification:", error);
-        showMsg("Notification error", "Failed to register remote notification.");
+    } catch (error: any) {
+        console.error("Error registering remote notification:", error.response?.data?.message);
+        showMsg("Notification error", "Failed to register remote notification");
     }
 }
 
