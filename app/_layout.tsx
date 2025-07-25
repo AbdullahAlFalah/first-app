@@ -14,10 +14,14 @@ export default function RootLayout() {
   useEffect(() => {   
 
     // Initialize the notification system
-    let subscription: Notifications.EventSubscription | undefined;
+    let subscriptions: {
+      responseSubscription?: Notifications.EventSubscription,
+      receivedSubscription?: Notifications.EventSubscription
+    } = {};
+       
     const setupNotifications = async () => {
-      subscription = await initializeNotificationSystem();
-      if (subscription) {
+      subscriptions = ( await initializeNotificationSystem() ) ?? {};
+      if (subscriptions.responseSubscription && subscriptions.receivedSubscription) {
         console.log('Notification listener set up successfully.');
       } else {
         console.log('Failed to set up notification listener.');
@@ -25,12 +29,11 @@ export default function RootLayout() {
     };
     setupNotifications();
 
-
-
     // Cleanup subscription on unmount
     return () => {
-      if (subscription) {
-        subscription.remove();
+      if (subscriptions.responseSubscription && subscriptions.receivedSubscription) {
+        subscriptions.responseSubscription.remove();
+        subscriptions.receivedSubscription.remove();
         console.log('Cleaning up notification listener...');
       }
     };

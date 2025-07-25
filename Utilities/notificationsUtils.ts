@@ -1,7 +1,8 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
-import { Platform } from 'react-native';
+import { Platform, AppState } from 'react-native';
+
 
 /**
  * Configures notification channels, categories, and handlers for both platforms.
@@ -13,6 +14,17 @@ async function configureNotifications() {
         console.log('📵 Skipping notification config — Expo Go does not support native push features.');
         return;
     }
+
+    // Setting the notification handler for both Android and iOS
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true, // show system alert while app is in foreground
+            shouldPlaySound: true, // Play notification sound (if one is set)
+            shouldSetBadge: false, // Set app icon badge (iOS only)
+            shouldShowBanner: true, // (iOS 14+) Show banner at top of screen
+            shouldShowList: true // (iOS 15+) Include in Notification Center
+        }),
+    });
     
     if (Platform.OS === 'android') {
         // Setting the notification channel for Android
@@ -33,14 +45,6 @@ async function configureNotifications() {
     }
 
     if (Platform.OS === 'ios') {
-        // Setting the notification handler for iOS
-        await Notifications.setNotificationHandler({
-            handleNotification: async () => ({
-                shouldShowAlert: true,
-                shouldPlaySound: true,
-                shouldSetBadge: false,
-            }),
-        });
         // Setting a notification category with a button for iOS
         await Notifications.setNotificationCategoryAsync('with-button', [
             {
@@ -102,7 +106,10 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
 
 }
 
-export async function initializeNotificationSystem(): Promise<Notifications.EventSubscription|undefined> {
+export async function initializeNotificationSystem(): Promise<{
+    responseSubscription: Notifications.EventSubscription,
+    receivedSubscription: Notifications.EventSubscription
+} | undefined> {
 
     console.log('🔍 ENV:', Constants.executionEnvironment);
 
@@ -111,17 +118,24 @@ export async function initializeNotificationSystem(): Promise<Notifications.Even
         return;
     }
  
-    // Listen for remote sent notifications
-    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-      // TypeScript may not recognize categoryIdentifier, so use 'as any'
-      const category = (response.notification.request.content as any).categoryIdentifier;
-      if ( category === 'with-button' && response.actionIdentifier === 'open' ) {
-          // Handle button press here (navigate, show alert, etc.)
-          console.log("Open button pressed!");
-      }
+    // Initialize the response listener (on user taps)
+    const responseSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+        // TypeScript may not recognize categoryIdentifier, so use 'as any'
+        const category = (response.notification.request.content as any).categoryIdentifier;
+        if ( category === 'with-button' && response.actionIdentifier === 'open' ) {
+            // Handle button press here (navigate, show alert, etc.)
+            console.log("Open button pressed!");
+        }
     });
 
-    return subscription;
+    // Initialize the received listener (on notification arrival) 
+    // this will fire if the notification comes in the background or foreground 
+    const receivedSubscription = Notifications.addNotificationReceivedListener(notification => {
+        console.log('Notification received:', notification);
+        // Optionally show a custom alert or in-app UI here
+    });
+
+    return { responseSubscription, receivedSubscription };
 }
 
 /**
