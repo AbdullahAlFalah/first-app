@@ -38,7 +38,7 @@ export default function RewardsScreen() {
 
     const handleUpgradeBackground = async () => {  
         const result = await upgradeBackground();
-        console.log('Upgrade result:', result);
+        console.log(`Upgrade result: {"success": ${result?.success}, "message": "${result?.message}"}`);
         showMsg(result?.success ? 'Upgrade Succeded' : 'Upgrade Failed', `API message: ${result?.message}`);
         if (result?.success) {
             router.push(

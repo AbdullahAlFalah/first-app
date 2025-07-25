@@ -36,7 +36,6 @@ export const registerRemoteNotification = async (token: string) => {
     }
 
     try {              
-        console.log('About to post...');
 
         // Send data to express server
         const response = await axios.post<ApiResponse>(
@@ -50,8 +49,6 @@ export const registerRemoteNotification = async (token: string) => {
                 timeout: 5000, // Set a timeout of 5 seconds
             }
         );
-
-        console.log('Posted!');
 
         if (response.status === 200) {
             console.log("Response message:", response.data.message);

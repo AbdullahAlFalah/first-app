@@ -43,20 +43,17 @@ export const upgradeBackground = async (): Promise<UpgradeBackgroundResponse | n
             }
         );
 
-        if (response.status === 200 && response.data) {
-            if (response.data.success) {                
-                return response.data;
-            } else {                
-                return response.data;
-            }
+        if (response?.data) {                           
+            return response.data;             
         }
         
     } catch (error: any) {
+        const success = error?.response?.data?.success || error.success || false;
         const message =
         error?.response?.data?.message ||
         error.message ||
         "Unknown error occurred during background upgrade.";
-        showMsg("Upgrade Failed", message);
+        return { success, message};
     }
 
     return null;
