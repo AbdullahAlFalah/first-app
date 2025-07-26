@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Ionicons } from '@expo/vector-icons';
@@ -52,12 +52,18 @@ export default function EntryLayout() {
                 href: null, // This removes the button completely now
             }}
         />
-        <Tabs.Screen name='HomeButton'
-            options={{
+        <Tabs.Screen name="HomeButton"
+            options={{                
                 title: 'Home',
                 tabBarIcon: ({ color, focused }) => 
                 ( <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} /> ),
-            }}           
+            }}
+            listeners = {{
+                tabPress: (e) => {
+                    e.preventDefault(); // Prevent default tab navigation behavior
+                    router.replace('/'); // // Redirect immediately to the home screen: '/(tabs)/index.tsx'
+                },
+            }}  
         />
 
     </Tabs>
