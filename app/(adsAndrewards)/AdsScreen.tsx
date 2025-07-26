@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button, StyleSheet, ScrollView } from 'react-native';
 import { BannerAd, BannerAdSize, InterstitialAd, AdEventType, RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import { claimReward } from '../../api/GetReward';
 import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
+import { saveBackgroundUrl, loadBackgroundUrl } from '@/Utilities/persistantBackgroundUtils';
 
 const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
     requestNonPersonalizedAdsOnly: true,
@@ -14,6 +15,8 @@ const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED, {
 });
 
 export default function AdsScreen() {
+
+    const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
 
     // Extract parameters from the local URL
     const { assetUrl } = useLocalSearchParams();
@@ -59,6 +62,23 @@ export default function AdsScreen() {
 
     }, []);
 
+    useEffect(() => {
+
+        // Load the background URL from storage if available
+        const loadBackground = async () => {
+            if (imageUrl !== undefined && imageUrl !== null) {
+                await saveBackgroundUrl(imageUrl);
+                setBackgroundUrl(imageUrl);
+            } else {
+                const storedUrl = await loadBackgroundUrl();
+                if (storedUrl) setBackgroundUrl(storedUrl);
+            }
+        };
+
+        loadBackground();
+
+    }, [imageUrl]);
+
     // Show Interstitial Ad
     const showInterstitial = async () => {
         if (interstitial?.loaded) {
@@ -78,11 +98,11 @@ export default function AdsScreen() {
     };
 
     // If assetUrl exists, use it as background; otherwise, use default background
-    const Wrapper = imageUrl ?
+    const Wrapper = backgroundUrl ?
         ({ children }: { children: React.ReactNode }) => (
             <View style={styles.background}>
                 <Image
-                    source={imageUrl as string}
+                    source={backgroundUrl as string}
                     style={StyleSheet.absoluteFill}
                     contentFit="cover"
                     transition={300}
