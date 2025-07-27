@@ -53,7 +53,7 @@ export const upgradeBackground = async (): Promise<UpgradeBackgroundResponse | n
         error?.response?.data?.message ||
         error.message ||
         "Unknown error occurred during background upgrade.";
-        return { success, message};
+        return { success, message };
     }
 
     return null;

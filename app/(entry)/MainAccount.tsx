@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Alert, Platform, Pressable } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 
 import { useUserinfo } from "@/hooks/UserContext";
-import { getApiUrl } from "@/Utilities/ApiUtils";
+import { getApiUrl, showMsg } from "@/Utilities/ApiUtils";
 import  Ads_BTN  from "@/components/navigation/Ads_BTN";
+import { useThemeMode } from "@/hooks/ThemeContext";
 
 type UserData = {
     email: string;
@@ -21,22 +22,26 @@ export default function MainAccount() {
 
     const { globalemail, setGlobalId } = useUserinfo();
 
-    // const getApiUrl = () => {
-    //     const encodedEmail = encodeURIComponent(globalemail);
-    //     if (Platform.OS === 'web') {
-    //         return `http://192.168.1.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
-    //     } else if (Platform.OS === 'android') {
-    //         return `http://10.0.2.2:3000/api/users/getuserinfo?email=${encodedEmail}`;
-    //     };
-    //     throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
-    // };
+    // Access the theme context inside the component for needed inline styling and onPress toggle theme function
+    const themeContext = useThemeMode();
 
-    const showMsg = (title: any, msg: any) => {
-        if (Platform.OS === 'web') {
-            window.alert(title + ':\n' + msg);
-        } else if (Platform.OS === 'android') {
-            Alert.alert(title, msg);
-        };
+    const dynamicStyles = StyleSheet.create({
+        Togglebutton: {
+            backgroundColor: themeContext.colors.background,
+            borderRadius: themeContext.radius.sm,
+            padding: themeContext.spacing.sm,
+        },
+        Togglebuttontext: {
+            color: themeContext.colors.text,
+            fontSize: themeContext.fontSize.sm,
+        },
+    });
+
+    const { toggleTheme } = themeContext; // Destructure toggleTheme from themeContext
+    // Handler function to toggle the theme
+    const handleToggleTheme = () => { 
+        console.log("Theme toggled to:", themeContext.theme);
+        toggleTheme(); // Call the toggleTheme function from the context
     };
 
     useEffect(() => {
@@ -87,17 +92,20 @@ export default function MainAccount() {
 
     }, []);
     
-      if (loading) {
+    if (loading) {
         return (
             <View style={styles.loadContainer}>                 
                 <ActivityIndicator style={styles.loadWrapper} size="large" color="#ff0000" />              
             </View>    
         );
-      }
+    }
 
     return (
 
         <View style={styles.container}>
+            <Pressable style={[styles.Togglebutton, dynamicStyles.Togglebutton]} onPress={handleToggleTheme}>
+                <Text style={[styles.Togglebuttontext, dynamicStyles.Togglebuttontext]}>Toggle Theme</Text>
+            </Pressable>
             {data && data.length > 0 ? (
                 // <Text style={styles.text}>Fetched Data: {JSON.stringify(data)}</Text>
                 <View style={styles.tableContainer}>
@@ -213,7 +221,22 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    Togglebutton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        backgroundColor: '#1e90ff',
+        width: '45%',
+        margin: 12, // Affects outer spacing
+        marginTop: 24, // Affects outer spacing on top of the button
+        padding: 12, // Affects inner spacing
+    },
+    Togglebuttontext: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
   });
 
 
-  

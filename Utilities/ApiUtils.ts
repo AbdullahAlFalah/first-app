@@ -2,14 +2,6 @@ import { Platform, Alert } from 'react-native';
 
 export const getApiUrl = (path: string) => {
     
-    // const baseUrl = Platform.OS === 'web' 
-    //     ? `http://127.0.0.1:3000/api/users/`
-    //     : Platform.OS === 'android' 
-    //         ? `http://10.0.2.2:3000/api/users/`
-    //         : (() => { throw new Error("Platform Unsupported!"); })();
-
-    // return `${baseUrl}${path}`;
-
     const baseUrl = `http://52.59.130.11:3000/api/users/`; // Using the public IP of my EC2 instance
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms

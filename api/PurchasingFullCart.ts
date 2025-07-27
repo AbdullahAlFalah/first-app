@@ -53,12 +53,13 @@ export const purchaseItems = async (items: CartItem[]): Promise<void> => {
 
         if (response.data.success) {
             showMsg("Success:", response.data.ServerNote);
-        } else {
-            showMsg("Failed:", response.data.ServerNote);
-        }
-    } catch (error) {
-        console.error("API error:", error);
-        showMsg("API Error:", error);
+        } 
+
+    } catch (error: any) {
+        const success = error?.response?.data?.success || error.success || false;
+        const ServerNote = error?.response?.data?.ServerNote || error.message || "Unknown error occurred during purchase.";
+        console.log(`Upgrade result: {"success": ${success}, "message": "${ServerNote}"}`);
+        showMsg(success? 'Upgrade Succeded' : 'Upgrade Failed', `API message: ${ServerNote}`);
     } finally {
         console.log("Purchase API call completed.");
     }
