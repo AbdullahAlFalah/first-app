@@ -1,7 +1,7 @@
 import { useBreakpoint } from '../hooks/UseScreenBreakpoints';
 
 // Get the user-toggled theme mode
-export function useResponsiveTheme(theme: 'light' | 'dark') {
+export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
 
     const { isSmall, isMedium, isLarge } = useBreakpoint();
 
@@ -42,10 +42,20 @@ export function useResponsiveTheme(theme: 'light' | 'dark') {
       };
 
     return {
-        spacing,
-        fontSize,
-        radius,
-        colors,
+        
+      container: {
+        backgroundColor: colors.background,       
+      },
+      text: {
+        color: colors.text,
+      },
+
+
+      spacing,
+      fontSize,   
+      radius,
+      colors,
+
     };
 
 }

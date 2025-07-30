@@ -25,9 +25,14 @@ export default function MainAccount() {
     // Access the theme context inside the component for needed inline styling and onPress toggle theme function
     const themeContext = useThemeMode();
 
+    /* Either apply the theme styles from theme context directly using premade styles:
+    Like themeContext.container, themeContext.text, etc.
+    Or use the responsive theme styles from the context to create dynamic styles here:
+    Like dynamicStyles.Togglebutton, dynamicStyles.Togglebuttontext, etc.
+    */
     const dynamicStyles = StyleSheet.create({
         Togglebutton: {
-            backgroundColor: themeContext.colors.background,
+            backgroundColor: themeContext.colors.card,
             borderRadius: themeContext.radius.sm,
             padding: themeContext.spacing.sm,
         },
@@ -102,7 +107,7 @@ export default function MainAccount() {
 
     return (
 
-        <View style={styles.container}>
+        <View style={[styles.container, themeContext.container]}> 
             <Pressable style={[styles.Togglebutton, dynamicStyles.Togglebutton]} onPress={handleToggleTheme}>
                 <Text style={[styles.Togglebuttontext, dynamicStyles.Togglebuttontext]}>Toggle Theme</Text>
             </Pressable>

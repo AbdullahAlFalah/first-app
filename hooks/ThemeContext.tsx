@@ -1,18 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useResponsiveTheme } from '../constants/responsiveTheme';
+import { useResponsiveThemeStyles } from '../constants/responsiveThemeStyles';
 
 type ThemeMode = 'light' | 'dark';
 
 type ThemeContextType = {
     theme: ThemeMode;
-    setTheme: (theme: ThemeMode) => void;
+    setTheme: (theme: ThemeMode) => void; // Function to set the theme persistently
     toggleTheme: () => void;
-    spacing: ReturnType<typeof useResponsiveTheme>['spacing'];
-    fontSize: ReturnType<typeof useResponsiveTheme>['fontSize'];
-    radius: ReturnType<typeof useResponsiveTheme>['radius'];
-    colors: ReturnType<typeof useResponsiveTheme>['colors'];
+    spacing: ReturnType<typeof useResponsiveThemeStyles>['spacing'];
+    fontSize: ReturnType<typeof useResponsiveThemeStyles>['fontSize'];
+    radius: ReturnType<typeof useResponsiveThemeStyles>['radius'];
+    colors: ReturnType<typeof useResponsiveThemeStyles>['colors'];
+    container: ReturnType<typeof useResponsiveThemeStyles>['container'];
+    text: ReturnType<typeof useResponsiveThemeStyles>['text'];
+    
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -20,7 +23,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [themeState, setThemeState] = useState<ThemeMode>('light');
-    const responsiveTheme = useResponsiveTheme(themeState);
+    const responsiveTheme = useResponsiveThemeStyles(themeState);
 
     useEffect(() => {
         const loadTheme = async () => {
