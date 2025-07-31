@@ -5,17 +5,28 @@ import { useResponsiveThemeStyles } from '../constants/responsiveThemeStyles';
 
 type ThemeMode = 'light' | 'dark';
 
-type ThemeContextType = {
+export type ThemeContextType = {
     theme: ThemeMode;
     setTheme: (theme: ThemeMode) => void; // Function to set the theme persistently
     toggleTheme: () => void;
     spacing: ReturnType<typeof useResponsiveThemeStyles>['spacing'];
     fontSize: ReturnType<typeof useResponsiveThemeStyles>['fontSize'];
+    size: ReturnType<typeof useResponsiveThemeStyles>['size'];
     radius: ReturnType<typeof useResponsiveThemeStyles>['radius'];
     colors: ReturnType<typeof useResponsiveThemeStyles>['colors'];
     container: ReturnType<typeof useResponsiveThemeStyles>['container'];
-    text: ReturnType<typeof useResponsiveThemeStyles>['text'];
-    
+    primaryText: ReturnType<typeof useResponsiveThemeStyles>['primaryText'];
+    secondaryText: ReturnType<typeof useResponsiveThemeStyles>['secondaryText'];
+    tertiaryText: ReturnType<typeof useResponsiveThemeStyles>['tertiaryText'];
+    boldText: ReturnType<typeof useResponsiveThemeStyles>['boldText'];
+    cellText: ReturnType<typeof useResponsiveThemeStyles>['cellText'];
+    titleText: ReturnType<typeof useResponsiveThemeStyles>['titleText'];
+    tableContainer: ReturnType<typeof useResponsiveThemeStyles>['tableContainer'];
+    tableOuterBorder: ReturnType<typeof useResponsiveThemeStyles>['tableOuterBorder'];
+    tabelRow: ReturnType<typeof useResponsiveThemeStyles>['tabelRow'];
+    tableRowBorder: ReturnType<typeof useResponsiveThemeStyles>['tableRowBorder'];
+    CircleButtonContainer: ReturnType<typeof useResponsiveThemeStyles>['CircleButtonContainer'];
+    CircleButton: ReturnType<typeof useResponsiveThemeStyles>['CircleButton'];
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -43,6 +54,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const toggleTheme = () => {
         const newTheme = themeState === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
+        console.log("Theme toggled to:", newTheme);
     };
 
     return (

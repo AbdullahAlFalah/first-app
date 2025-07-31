@@ -1,40 +1,35 @@
 import { View, Pressable, StyleSheet } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
 type Props = {
+  icon: keyof typeof MaterialIcons.glyphMap;
   onPress: () => void;
+  themeContext: ThemeContextType; // theme context prop
 };
 
-export default function CircleButton({ onPress }: Props) {
-  console.log("Rendering CircleButton");
+export default function CircleButton({ icon, onPress, themeContext }: Props) {
 
   return (
-    <View style={styles.circleButtonContainer}>
-      <Pressable style={styles.circleButton} onPress={() => {
+    <View style={[styles.circleButtonContainer, themeContext.CircleButtonContainer]}>
+      <Pressable style={[styles.circleButton, themeContext.CircleButton]} onPress={() => {
           console.log("CircleButton pressed");
           onPress();
       }}>
-          <MaterialIcons name="add" size={38} color="#25292e" />
+          <MaterialIcons name={icon} size={(themeContext.size.lg+2)} color={themeContext.colors.background} />
       </Pressable>
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
   circleButtonContainer: {
-    width: 84,
-    height: 84,
-    marginHorizontal: 60,
     borderWidth: 4,
-    borderColor: '#ffd700',
-    borderRadius: 42,
-    padding: 3,
   },
   circleButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 42,
-    backgroundColor: '#fff',
   },
 });

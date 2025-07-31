@@ -12,6 +12,7 @@ import EmojiPicker from "@/components/EmojiPicker";
 import EmojiList from "@/components/EmojiList";
 import EmojiSticker from "@/components/EmojiSticker";
 import ScreenshotUtil from "@/Utilities/ScreenshotUtil";
+import { useThemeMode } from "@/hooks/ThemeContext";
 
 const PlaceholderImage = require('@/assets/images/background-image.png');
 
@@ -23,6 +24,8 @@ export default function Home() {
 
   const imageRef = useRef<View>(null);
   const emojiPickerRef = useRef<{ open: () => void }>(null); // Ref for EmojiPicker
+
+  const themeContext = useThemeMode();
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={[styles.container, themeContext.container]}>
       <View style={styles.imageContainer}>
         <View ref={imageRef} collapsable={false}>
           <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage}/>
@@ -72,8 +75,9 @@ export default function Home() {
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
-            <IconButton icon="refresh" label="Reset" onPress={onReset} />            
-            <CircleButton 
+            <IconButton icon="refresh" label="Reset" onPress={onReset} themeContext={themeContext} />            
+            <CircleButton
+              icon="add" 
               onPress={() => {
                 console.log("ref:", emojiPickerRef.current);
                 console.log("ref.open:", emojiPickerRef.current?.open);
@@ -81,8 +85,9 @@ export default function Home() {
                   emojiPickerRef.current?.open();
                 }, 100);                
               }}
+              themeContext={themeContext}
             />            
-            <IconButton icon="save-alt" label="Save" onPress={handleSave} /> 
+            <IconButton icon="save-alt" label="Save" onPress={handleSave} themeContext={themeContext} /> 
           </View>
         </View>
       ) : (

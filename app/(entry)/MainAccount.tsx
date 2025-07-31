@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Pressable, TextStyle } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 
@@ -24,6 +24,7 @@ export default function MainAccount() {
 
     // Access the theme context inside the component for needed inline styling and onPress toggle theme function
     const themeContext = useThemeMode();
+    console.log("Testing styles:", themeContext.titleText?.color); // Debugging line to check if styles are applied correctly
 
     /* Either apply the theme styles from theme context directly using premade styles:
     Like themeContext.container, themeContext.text, etc.
@@ -37,17 +38,12 @@ export default function MainAccount() {
             padding: themeContext.spacing.sm,
         },
         Togglebuttontext: {
-            color: themeContext.colors.text,
+            color: themeContext.colors.primaryText,
             fontSize: themeContext.fontSize.sm,
         },
     });
 
     const { toggleTheme } = themeContext; // Destructure toggleTheme from themeContext
-    // Handler function to toggle the theme
-    const handleToggleTheme = () => { 
-        console.log("Theme toggled to:", themeContext.theme);
-        toggleTheme(); // Call the toggleTheme function from the context
-    };
 
     useEffect(() => {
 
@@ -100,7 +96,7 @@ export default function MainAccount() {
     if (loading) {
         return (
             <View style={styles.loadContainer}>                 
-                <ActivityIndicator style={styles.loadWrapper} size="large" color="#ff0000" />              
+                <ActivityIndicator style={[styles.loadWrapper]} size="large" color="#ff0000" />              
             </View>    
         );
     }
@@ -108,30 +104,30 @@ export default function MainAccount() {
     return (
 
         <View style={[styles.container, themeContext.container]}> 
-            <Pressable style={[styles.Togglebutton, dynamicStyles.Togglebutton]} onPress={handleToggleTheme}>
+            <Pressable style={[styles.Togglebutton, dynamicStyles.Togglebutton]} onPress={toggleTheme}>
                 <Text style={[styles.Togglebuttontext, dynamicStyles.Togglebuttontext]}>Toggle Theme</Text>
             </Pressable>
-            {data && data.length > 0 ? (
-                // <Text style={styles.text}>Fetched Data: {JSON.stringify(data)}</Text>
-                <View style={styles.tableContainer}>
-                    <Text style={styles.tableTitle}>User Information</Text>
-                    <View style={styles.table}>
+            {data && data.length > 0 ? (               
+                <View style={[styles.tableContainer, themeContext.tableContainer]}>
+                    <Text style={[styles.tableTitle, themeContext.titleText as TextStyle]}>User Information</Text>
+                    <View style={[styles.table, themeContext.tableOuterBorder]}>
                         {Object.entries(data[0]).map(([key, value], index, array) => (
                             <View 
                                 key={key} 
                                 style={[
                                     styles.row,
-                                    index !== array.length - 1 && styles.rowBorder, // Apply border only if it's NOT the last row  
+                                    themeContext.tabelRow,
+                                    index !== array.length - 1 && [styles.rowBorder, themeContext.tableRowBorder], // Apply border only if it's NOT the last row  
                                 ]}
                             >
-                                <Text style={styles.cellTitle}>{key}: </Text>
-                                <Text style={styles.cell}>{String(value)}</Text>
+                                <Text style={[styles.cellTitle, themeContext.boldText as TextStyle]}>{key}: </Text>
+                                <Text style={[styles.cell, themeContext.cellText]}>{String(value)}</Text>
                             </View>
                         ))}
                     </View>
                 </View>
             ) : (
-                <Text style={styles.text}>No data available: Error fetching data on the front-end side</Text>
+                <Text style={[styles.text, themeContext.primaryText]}>No data available: Error fetching data on the front-end side</Text>
             )}
             <Pressable style={styles.Filmsbutton} onPress={() => router.push('/(films)/Films')}>
                 <Text style={styles.Filmsbuttontext}>Open Films</Text>
