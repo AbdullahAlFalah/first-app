@@ -92,8 +92,8 @@ export default function Home() {
         </View>
       ) : (
         <View style={styles.footerContainer}>         
-          <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
-          <Button label="Use this photo" onPress={() => setShowAppOptions(true) } />
+          <Button icon="picture-o" theme="primary" label="Choose a photo" onPress={pickImageAsync} themeContext={themeContext}/>
+          <Button label="Use this photo" onPress={() => setShowAppOptions(true)} themeContext={themeContext}/>
         </View>
       )}
       {/* Notify parent when modal closes; here you can any logic you need on close; never use these on the same line as JSX components */}
@@ -117,14 +117,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   footerContainer: {
     flex: 1/3,
     alignItems: 'center',
   },
   optionsContainer: {
-    position: 'absolute',
-    bottom: 80,
+    flex: 1/3,
+    alignItems: 'center',
   },
   optionsRow: {
     alignItems: 'center',

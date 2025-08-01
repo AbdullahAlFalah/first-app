@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { Text, TextInput, Pressable, View, StyleSheet, Alert, Platform } from "react-native";
-import { useRouter, Link } from "expo-router";
+import { Text, TextInput, Pressable, View, StyleSheet, TextStyle } from "react-native";
+import { Link } from "expo-router";
 
 import { useUserinfo } from "@/hooks/UserContext";
 import { signin } from "@/api/Signin";
+import { getApiUrl, showMsg } from  "@/Utilities/ApiUtils";
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
-export default function Signup () {
+type SignupProps = {
+    themeContext?: ThemeContextType;
+};
+
+export default function Signup ({ themeContext }: SignupProps) {
 
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -13,27 +19,10 @@ export default function Signup () {
     // const router = useRouter();
 
     const { setGlobalemail } = useUserinfo(); // Access the context to set the global email
-    
-    const getApiUrl = () => {
-        if (Platform.OS === 'web') {
-            return `http://52.59.130.11:3000/api/users/signup`; // used to be `http://localhost:3000/api/users/signup`
-        } else if (Platform.OS === 'android') {
-            return `http://52.59.130.11:3000/api/users/signup`; // used to be `http://10.0.2.2:3000/api/users/signup`
-        };
-        throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
-    };
-
-    const showMsg = (title: any, msg: any) => {
-        if (Platform.OS === 'web') {
-            window.alert(title + ':\n' + msg);
-        } else if (Platform.OS === 'android') {
-            Alert.alert(title, msg);
-        };
-    };
 
     const onSubmit = async () => {
 
-        const url = getApiUrl();
+        const url = getApiUrl('signup');
 
         // Username validation: Ensures the username has a 3-25 alphanumeric characters 
         const usernameRegex = /^[a-zA-Z0-9]{3,25}$/;
@@ -97,17 +86,17 @@ export default function Signup () {
       };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.maintext}>Enter your credentials here:</Text>
-            <TextInput style={styles.input} onChangeText={setUsername} onSubmitEditing={onSubmit} value={username} placeholder="Enter your Username"/>
-            <TextInput style={styles.input} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email"/>
-            <TextInput style={styles.input} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" secureTextEntry/>
-            <Pressable style={styles.submitbutton} onPress={onSubmit}>
-                <Text style={styles.submitbuttontext}>Submit</Text>
+        <View style={[styles.container, themeContext?.container]}>
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Enter your credentials here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setUsername} onSubmitEditing={onSubmit} value={username} placeholder="Enter your Username" placeholderTextColor={themeContext?.inputsText?.color} />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email" placeholderTextColor={themeContext?.inputsText?.color} />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" placeholderTextColor={themeContext?.inputsText?.color} secureTextEntry />
+            <Pressable style={[ styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor2 } ]} onPress={onSubmit}>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Submit</Text>
             </Pressable>
             <View style={ { flexDirection: 'row' } } >
-                <Text style={styles.secondarytext}>Already have an account? </Text>
-                <Link href="/(entry)/Sign-in" style={styles.clickabletext}>Sign-in</Link>
+                <Text style={[styles.secondarytext, themeContext?.formsSecondaryText]}>Already have an account? </Text>
+                <Link href="/(entry)/Sign-in" style={[styles.clickabletext, themeContext?.clickableText as TextStyle]}>Sign-in</Link>
             </View>            
         </View>
     );
@@ -135,14 +124,11 @@ const styles = StyleSheet.create({
     submitbutton: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
-        backgroundColor: '#1e90ff',
+        borderRadius: 5,       
         margin: 12, // Affects outer spacing
         padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
-        color: '#fff',
-        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -154,11 +140,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     clickabletext: {
-        color:'#ff0000',
-        fontSize: 16,
         fontWeight: 'medium',
-        fontStyle: 'italic',
-        textDecorationLine: 'underline',
     },
 });
 

@@ -24,7 +24,6 @@ export default function MainAccount() {
 
     // Access the theme context inside the component for needed inline styling and onPress toggle theme function
     const themeContext = useThemeMode();
-    console.log("Testing styles:", themeContext.titleText?.color); // Debugging line to check if styles are applied correctly
 
     /* Either apply the theme styles from theme context directly using premade styles:
     Like themeContext.container, themeContext.text, etc.

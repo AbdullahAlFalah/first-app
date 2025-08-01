@@ -2,8 +2,11 @@ import { Text, View, StyleSheet, ActivityIndicator, Animated } from 'react-nativ
 import { useFonts } from 'expo-font';
 import { useEffect, useRef } from 'react';
 import DropCapText from '../../components/DropCapText'; 
+import { useThemeMode } from "@/hooks/ThemeContext";
 
 export default function About() {
+
+  const themeContext = useThemeMode();
 
   const [fontsLoaded] = useFonts({
     'TimesNewRoman': require('../../assets/fonts/times-new-roman.ttf'),
@@ -31,15 +34,24 @@ export default function About() {
 
   if (!fontsLoaded) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#fff" />
-        <Text style={styles.loadingText}>Loading...</Text>
+      <View style={[
+        styles.loadingContainer, 
+        { backgroundColor: themeContext.colors.background, },
+      ]}>
+        <ActivityIndicator size="large" color={themeContext.colors.primaryText} />
+        <Text style={[styles.loadingText, themeContext.primaryText]}>Loading...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[
+      styles.container,
+      { 
+        backgroundColor: themeContext.colors.background, 
+        padding: (themeContext.spacing.md+4),
+      },
+    ]}>
       <Animated.View style={[
         {
           opacity: fadeAnim, 
@@ -47,9 +59,10 @@ export default function About() {
         }, 
       ]}>       
           <DropCapText 
-            text={`Welcome to Mish Mash!\nThis app is a chaotic blend of features, each\none representing different aspects of my mobile development journey.\nIt is intentionally varied and a little unpredictable, just like the creative process itself.\nDive in and explore this unique showcase of my skills, where each feature brings something different to the table!`}
+            text={`Welcome to Mish Mash!\nThis app is a chaotic blend of features,\neach one representing different aspects of my mobile development journey.\nIt is intentionally varied and a little unpredictable, just like the creative process itself.\nDive in and explore this unique showcase of my skills, where each feature brings something different to the table!`}
             dropCapStyle={styles.DropCapText}
             textStyle={styles.ParagraphText}
+            themeContext={themeContext} // Pass the theme context here
           />
       </Animated.View>      
     </View>
@@ -78,8 +91,6 @@ const styles = StyleSheet.create({
     },
     DropCapText: {
       fontFamily: 'TimesNewRoman',
-      fontSize: 96, // Override default drop cap size
-      lineHeight: 96, // Override default line height
     },
     ParagraphText: {
       fontFamily: 'TimesNewRoman',

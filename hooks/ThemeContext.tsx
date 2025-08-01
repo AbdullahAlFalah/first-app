@@ -27,6 +27,15 @@ export type ThemeContextType = {
     tableRowBorder: ReturnType<typeof useResponsiveThemeStyles>['tableRowBorder'];
     CircleButtonContainer: ReturnType<typeof useResponsiveThemeStyles>['CircleButtonContainer'];
     CircleButton: ReturnType<typeof useResponsiveThemeStyles>['CircleButton'];
+    wideButtonContainer: ReturnType<typeof useResponsiveThemeStyles>['wideButtonContainer'];
+    dropCapText: ReturnType<typeof useResponsiveThemeStyles>['dropCapText'];
+    besideText: ReturnType<typeof useResponsiveThemeStyles>['besideText'];
+    belowText: ReturnType<typeof useResponsiveThemeStyles>['belowText'];
+    formsMainText: ReturnType<typeof useResponsiveThemeStyles>['formsMainText'];
+    formsSecondaryText: ReturnType<typeof useResponsiveThemeStyles>['formsSecondaryText'];
+    inputsText: ReturnType<typeof useResponsiveThemeStyles>['inputsText'];
+    submitButton: ReturnType<typeof useResponsiveThemeStyles>['submitButton'];
+    clickableText: ReturnType<typeof useResponsiveThemeStyles>['clickableText'];
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

@@ -12,10 +12,13 @@ export default function CircleButton({ icon, onPress, themeContext }: Props) {
 
   return (
     <View style={[styles.circleButtonContainer, themeContext.CircleButtonContainer]}>
-      <Pressable style={[styles.circleButton, themeContext.CircleButton]} onPress={() => {
+      <Pressable 
+        style={[styles.circleButton, themeContext.CircleButton]} 
+        onPress={() => {
           console.log("CircleButton pressed");
           onPress();
-      }}>
+        }}
+      >
           <MaterialIcons name={icon} size={(themeContext.size.lg+2)} color={themeContext.colors.background} />
       </Pressable>
     </View>

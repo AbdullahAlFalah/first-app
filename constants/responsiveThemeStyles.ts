@@ -47,8 +47,10 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         tertiaryText: '#777777', // deeper muted gray color (for disabled/hint text)
         card: '#1e1e1e', // soft black color used for cards, buttons, etc.
         border: '#d1d1d1', // off-white color
-        circleButtonBorder: '#ffd700', // gold color for circle button border
-        circleButtonColor: '#ffffff', // pure white color for circle button background
+        buttonBorder: '#ffd700', // gold color for circle button border
+        buttonColor: '#ffffff', // pure white color for circle button background
+        buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
+        clickableText: '#ff0000', // red color for clickable text for both dark and light themes
       }
     : {
         background: '#ffffff', // pure white color
@@ -57,8 +59,10 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         tertiaryText: '#aaaaaa', // soft light gray color (for disabled/hint text)
         card: '#f0f0f0', // ultra light gray color used for cards, buttons, etc.
         border: '#1a1a1a', // light gray color
-        circleButtonBorder: '#4b0082', // indigo color for button border
-        CircleButtonColor: '#25292e', // pure white color for button background
+        buttonBorder: '#4b0082', // indigo color for button border
+        buttonColor: '#25292e', // pure white color for button background
+        buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
+        clickableText: '#ff0000', // red color for clickable text for both dark and light themes
       };
 
     return {
@@ -113,16 +117,71 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         borderBottomColor: colors.border,
       },
       CircleButtonContainer: {
-        width: size.xl+4,
-        height: size.xl+4,
+        width: (size.xl*2)+4,
+        height: (size.xl*2)+4,
         marginHorizontal: (spacing.xl-2)*2, 
         padding: (spacing.xs)*0.5, 
-        borderColor: colors.circleButtonBorder,
-        borderRadius: (radius.lg)-6,
+        borderColor: colors.buttonBorder,
+        borderRadius: (radius.lg*4)-6,
       },
       CircleButton: {
-        backgroundColor: colors.circleButtonColor,
-        borderRadius: (radius.lg)-6,       
+        backgroundColor: colors.buttonColor,
+        borderRadius: (radius.lg*4)-6,       
+      },
+      wideButtonContainer: {
+        width: (size.md)*10,
+        height: (size.md+2)*2,
+        marginHorizontal: spacing.lg-4,
+        padding: (spacing.xs)*0.5,
+      },
+      dropCapText : {
+        fontSize: (fontSize.xxxl)*4,
+        lineHeight: (fontSize.xxxl)*4,
+        color: colors.primaryText,
+        marginRight: (spacing.sm-2),
+      },
+      besideText: {
+        fontSize: fontSize.xxl,
+        lineHeight: fontSize.xxxl,
+        color: colors.primaryText,
+        paddingTop: (spacing.sm-2),
+      },
+      belowText: {
+        fontSize: fontSize.xxl,
+        lineHeight: fontSize.xxxl,
+        color: colors.primaryText,
+        paddingTop: (spacing.xs-1),
+      },
+      formsMainText: {
+        color: colors.primaryText,
+        fontSize: fontSize.lg,
+        marginLeft: spacing.sm,
+        marginTop: spacing.sm,
+      },
+      formsSecondaryText: {
+        color: colors.secondaryText,
+        fontSize: fontSize.md,
+        marginLeft: spacing.sm,
+        marginBottom: spacing.sm,
+      },   
+      inputsText: {
+        height: size.xl,
+        margin: spacing.sm,
+        borderWidth: 1,
+        borderColor: colors.border,
+        padding: (spacing.sm-2),
+        color: colors.primaryText, 
+      },
+      submitButton: {
+        borderRadius: (radius.sm-1),       
+        margin: spacing.sm, 
+        padding: spacing.sm, 
+      },
+      clickableText: {
+        color: colors.clickableText,
+        fontSize: fontSize.md,
+        fontStyle: 'italic',
+        textDecorationLine: 'underline',
       },
       spacing,
       fontSize,
