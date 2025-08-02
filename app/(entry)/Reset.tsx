@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 
 import Resetpassword from "@/components/Forms/Reset";
 import Updateuser from "@/components/Forms/Updateuser";
@@ -10,11 +10,20 @@ export default function resetPassword() {
     const themeContext = useThemeMode();
 
     return (
-        
-        <View style={[styles.container, themeContext.container]}>
-            <Resetpassword themeContext={themeContext} />
-            <Updateuser themeContext={themeContext} />
-        </View> 
+
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={(themeContext.spacing.xl*2)} // adjust if you have a header
+        > 
+            <ScrollView 
+                contentContainerStyle={[styles.container, themeContext.container]}
+                keyboardShouldPersistTaps="handled"
+            >
+                <Resetpassword themeContext={themeContext} />
+                <Updateuser themeContext={themeContext} />
+            </ScrollView>
+        </KeyboardAvoidingView>
 
     );
     
@@ -22,7 +31,7 @@ export default function resetPassword() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1, // Use flexGrow for ScrollView content
     },
 });
 
