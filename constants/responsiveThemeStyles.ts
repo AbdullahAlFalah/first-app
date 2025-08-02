@@ -50,7 +50,9 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         buttonBorder: '#ffd700', // gold color for circle button border
         buttonColor: '#ffffff', // pure white color for circle button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
+        buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
+        caret: '#00ff00', // lime color for text input caret for both dark and light themes
       }
     : {
         background: '#ffffff', // pure white color
@@ -62,7 +64,9 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         buttonBorder: '#4b0082', // indigo color for button border
         buttonColor: '#25292e', // pure white color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
+        buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
+        caret: '#00ff00', // lime color for text input caret for both dark and light themes
       };
 
     return {

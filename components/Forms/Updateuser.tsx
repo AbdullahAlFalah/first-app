@@ -5,8 +5,13 @@ import { useRouter } from "expo-router";
 
 import { getApiUrl, showMsg, validateUsername, validateEmail } from "@/Utilities/ApiUtils"; 
 import { useUserinfo } from "@/hooks/UserContext";
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
-export default function Updateuser() {
+type UpdateUserProps = {
+    themeContext?: ThemeContextType;
+};
+
+export default function Updateuser({ themeContext }: UpdateUserProps) {
 
     const [newUsername, setNewUsername] = useState<string>('');
     const [newEmail, setNewEmail] = useState<string>('');
@@ -46,13 +51,13 @@ export default function Updateuser() {
 
     return (
         
-        <View style={styles.container}>
-            <Text style={styles.maintext}>Put your new username here:</Text>
-            <TextInput style={styles.input} onChangeText={setNewUsername} onSubmitEditing={onUpdate} value={newUsername}  />
-            <Text style={styles.maintext}>Put your new email here:</Text>
-            <TextInput style={styles.input} onChangeText={setNewEmail} onSubmitEditing={onUpdate} value={newEmail}  />
-            <Pressable style={styles.submitbutton} onPress={onUpdate}>
-                <Text style={styles.submitbuttontext}>Update Info</Text>
+        <View style={[styles.container, themeContext?.container]}>
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your new username here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setNewUsername} onSubmitEditing={onUpdate} value={newUsername} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your new email here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setNewEmail} onSubmitEditing={onUpdate} value={newEmail} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
+            <Pressable style={[styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor3 }]} onPress={onUpdate}>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Update Info</Text>
             </Pressable>
         </View>
 
@@ -82,13 +87,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        backgroundColor: '#4b0082',
         margin: 12, // Affects outer spacing
         padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
-        color: '#fff',
-        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
     },

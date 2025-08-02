@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Text, TextInput, Pressable, View, StyleSheet } from "react-native";
+import { Text, TextInput, Pressable, View, StyleSheet, TextStyle } from "react-native";
 import { Link } from "expo-router";
 
 import { showMsg, validateEmail, validatePassword } from "@/Utilities/ApiUtils";
 import { useUserinfo } from "@/hooks/UserContext";
 import { signin } from "@/api/Signin";
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
-export default function Signin () {
+type SigninProps = {
+    themeContext?: ThemeContextType;
+};
+
+export default function Signin ({ themeContext }: SigninProps) {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');  
@@ -33,16 +38,16 @@ export default function Signin () {
       };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.maintext}>Enter your login credentials here:</Text>
-            <TextInput style={styles.input} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email"/>
-            <TextInput style={styles.input} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" secureTextEntry/>
-            <Pressable style={styles.submitbutton} onPress={onSubmit}>
-                <Text style={styles.submitbuttontext}>Submit</Text>
+        <View style={[styles.container, themeContext?.container]}>
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Enter your login credentials here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
+            <Pressable style={[styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor2 }]} onPress={onSubmit}>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Submit</Text>
             </Pressable>
             <View style={ { flexDirection: 'row' } }>
-                <Text style={styles.secondarytext}>Forgot your password? </Text>
-                <Link href="/(entry)/Reset" style={styles.clickabletext}>Reset password</Link> 
+                <Text style={[styles.secondarytext, themeContext?.formsSecondaryText]}>Forgot your password? </Text>
+                <Link href="/(entry)/Reset" style={[styles.clickabletext, themeContext?.clickableText as TextStyle]}>Reset password</Link> 
             </View>            
         </View>
     );
@@ -71,13 +76,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
-        backgroundColor: '#1e90ff',
         margin: 12, // Affects outer spacing
         padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
-        color: '#fff',
-        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -89,11 +91,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     clickabletext: {
-        color:'#ff0000',
-        fontSize: 16,
         fontWeight: 'medium',
-        fontStyle: 'italic',
-        textDecorationLine: 'underline',
     },
 });
 

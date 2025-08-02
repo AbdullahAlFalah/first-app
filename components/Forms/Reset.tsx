@@ -4,8 +4,13 @@ import axios from "axios";
 
 import { getApiUrl, showMsg, validatePassword } from "@/Utilities/ApiUtils"; 
 import { useUserinfo } from "@/hooks/UserContext";
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
-export default function Resetpassword() {
+type ResetProps = {
+    themeContext?: ThemeContextType;
+};
+
+export default function Resetpassword({ themeContext }: ResetProps) {
 
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
@@ -43,13 +48,13 @@ export default function Resetpassword() {
 
     return (
 
-        <View style={styles.container}>
-            <Text style={styles.maintext}>Put your current password here:</Text>
-            <TextInput style={styles.input} onChangeText={setOldPassword} onSubmitEditing={onReset} value={oldPassword}  />
-            <Text style={styles.maintext}>Put your new password here:</Text>
-            <TextInput style={styles.input} onChangeText={setNewPassword} onSubmitEditing={onReset} value={newPassword}  />
-            <Pressable style={styles.submitbutton} onPress={onReset}>
-                <Text style={styles.submitbuttontext}>Reset Password</Text>
+        <View style={[styles.container, themeContext?.container]}>
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your current password here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setOldPassword} onSubmitEditing={onReset} value={oldPassword} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
+            <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your new password here:</Text>
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setNewPassword} onSubmitEditing={onReset} value={newPassword} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
+            <Pressable style={[styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor3 }]} onPress={onReset}>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Reset Password</Text>
             </Pressable>
         </View>
 
@@ -78,13 +83,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        backgroundColor: '#4b0082',
         margin: 12, // Affects outer spacing
         padding: 12, // Affects inner spacing
     },
     submitbuttontext: {
-        color: '#fff',
-        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
     },

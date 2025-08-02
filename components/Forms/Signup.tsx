@@ -45,8 +45,6 @@ export default function Signup ({ themeContext }: SignupProps) {
             return;
         }
 
-        console.log("Regex validation passed");
-
         try {
 
             // Send data to express server
@@ -81,16 +79,14 @@ export default function Signup ({ themeContext }: SignupProps) {
             showMsg("Network Error", "Server error... Please try again later.");
         }
 
-        console.log("End of onSubmit function");
-
       };
 
     return (
         <View style={[styles.container, themeContext?.container]}>
             <Text style={[styles.maintext, themeContext?.formsMainText]}>Enter your credentials here:</Text>
-            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setUsername} onSubmitEditing={onSubmit} value={username} placeholder="Enter your Username" placeholderTextColor={themeContext?.inputsText?.color} />
-            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email" placeholderTextColor={themeContext?.inputsText?.color} />
-            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" placeholderTextColor={themeContext?.inputsText?.color} secureTextEntry />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setUsername} onSubmitEditing={onSubmit} value={username} placeholder="Enter your Username" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
+            <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
             <Pressable style={[ styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor2 } ]} onPress={onSubmit}>
                 <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Submit</Text>
             </Pressable>
