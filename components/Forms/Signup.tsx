@@ -88,7 +88,7 @@ export default function Signup ({ themeContext }: SignupProps) {
             <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setEmail} onSubmitEditing={onSubmit} value={email} placeholder="Enter your Email" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
             <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setPassword} onSubmitEditing={onSubmit} value={password} placeholder="Enter your Password" placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
             <Pressable style={[ styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor2 } ]} onPress={onSubmit}>
-                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Submit</Text>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText2]}>Submit</Text>
             </Pressable>
             <View style={ { flexDirection: 'row' } } >
                 <Text style={[styles.secondarytext, themeContext?.formsSecondaryText]}>Already have an account? </Text>

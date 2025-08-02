@@ -7,11 +7,15 @@ import RotatingSquareButton from "@/components/RotatingSquareButton";
 
 import { useCart } from "@/hooks/CartContext"; 
 import { useWalletContext } from "@/hooks/WalletContext"; 
+import { useThemeMode } from "@/hooks/ThemeContext";
 
 export default function Cart() {
     
     const { cart, totalCost } = useCart();
     const { status } = useWalletContext();
+
+    // Access the theme context for styling
+    const themeContext = useThemeMode();
 
     const handleCheckout = () => {
         if (status === "inactive") {
@@ -26,38 +30,60 @@ export default function Cart() {
         router.push("/Wallet");
     };
 
-    console.log("Total Cost:", totalCost, "Type:", typeof totalCost); // Debugging totalCost
-
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Your Cart</Text>
+        <View style={[styles.container, themeContext.container, { padding: themeContext.spacing.md }]}>
+            <Text style={[styles.title, { fontSize: themeContext.fontSize.xxxl, marginBottom: themeContext.spacing.md, color: themeContext.colors.primaryText }]}>Your Cart</Text>
             {cart.length > 0 ? (
                 <>
                     <FlatList
                         data={cart}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <View style={styles.cartItem}>
-                                <Text style={styles.cartItemText}>{item.title}</Text>
-                                <Text style={styles.cartItemText}>${item.cost}</Text>
+                            <View style={[styles.cartItem, themeContext.cartItem]}>
+                                <Text style={[styles.cartItemText, { color: themeContext.colors.secondaryText2, fontSize: themeContext.fontSize.md }]}>{item.title}</Text>
+                                <Text style={[styles.cartItemText, { color: themeContext.colors.secondaryText2, fontSize: themeContext.fontSize.md }]}>${item.cost}</Text>
                             </View>
                         )}
                     />
-                    <View style={styles.checkoutContainer}>
-                        <Text style={styles.totalCostContainer}>Total: ${ totalCost ? totalCost.toFixed(2) : "0.00" }</Text>
-                        <Pressable style={styles.checkoutButton} onPress={handleCheckout}>
-                            <Text style={styles.checkoutButtonText}>Checkout</Text>
+                    <View style={[styles.checkoutContainer, { marginRight: (themeContext.spacing.lg+1)*4 }]}>
+                        <Text style={[styles.totalCostText, { fontSize: themeContext.fontSize.xl, marginTop: themeContext.spacing.md, color: themeContext.colors.primaryText }]}>Total: ${ totalCost ? totalCost.toFixed(2) : "0.00" }</Text>
+                        <Pressable 
+                            style={[
+                                styles.checkoutButton,
+                                {
+                                    marginTop: themeContext.spacing.md,
+                                    backgroundColor: themeContext.colors.buttonColor2,
+                                    paddingVertical: themeContext.spacing.sm,
+                                    paddingHorizontal: themeContext.spacing.md,
+                                    borderRadius: (themeContext.radius.sm-1),
+                                }, 
+                            ]} 
+                            onPress={handleCheckout}
+                        >
+                            <Text style={[styles.checkoutButtonText, themeContext.primaryText2]}>Checkout</Text>
                         </Pressable>
                     </View>
                 </>
             ) : (
-                <Text style={styles.emptyCartText}>Your cart is empty.</Text>
+                <Text 
+                    style={[
+                        styles.emptyCartText,
+                        {
+                            fontSize: themeContext.fontSize.md,
+                            color: themeContext.colors.secondaryText2,
+                            marginTop: themeContext.spacing.xl,
+                        },
+                    ]}
+                >
+                    Your cart is empty.
+                </Text>
             )}
             <RotatingSquareButton 
                 icon="wallet" 
                 audioSource={require('../../assets/sounds/unlock.mp3')} 
-                style={styles.RSBposition} 
+                style={[styles.RSBposition, { bottom: themeContext.spacing.xl, right: themeContext.spacing.xl } ]} 
                 onPress={openWallet} 
+                themeContext={themeContext}
             />
         </View>
     );
@@ -66,22 +92,13 @@ export default function Cart() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: "#f9f9f9",
     },
     title: {
-        fontSize: 24,
         fontWeight: "bold",
-        marginBottom: 16,
     },
     cartItem: {
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 16,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        marginBottom: 8,
-        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -89,43 +106,28 @@ const styles = StyleSheet.create({
     },
     cartItemText: {
         fontSize: 16,
-        color: "#333",
     },
     checkoutContainer: {
         alignItems: "flex-start",
         marginRight: 100, // Leaves space for the floating button
         width: "60%",     // Or set a fixed width 
     },
-    totalCostContainer: {
-        fontSize: 20,
+    totalCostText: {
         fontWeight: "bold",
-        marginTop: 16,
         textAlign: "center",      
     },
     checkoutButton: {
-        marginTop: 16,
-        backgroundColor: "#1e90ff",
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 5,
         alignItems: "center",
         width: "100%",
     },
     checkoutButtonText: {
-        color: "#fff",
-        fontSize: 16,
         fontWeight: "bold",
     },
     emptyCartText: {
-        fontSize: 16,
-        color: "#666",
-        textAlign: "center",
-        marginTop: 32,
+        textAlign: "center",    
     },
     RSBposition: {
         position: "absolute",
-        bottom: 32,
-        right: 32,
         zIndex: 100,
         overflow: "visible",
     },

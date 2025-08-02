@@ -57,7 +57,7 @@ export default function Updateuser({ themeContext }: UpdateUserProps) {
             <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your new email here:</Text>
             <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setNewEmail} onSubmitEditing={onUpdate} value={newEmail} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} />
             <Pressable style={[styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor3 }]} onPress={onUpdate}>
-                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Update Info</Text>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText2]}>Update Info</Text>
             </Pressable>
         </View>
 

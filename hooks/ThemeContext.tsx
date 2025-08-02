@@ -16,6 +16,7 @@ export type ThemeContextType = {
     colors: ReturnType<typeof useResponsiveThemeStyles>['colors'];
     container: ReturnType<typeof useResponsiveThemeStyles>['container'];
     primaryText: ReturnType<typeof useResponsiveThemeStyles>['primaryText'];
+    primaryText2: ReturnType<typeof useResponsiveThemeStyles>['primaryText2'];
     secondaryText: ReturnType<typeof useResponsiveThemeStyles>['secondaryText'];
     tertiaryText: ReturnType<typeof useResponsiveThemeStyles>['tertiaryText'];
     boldText: ReturnType<typeof useResponsiveThemeStyles>['boldText'];
@@ -36,6 +37,11 @@ export type ThemeContextType = {
     inputsText: ReturnType<typeof useResponsiveThemeStyles>['inputsText'];
     submitButton: ReturnType<typeof useResponsiveThemeStyles>['submitButton'];
     clickableText: ReturnType<typeof useResponsiveThemeStyles>['clickableText'];
+    loadContainer: ReturnType<typeof useResponsiveThemeStyles>['loadContainer'];
+    loadWrapper: ReturnType<typeof useResponsiveThemeStyles>['loadWrapper'];
+    cartItem: ReturnType<typeof useResponsiveThemeStyles>['cartItem'];
+    componentSize: ReturnType<typeof useResponsiveThemeStyles>['componentSize'];
+    
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

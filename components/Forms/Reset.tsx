@@ -54,7 +54,7 @@ export default function Resetpassword({ themeContext }: ResetProps) {
             <Text style={[styles.maintext, themeContext?.formsMainText]}>Put your new password here:</Text>
             <TextInput style={[styles.input, themeContext?.inputsText]} onChangeText={setNewPassword} onSubmitEditing={onReset} value={newPassword} placeholderTextColor={themeContext?.inputsText?.color} selectionColor={themeContext?.colors.caret} secureTextEntry />
             <Pressable style={[styles.submitbutton, themeContext?.submitButton, { backgroundColor: themeContext?.colors.buttonColor3 }]} onPress={onReset}>
-                <Text style={[styles.submitbuttontext, themeContext?.primaryText]}>Reset Password</Text>
+                <Text style={[styles.submitbuttontext, themeContext?.primaryText2]}>Reset Password</Text>
             </Pressable>
         </View>
 

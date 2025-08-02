@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Pressable, TextStyle } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Pressable, TextStyle, ViewStyle } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 
@@ -94,8 +94,8 @@ export default function MainAccount() {
     
     if (loading) {
         return (
-            <View style={styles.loadContainer}>                 
-                <ActivityIndicator style={[styles.loadWrapper]} size="large" color="#ff0000" />              
+            <View style={themeContext.loadContainer as ViewStyle}>                 
+                <ActivityIndicator style={themeContext.loadWrapper as ViewStyle} size="large" color={themeContext.colors.loadIndicator} />              
             </View>    
         );
     }
@@ -138,19 +138,6 @@ export default function MainAccount() {
 }
 
 const styles = StyleSheet.create({
-    loadContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',       
-    },
-    loadWrapper: {
-        width: 70,
-        height: 70,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
-    },
     container: {
       flex: 1,
       justifyContent: 'center',

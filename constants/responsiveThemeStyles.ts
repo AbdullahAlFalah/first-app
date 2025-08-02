@@ -43,7 +43,9 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
     ? {
         background: '#25292e', // dark gray color
         primaryText: '#ffffff', // pure white color
+        primaryText2: '#ffffff', // pure white color for both dark and light themes
         secondaryText: '#bbbbbb', // muted off-white color
+        secondaryText2: '#999999', // darker muted off-white color
         tertiaryText: '#777777', // deeper muted gray color (for disabled/hint text)
         card: '#1e1e1e', // soft black color used for cards, buttons, etc.
         border: '#d1d1d1', // off-white color
@@ -51,13 +53,19 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         buttonColor: '#ffffff', // pure white color for circle button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
+        RSButtonColor: '#dc143c', // crimson color for rotating square button background
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
         caret: '#00ff00', // lime color for text input caret for both dark and light themes
+        loadWrapper: 'rgba(255, 255, 255, 0.1)', // white semi-transparent background for loading indicator
+        loadIndicator: '#ff0000', // red color for loading indicator for both dark and light themes
+        loadIndicator2: '#1e90ff', // blue color for loading indicator (Variant 2) for both dark and light themes
       }
     : {
         background: '#ffffff', // pure white color
         primaryText: '#000000',  // pure black color
-        secondaryText: '#6e6e6e', // muted dark gray color 
+        primaryText2: '#ffffff', // pure white color for both dark and light themes
+        secondaryText: '#6e6e6e', // muted dark gray color
+        secondaryText2: '#333333', // darker gray color 
         tertiaryText: '#aaaaaa', // soft light gray color (for disabled/hint text)
         card: '#f0f0f0', // ultra light gray color used for cards, buttons, etc.
         border: '#1a1a1a', // light gray color
@@ -65,8 +73,12 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         buttonColor: '#25292e', // pure white color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
+        RSButtonColor: '#0000cd', // dark blue color for rotating square button background 
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
         caret: '#00ff00', // lime color for text input caret for both dark and light themes
+        loadWrapper: 'rgba(0, 0, 0, 0.1)', // black semi-transparent background for loading indicator
+        loadIndicator: '#ff0000', // red color for loading indicator for both dark and light themes
+        loadIndicator2: '#1e90ff', // blue color for loading indicator (Variant 2) for both dark and light themes
       };
 
     return {
@@ -77,6 +89,10 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
       primaryText: {
         fontSize: fontSize.lg,
         color: colors.primaryText,
+      },
+      primaryText2: {
+        fontSize: fontSize.lg,
+        color: colors.primaryText2,
       },
       secondaryText: {
         fontSize: fontSize.sm,
@@ -186,6 +202,30 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         fontSize: fontSize.md,
         fontStyle: 'italic',
         textDecorationLine: 'underline',
+      },
+      loadContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center', 
+      },
+      loadWrapper: {
+        width: (size.lg-1)*2,
+        height: (size.lg-1)*2,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: (radius.lg-2),
+        backgroundColor: colors.loadWrapper,
+      },
+      cartItem: {
+        padding: spacing.md,
+        backgroundColor: colors.card,
+        borderRadius: radius.md,
+        marginBottom: (spacing.xs+2),
+        shadowColor: colors.border,
+      },
+      componentSize: {
+        width: (size.md)*2,
+        height: (size.md)*2,
       },
       spacing,
       fontSize,

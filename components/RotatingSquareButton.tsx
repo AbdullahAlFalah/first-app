@@ -2,16 +2,18 @@ import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { Audio } from 'expo-av';
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
 type Props = {
   icon: keyof typeof Entypo.glyphMap;
   label?: string;
   onPress: () => void;
   style?: ViewStyle | ViewStyle[];
-  audioSource?: number; 
+  audioSource?: number;
+  themeContext: ThemeContextType; // theme context prop 
 };
 
-export default function RotatingSquareButton({ icon, label, onPress, style, audioSource }: Props) {
+export default function RotatingSquareButton({ icon, label, onPress, style, audioSource, themeContext }: Props) {
 
     const rotation = useRef(new Animated.Value(45)).current; // Start at 45deg
 
@@ -38,7 +40,7 @@ export default function RotatingSquareButton({ icon, label, onPress, style, audi
                 });    
             }
         } catch (e) {
-        // If sound fails, just continue
+            // If sound fails, just continue
         }
 
         // Animate back to diamond
@@ -67,42 +69,30 @@ export default function RotatingSquareButton({ icon, label, onPress, style, audi
     });
 
     return (
-        <Animated.View style={[styles.animated, style, { transform: [{ rotate }] }]}>
+        <Animated.View style={[styles.animated, style, themeContext.componentSize, { transform: [{ rotate }] }]}>
             <Pressable 
-                style={styles.RSButton} 
+                style={[styles.RSButton, themeContext.componentSize, { backgroundColor: themeContext.colors.RSButtonColor }]} 
                 onPress={handlePress}
                 android_disableSound={true} // Disable default Android sound
             >
                 <Animated.View style={{ transform: [{ rotate: iconRotate }] }}>
-                    <Entypo name={icon} size={36} color="#fff" />
+                    <Entypo name={icon} size={themeContext.size.lg} color={themeContext.colors.primaryText2} />
                 </Animated.View>
-                {label ? <Text style={styles.RSButtonLabel}>{label}</Text> : null}
+                {label ? <Text style={{ color: themeContext.colors.primaryText2, marginTop: themeContext.spacing.sm }}>{label}</Text> : null}
             </Pressable>
         </Animated.View>
     );
 
 }
 
-const SIZE = 64;
-
 const styles = StyleSheet.create({
     animated: {
-        width: SIZE,
-        height: SIZE,
         justifyContent: 'center',
         alignItems: 'center',
     },
     RSButton: {
-        width: SIZE,
-        height: SIZE,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#0000cd',
-    },
-    RSButtonLabel: {
-        color: '#fff',
-        marginTop: 12,
     },
 });
-
 
