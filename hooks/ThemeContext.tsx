@@ -41,7 +41,10 @@ export type ThemeContextType = {
     loadWrapper: ReturnType<typeof useResponsiveThemeStyles>['loadWrapper'];
     cartItem: ReturnType<typeof useResponsiveThemeStyles>['cartItem'];
     componentSize: ReturnType<typeof useResponsiveThemeStyles>['componentSize'];
-    
+    radio: ReturnType<typeof useResponsiveThemeStyles>['radio'];
+    radioSelected: ReturnType<typeof useResponsiveThemeStyles>['radioSelected'];
+    filmCardItem: ReturnType<typeof useResponsiveThemeStyles>['filmCardItem'];
+    filmCardButton: ReturnType<typeof useResponsiveThemeStyles>['filmCardButton'];
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

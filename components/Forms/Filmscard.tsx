@@ -3,6 +3,7 @@ import { Text, Pressable, StyleSheet, View, ActivityIndicator, LayoutAnimation, 
 
 import { getActorsByFilmId } from "@/api/GetActors";
 import { useCart } from "@/hooks/CartContext";
+import { ThemeContextType } from "@/hooks/ThemeContext";
 
 //Enable LayoutAnimation for Android
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -17,6 +18,7 @@ interface FilmsCardProps {
     cost: number;
     rating: string;
     onPress?: () => void; // Optional callback for when the card is pressed
+    themeContext?: ThemeContextType; // Optional theme context for styling
 }
 
 // Define the type for an actor object
@@ -26,7 +28,7 @@ type Actors = {
     Lname: string;
 }
 
-export default function FilmsCard({ id, title, description, length, cost, rating, onPress}: FilmsCardProps) {
+export default function FilmsCard({ id, title, description, length, cost, rating, onPress, themeContext}: FilmsCardProps) {
    
     const [expanded, setExpanded] = useState<boolean>(false); // State to manage card expansion
     const [actors, setActors] = useState<Actors[]>([]); // State to store actors data
@@ -57,32 +59,32 @@ export default function FilmsCard({ id, title, description, length, cost, rating
     };
 
     return (
-        <Pressable style={styles.card} onPress={onPress}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
-            <Text style={styles.info}>Length: {length} mins</Text>
-            <Text style={styles.info}>Cost: {cost}$</Text>
-            <Text style={styles.info}>Rating: {rating}</Text>
-            <Pressable style={styles.actorInfoButton} onPress={handleMoreInfo}>
-                <Text style={styles.actorInfoText}>More Details</Text>
+        <Pressable style={[styles.card, themeContext?.filmCardItem]} onPress={onPress}>
+            <Text style={[styles.title, { fontSize: themeContext?.fontSize.lg, color: themeContext?.colors.secondaryText2, marginBottom: themeContext?.spacing.xs }]}>{title}</Text>
+            <Text style={{ fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText, marginBottom: themeContext?.spacing.xs }}>{description}</Text> 
+            <Text style={{ fontSize: themeContext?.fontSize.xs, color: themeContext?.colors.secondaryText2 }}>Length: {length} mins</Text>
+            <Text style={{ fontSize: themeContext?.fontSize.xs, color: themeContext?.colors.secondaryText2 }}>Cost: {cost}$</Text>
+            <Text style={{ fontSize: themeContext?.fontSize.xs, color: themeContext?.colors.secondaryText2 }}>Rating: {rating}</Text>
+            <Pressable style={[styles.actorInfoButton, themeContext?.filmCardButton, { backgroundColor: themeContext?.colors.card2 }]} onPress={handleMoreInfo}>
+                <Text style={[styles.actorInfoText, { fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText2 }]}>More Details</Text>
             </Pressable>
             {expanded && (
-                <View style={styles.extraInfo}>
+                <View style={[styles.extraInfo, { borderTopColor: themeContext?.colors.border, paddingTop: themeContext?.spacing.xs, marginTop: themeContext?.spacing.md }]}>
                     {loading ? (
                         <ActivityIndicator size="small" color="#1e90ff" />
                     ) : actors.length > 0 ? (
                         actors.map((actor) => (
-                            <Text key={actor.actorId} style={styles.actor}>
+                            <Text key={actor.actorId} style={{ fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText2, marginBottom: themeContext?.spacing.xs }}>
                                 {actor.Fname} {actor.Lname}
                             </Text>
                         ))
                     ) : (
-                        <Text style={styles.noDataText}>No actors available</Text>
+                        <Text style={{ fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText2 }}>No actors available!!!</Text>
                     )}
                 </View>
             )}
-            <Pressable style={styles.addToCartButton} onPress={handleAddToCart}>
-                <Text style={styles.addToCartText}>Add to Cart</Text>
+            <Pressable style={[styles.addToCartButton, themeContext?.filmCardButton, { backgroundColor: themeContext?.colors.buttonColor2 }]} onPress={handleAddToCart}>
+                <Text style={[styles.addToCartText, { fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.primaryText2 }]}>Add to Cart</Text>
             </Pressable>            
         </Pressable>
     );
@@ -91,71 +93,28 @@ export default function FilmsCard({ id, title, description, length, cost, rating
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 16,
-        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
     },
-    title: {
-        fontSize: 18,
+    title: {          
+        fontWeight: "bold",    
+    },
+    actorInfoButton: {                 
+        alignItems: "center",
+    },
+    actorInfoText: {               
         fontWeight: "bold",
-        color: "#333",
-        marginBottom: 8,
     },
-    description: {
-        fontSize: 14,
-        color: "#666",
-        marginBottom: 8,
-    },
-    info: {
-        fontSize: 12,
-        color: "#999",
+    extraInfo: {      
+        borderTopWidth: 1,      
     },
     addToCartButton: {
-        marginTop: 12,
-        backgroundColor: "#1e90ff",
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 5,
         alignItems: "center",
     },
     addToCartText: {
-        color: "#fff",
-        fontSize: 14,
         fontWeight: "bold",
-    },
-    actorInfoButton: {
-        marginTop: 12,
-        backgroundColor: "#f0f0f0",
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 5,
-        alignItems: "center",
-    },
-    actorInfoText: {
-        color: "#333",
-        fontSize: 14,
-        fontWeight: "bold",
-    },
-    extraInfo: {
-        marginTop: 16,
-        borderTopWidth: 1,
-        borderTopColor: "#ddd",
-        paddingTop: 8,
-    },
-    actor: {
-        fontSize: 14,
-        color: "#333",
-        marginBottom: 4,
-    },
-    noDataText: {
-        fontSize: 14,
-        color: "#999",
     },
 });
 

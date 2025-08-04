@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EAS_BUILD" != "true" ]; then
+  echo "⛔ Not running on EAS build servers. Skipping preinstall tasks."
+  exit 0
+fi
+
 echo "🔧 Running prebuild hook..."
 
 if [ -z "$GOOGLE_SERVICES_JSON" ]; then

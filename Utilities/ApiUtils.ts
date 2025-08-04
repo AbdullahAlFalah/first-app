@@ -63,7 +63,7 @@ export const getRemoteNotificationApiUrl = (path: string) => {
 export const showMsg = (title: string, msg: any) => {
     if (Platform.OS === 'web') {
         window.alert(`${title}:\n${msg}`);
-    } else if (Platform.OS === 'android') {
+    } else {
         Alert.alert(title, msg);
     }
 };

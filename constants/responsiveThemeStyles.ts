@@ -19,10 +19,10 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
 
     // Font sizes for different screen sizes
     const fontSize = isSmall
-        ? { sm: 12, md: 14, lg: 16, xl: 18, xxl: 20, xxxl: 22 }
+        ? { xs: 10, sm: 12, md: 14, lg: 16, xl: 18, xxl: 20, xxxl: 22 }
         : isMedium
-        ? { sm: 14, md: 16, lg: 18, xl: 20, xxl: 22, xxxl: 24 }
-        : { sm: 16, md: 18, lg: 20, xl: 22, xxl: 24, xxxl: 26 };
+        ? { xs: 12, sm: 14, md: 16, lg: 18, xl: 20, xxl: 22, xxxl: 24 }
+        : { xs: 14, sm: 16, md: 18, lg: 20, xl: 22, xxl: 24, xxxl: 26 };
 
     // Generic sizes for different screen sizes
     const size = isSmall
@@ -47,10 +47,11 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         secondaryText: '#bbbbbb', // muted off-white color
         secondaryText2: '#999999', // darker muted off-white color
         tertiaryText: '#777777', // deeper muted gray color (for disabled/hint text)
-        card: '#1e1e1e', // soft black color used for cards, buttons, etc.
+        card: '#1e1e1e', // soft black color used for cards, buttons, etc....
+        card2: '#f0f0f0', // ultra light gray color used for cards, buttons, etc... (Variant 2).
         border: '#d1d1d1', // off-white color
-        buttonBorder: '#ffd700', // gold color for circle button border
-        buttonColor: '#ffffff', // pure white color for circle button background
+        buttonBorder: '#ffd700', // gold color for button border
+        buttonColor: '#ffffff', // pure white color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
         RSButtonColor: '#dc143c', // crimson color for rotating square button background
@@ -67,10 +68,11 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         secondaryText: '#6e6e6e', // muted dark gray color
         secondaryText2: '#333333', // darker gray color 
         tertiaryText: '#aaaaaa', // soft light gray color (for disabled/hint text)
-        card: '#f0f0f0', // ultra light gray color used for cards, buttons, etc.
+        card: '#f0f0f0', // ultra light gray color used for cards, buttons, etc...
+        card2: '#1e1e1e', // soft black color used for cards, buttons, etc... (Variant 2).
         border: '#1a1a1a', // light gray color
         buttonBorder: '#4b0082', // indigo color for button border
-        buttonColor: '#25292e', // pure white color for button background
+        buttonColor: '#25292e', // dark gray color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
         RSButtonColor: '#0000cd', // dark blue color for rotating square button background 
@@ -218,14 +220,42 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
       },
       cartItem: {
         padding: spacing.md,
-        backgroundColor: colors.card,
+        marginBottom: (spacing.xs+2),       
         borderRadius: radius.md,
-        marginBottom: (spacing.xs+2),
+        backgroundColor: colors.card,
         shadowColor: colors.border,
       },
       componentSize: {
         width: (size.md)*2,
         height: (size.md)*2,
+      },
+      radio: {
+        width: (size.xl)*0.5,
+        height: (size.xl)*0.5,
+        borderRadius: (radius.lg-2),
+        borderWidth: 2,
+        marginRight: (spacing.xs+2),
+        borderColor: colors.border,        
+        backgroundColor: colors.background,
+      },
+      radioSelected: {
+        width: (size.xl)*0.25,
+        height: (size.xl)*0.25,
+        borderRadius: (radius.lg-2),
+        backgroundColor: colors.border,
+      },
+      filmCardItem: {                
+        padding: spacing.md,
+        marginBottom: spacing.md,
+        borderRadius: radius.md,
+        backgroundColor: colors.card,
+        shadowColor: colors.border,
+      },
+      filmCardButton: {
+        marginTop: spacing.sm, // 12 at medium
+        paddingVertical: (spacing.xs+2), // 8 at medium
+        paddingHorizontal: spacing.md, // 16 at medium
+        borderRadius: (radius.sm-1), // 5 at medium
       },
       spacing,
       fontSize,

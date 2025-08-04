@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { ThemeContextType } from "@/hooks/ThemeContext";
 
 const currencies = [
     "USD",
@@ -14,15 +15,15 @@ const currencies = [
     "AED"
 ];
 
-export default function CurrencyCB({ value, onChange }: { value?: string; onChange?: (val: string) => void }) {
+export default function CurrencyCB({ value, onChange, themeContext }: { value?: string; onChange?: (val: string) => void; themeContext: ThemeContextType }) {
     
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Currency:</Text>
-            <View style={styles.pickerContainer}>
+        <View style={[styles.container, { marginVertical: (themeContext.spacing.sm-2) }]}>
+            <Text style={{ fontSize: themeContext.fontSize.lg, color: themeContext.colors.primaryText, marginBottom: (themeContext.spacing.xs-2) }}>Currency:</Text>
+            <View style={[styles.pickerContainer, { borderRadius: themeContext.radius.sm, borderColor: themeContext.colors.border }]}>
                 <Picker
                     dropdownIconColor={"#696969"} // Dim gray?! your number is "Sus"
-                    style={styles.pickerDimensions}            
+                    style={{ width: (themeContext.size.xl*3) }}            
                     selectedValue={value||currencies[0]}               
                     onValueChange={onChange}
                 >
@@ -39,21 +40,10 @@ const styles = StyleSheet.create({
     container: { 
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: 10,
-    },
-    label: { 
-        fontSize: 18,  
-        marginBottom: 4,
-        color: "#000000",
-    },
-    pickerDimensions: { 
-        width: 120,
     },
     pickerContainer: {  
         backgroundColor: "#8fbc8f", // Dark sea green
-        borderWidth: 1,
-        borderRadius: 6,
-        borderColor: "#000",
+        borderWidth: 1,        
     },
 });
 

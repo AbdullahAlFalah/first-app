@@ -1,8 +1,11 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
-import { Platform, AppState } from 'react-native';
+import { Linking, Platform } from 'react-native';
+import * as IntentLauncher from 'expo-intent-launcher';
+import * as Application from 'expo-application';
 
+import { showAlertWithAction } from './showAlertWithAction';
 
 /**
  * Configures notification channels, categories, and handlers for both platforms.
@@ -81,6 +84,22 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
         }
         if (finalStatus !== 'granted') {
             console.log('Failed to get push token for push notification!');
+            showAlertWithAction(
+                'Notification Permission Required',
+                'To receive important updates, please enable notifications in settings.',
+                'Open Settings',
+                () => {
+                    // deep link to app settings
+                    if (Platform.OS === 'ios') {
+                        Linking.openURL('app-settings:');
+                    } else {
+                        IntentLauncher.startActivityAsync(
+                            IntentLauncher.ActivityAction.APPLICATION_DETAILS_SETTINGS,
+                            { data: `package:${Application.applicationId}` }
+                        );
+                    }
+                }
+            );
             return;
         }
         

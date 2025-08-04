@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, ViewStyle } from 'react-native';
 
 import { getfilms } from '@/api/GetFilms'; // Import the API function
 import FilmsCard from '@/components/Forms/Filmscard'; // Import the FilmsCard component
+import { useThemeMode } from "@/hooks/ThemeContext";
 
 // Define the type for a film object
 interface Film {
@@ -18,6 +19,9 @@ export default function Films() {
 
     const [films, setFilms] = useState<Film[] | null>([]); // State to store films data
     const [loading, setLoading] = useState(true); // State to manage loading state
+
+    // Access the theme context for styling
+    const themeContext = useThemeMode();
 
     useEffect(() => {
         const fetchFilms = async () => {
@@ -36,15 +40,23 @@ export default function Films() {
 
     if (loading) {
         return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#1e90ff" />
-                <Text style={styles.loadingText}>Loading films...</Text>
+            <View style={themeContext.loadContainer as ViewStyle}>
+                <ActivityIndicator style={themeContext.loadWrapper as ViewStyle} size="large" color={themeContext.colors.loadIndicator2} />
+                <Text style={
+                    {
+                        fontSize: themeContext.fontSize.md,
+                        color: themeContext.colors.secondaryText,
+                        marginTop: (themeContext.spacing.sm-2),
+                    }
+                }>
+                    Loading films...
+                </Text>
             </View>
         );
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={[themeContext.container, { padding: themeContext.spacing.md }]}>
             {films && films.length > 0 ? (
                 films.map((film) => (
                     <FilmsCard
@@ -56,10 +68,20 @@ export default function Films() {
                         cost={film.cost}
                         rating={film.rating}
                         onPress={() => console.log(`Selected Film ID: ${film.id}`)} // Example onPress action
+                        themeContext={themeContext} // Pass the theme context for dynamic styling
                     />
                 ))
             ) : (
-                <Text style={styles.text}>No films found.</Text>
+                <Text style={[
+                    styles.text, 
+                    {
+                        fontSize: themeContext.fontSize.lg,
+                        color: themeContext.colors.secondaryText2,
+                        marginTop: (themeContext.spacing.md+4),
+                    },
+                ]}>
+                    No films found.
+                </Text>
             )}
         </ScrollView>
     );
@@ -67,24 +89,8 @@ export default function Films() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    loadingText: {
-        marginTop: 10,
-        fontSize: 16,
-        color: "#666",
-    },
     text: {
-        fontSize: 18,
-        color: "#333",
         textAlign: "center",
-        marginTop: 20,
     },
 });
 
