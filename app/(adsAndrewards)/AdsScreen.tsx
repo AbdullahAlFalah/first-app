@@ -5,6 +5,7 @@ import { claimReward } from '../../api/GetReward';
 import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { saveBackgroundUrl, loadBackgroundUrl } from '@/Utilities/persistantBackgroundUtils';
+import { useThemeMode } from '@/hooks/ThemeContext';
 
 const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
     requestNonPersonalizedAdsOnly: true,
@@ -21,6 +22,9 @@ export default function AdsScreen() {
     // Extract parameters from the local URL
     const { assetUrl } = useLocalSearchParams();
     const imageUrl = Array.isArray(assetUrl) ? assetUrl[0] : assetUrl;
+
+    // Access the theme context for styling
+    const themeContext = useThemeMode(); 
 
     useEffect(() => {
 
@@ -100,7 +104,7 @@ export default function AdsScreen() {
     // If assetUrl exists, use it as background; otherwise, use default background
     const Wrapper = backgroundUrl ?
         ({ children }: { children: React.ReactNode }) => (
-            <View style={styles.background}>
+            <View style={[styles.background, { backgroundColor: themeContext.colors.background }]}>
                 <Image
                     source={backgroundUrl as string}
                     style={StyleSheet.absoluteFill}
@@ -111,22 +115,22 @@ export default function AdsScreen() {
             </View>
         )
         : ({ children }: { children: React.ReactNode }) => (
-            <View style={styles.background}>{children}</View>
+            <View style={[styles.background, { backgroundColor: themeContext.colors.background }]}>{children}</View>
         );
 
     return (
         <Wrapper>
-            <ScrollView contentContainerStyle={styles.container}>
+            <ScrollView contentContainerStyle={[styles.container, themeContext.scrollViewContainer]}>
 
-                <View style={styles.section}>
+                <View style={[styles.section, { marginVertical: (themeContext.spacing.md+4) }]}>
                     <Button title="Show Interstitial Ad" onPress={showInterstitial} />
                 </View>
 
-                <View style={styles.section}>
+                <View style={[styles.section, { marginVertical: (themeContext.spacing.md+4) }]}>
                     <Button title="Watch Rewarded Ad" onPress={showRewarded} />
                 </View>
 
-                <View style={styles.banner}>
+                <View style={[styles.banner, { marginTop: (themeContext.spacing.xl-2) }]}>
                     <BannerAd
                         unitId={TestIds.BANNER}
                         size={BannerAdSize.FULL_BANNER}
@@ -150,11 +154,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1, // stretch it to fill the parent
-        paddingVertical: 50,
-        paddingHorizontal: 20,
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(255,255,255,0)', // Transparent background 
+        justifyContent: 'center', 
     },
     section: {
         marginVertical: 20,

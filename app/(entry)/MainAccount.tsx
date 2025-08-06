@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 
 import { useUserinfo } from "@/hooks/UserContext";
 import { getApiUrl, showMsg } from "@/Utilities/ApiUtils";
+import Phasedemo_BTN from "@/components/navigation/Phasedemo_BTN";
 import  Ads_BTN  from "@/components/navigation/Ads_BTN";
 import { useThemeMode } from "@/hooks/ThemeContext";
 
@@ -131,7 +132,8 @@ export default function MainAccount() {
             <Pressable style={styles.Filmsbutton} onPress={() => router.push('/(films)/Films')}>
                 <Text style={styles.Filmsbuttontext}>Open Films</Text>
             </Pressable>
-            <Ads_BTN />
+            <Phasedemo_BTN themeContext={themeContext}/>
+            <Ads_BTN themeContext={themeContext}/>
         </View>
 
     );

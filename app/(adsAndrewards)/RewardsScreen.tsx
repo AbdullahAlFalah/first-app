@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Pressable, ViewStyle } from 'react-native';
 import { getUserRewardHistory } from '@/api/GetUserRewardHistory';
 import { showMsg } from '@/Utilities/ApiUtils';
 import { router, useFocusEffect } from 'expo-router';
 import { upgradeBackground } from '@/api/UpgradingBackground';
+import { useThemeMode } from '@/hooks/ThemeContext';
 
 // Define the interface for a reward record object
 interface RewardRecord {
@@ -16,7 +17,9 @@ export default function RewardsScreen() {
     const [rewardHistory, setRewardHistory] = useState<RewardRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
-    
+    // Access the theme context for styling
+    const themeContext = useThemeMode();
+
     const fetchRewardHistory = useCallback(async () => {
         setLoading(true);
         const history = await getUserRewardHistory();
@@ -48,36 +51,54 @@ export default function RewardsScreen() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={[styles.container, themeContext.container, { padding: 20 }]}>
             {loading ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#007bff" />
-                    <Text style={styles.loadingText}>Loading reward history...</Text>
+                <View style={[themeContext.loadContainer as ViewStyle, { marginTop: ((themeContext.spacing.lg+1)*2) }]}>
+                    <ActivityIndicator size="large" color={themeContext.colors.loadIndicator2} />
+                    <Text style={[styles.loadingText, { fontSize: themeContext.fontSize.md, marginTop: (themeContext.spacing.sm-2), color: themeContext.colors.secondaryText2 }]}>Loading reward history...</Text>
                 </View>
             ) : rewardHistory.length > 0 ? (
                 <>
                     {rewardHistory.map((item, index) => (
-                        <View key={index} style={styles.item}>
-                            <Text style={styles.itemText}>Reward Coins: {item.rewardCoins}</Text>
-                            <Text style={styles.itemText}>Total Coins: {item.totalCoins}</Text>
-                            <Text style={styles.itemText}>Date: {new Date(item.createdAt).toLocaleDateString()}</Text>
+                        <View key={index} style={[
+                            styles.item, 
+                            {
+                                backgroundColor: themeContext.colors.background,
+                                padding: (themeContext.spacing.md-1),
+                                marginVertical: (themeContext.spacing.xs+2),
+                                borderRadius: themeContext.radius.md,
+                                shadowColor: themeContext.colors.primaryText,
+                            },
+                        ]}>
+                            <Text style={{ fontSize: themeContext.fontSize.sm, color: themeContext.colors.secondaryText2 }}>Reward Coins: {item.rewardCoins}</Text>
+                            <Text style={{ fontSize: themeContext.fontSize.sm, color: themeContext.colors.secondaryText2 }}>Total Coins: {item.totalCoins}</Text>
+                            <Text style={{ fontSize: themeContext.fontSize.sm, color: themeContext.colors.secondaryText2 }}>Date: {new Date(item.createdAt).toLocaleDateString()}</Text>
                         </View>
                     ))}
-                    <View style={styles.buttonContainer}>
-                        <Text style={styles.totalCoinsText}>Total Coins: {newestTotalCoins}</Text>
+                    <View style={[styles.buttonContainer, { marginTop: (themeContext.spacing.md+4) }]}>
+                        <Text style={[styles.totalCoinsText, { fontSize: themeContext.fontSize.md, marginBottom: (themeContext.spacing.sm-2), color: themeContext.colors.secondaryText2 }]}>Total Coins: {newestTotalCoins}</Text>
                         <Pressable
                             style={({ pressed }) => [
                                 styles.buttonContainer,
+                                { backgroundColor: themeContext.colors.buttonColor2, marginTop: (themeContext.spacing.md+4) },
                                 pressed && styles.buttonContainerPressed, // Add pressed effect
                             ]}
                             onPress={handleUpgradeBackground}
                         >
-                            <Text style={styles.buttonText}>Upgrade Background</Text>
+                            <Text style={{
+                                fontSize: themeContext.fontSize.md,
+                                color: themeContext.colors.primaryText2,
+                                paddingVertical: (themeContext.spacing.sm-2),
+                                paddingHorizontal: (themeContext.spacing.md+4),
+                                borderRadius: themeContext.radius.sm,
+                            }}>
+                                Upgrade Background
+                            </Text>
                         </Pressable>
                     </View>
                 </>
             ) : (
-                <Text style={styles.noDataText}>No reward history available.</Text>
+                <Text style={[styles.noDataText, { fontSize: themeContext.fontSize.md, marginTop: (themeContext.spacing.md+4), color: themeContext.colors.secondaryText2 }]}>No reward history available.</Text>
             )}
         </ScrollView>
     );
@@ -85,65 +106,30 @@ export default function RewardsScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
-        backgroundColor: '#f0f8ff',
-        padding: 20,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50,
+        flexGrow: 1,      
     },
     loadingText: {
-        fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 10,
-        color: '#555',
-    },
-    noDataText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 20,
-        color: '#555',
+        textAlign: 'center',          
     },
     item: {
-        backgroundColor: '#fff',
-        padding: 15,
-        marginVertical: 8,
-        borderRadius: 8,
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        elevation: 2,
-    },
-    itemText: {
-        fontSize: 14,
-        color: '#333',
+        elevation: 3,
     },
     buttonContainer: {
-        marginTop: 20,
         alignItems: 'center',
+    },
+    totalCoinsText: {
+        fontWeight: 'bold',        
     },
     buttonContainerPressed: {
         backgroundColor: '#0056b3',
-    },
-    buttonText: {
-        fontSize: 16,
-        color: '#fff',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        backgroundColor: '#007bff',
-        borderRadius: 5,
-    },
-    totalCoinsText: {
-        fontSize: 16,
+    },    
+    noDataText: {
         fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#333',
+        textAlign: 'center',        
     },
 });
 

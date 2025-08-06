@@ -45,6 +45,8 @@ export type ThemeContextType = {
     radioSelected: ReturnType<typeof useResponsiveThemeStyles>['radioSelected'];
     filmCardItem: ReturnType<typeof useResponsiveThemeStyles>['filmCardItem'];
     filmCardButton: ReturnType<typeof useResponsiveThemeStyles>['filmCardButton'];
+    scrollViewContainer: ReturnType<typeof useResponsiveThemeStyles>['scrollViewContainer'];
+    
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

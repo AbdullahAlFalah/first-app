@@ -50,16 +50,18 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         card: '#1e1e1e', // soft black color used for cards, buttons, etc....
         card2: '#f0f0f0', // ultra light gray color used for cards, buttons, etc... (Variant 2).
         border: '#d1d1d1', // off-white color
-        buttonBorder: '#ffd700', // gold color for button border
+        buttonBorder: '#ffd700', // gold color for button border        
         buttonColor: '#ffffff', // pure white color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
+        buttonColor4: '#ff69b4', // hot pink color for button background (Variant 4) for dark theme only
         RSButtonColor: '#dc143c', // crimson color for rotating square button background
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
         caret: '#00ff00', // lime color for text input caret for both dark and light themes
         loadWrapper: 'rgba(255, 255, 255, 0.1)', // white semi-transparent background for loading indicator
         loadIndicator: '#ff0000', // red color for loading indicator for both dark and light themes
         loadIndicator2: '#1e90ff', // blue color for loading indicator (Variant 2) for both dark and light themes
+        transparentColor: 'rgba(255,255,255,0)', // Transparent color for both dark and light themes
       }
     : {
         background: '#ffffff', // pure white color
@@ -75,12 +77,14 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         buttonColor: '#25292e', // dark gray color for button background
         buttonColor2: '#1e90ff', // blue color for button background (Variant 2) for both dark and light themes
         buttonColor3: '#4b0082', // indigo color for button background (Variant 3) for both dark and light themes
+        buttonColor4: '#40e0d0', // turquoise color for button background (Variant 4) for light theme only
         RSButtonColor: '#0000cd', // dark blue color for rotating square button background 
         clickableText: '#ff0000', // red color for clickable text for both dark and light themes
         caret: '#00ff00', // lime color for text input caret for both dark and light themes
         loadWrapper: 'rgba(0, 0, 0, 0.1)', // black semi-transparent background for loading indicator
         loadIndicator: '#ff0000', // red color for loading indicator for both dark and light themes
         loadIndicator2: '#1e90ff', // blue color for loading indicator (Variant 2) for both dark and light themes
+        transparentColor: 'rgba(0,0,0,0)', // Transparent color for both dark and light themes 
       };
 
     return {
@@ -256,6 +260,11 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         paddingVertical: (spacing.xs+2), // 8 at medium
         paddingHorizontal: spacing.md, // 16 at medium
         borderRadius: (radius.sm-1), // 5 at medium
+      },
+      scrollViewContainer: {
+        paddingVertical: (spacing.lg+1)*2, // 50 at medium
+        paddingHorizontal: (spacing.md+4), // 20 at medium
+        backgroundColor: colors.transparentColor, // Transparent background for both dark and light themes
       },
       spacing,
       fontSize,
