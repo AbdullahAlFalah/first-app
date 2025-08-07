@@ -67,7 +67,7 @@ export default function Home() {
             console.log(sticker.emoji); // Log the emoji for debugging
             console.log(typeof sticker.emoji); // Log the type of emoji
             return (
-              <EmojiSticker key={sticker.id} imageSize={40} stickerSource={sticker.emoji} />
+              <EmojiSticker key={sticker.id} imageSize={(themeContext.size.md+4)*2} stickerSource={sticker.emoji} />
             );
           })} 
         </View>        
@@ -97,7 +97,7 @@ export default function Home() {
         </View>
       )}
       {/* Notify parent when modal closes; here you can any logic you need on close; never use these on the same line as JSX components */}
-      <EmojiPicker ref={emojiPickerRef} onClose={() => console.log("Emoji Picker closed")}> 
+      <EmojiPicker ref={emojiPickerRef} onClose={() => console.log("Emoji Picker closed")} themeContext={themeContext}> 
         <EmojiList 
           onSelect={(emoji) => { 
             onAddSticker(emoji); 

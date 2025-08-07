@@ -1,8 +1,10 @@
 import React, { memo, useState } from 'react';
 import { StyleSheet, FlatList, Platform, Pressable, Text, Image, ImageSourcePropType } from 'react-native';
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
 type Props = {
   onSelect: (image: ImageSourcePropType) => void;
+  themeContext?: ThemeContextType; // This way, TypeScript won’t complain if it’s missing in JSX, but at runtime, EmojiPicker will still inject it. 
 };
 
 const emojiImages = Platform.select({
@@ -17,7 +19,7 @@ const emojiImages = Platform.select({
   ]
 });
 
-const EmojiList = memo(function EmojiList({ onSelect }: Props) {
+const EmojiList = memo(function EmojiList({ onSelect, themeContext }: Props) {
     
   const [emoji] = useState<ImageSourcePropType[]>(emojiImages);
 
@@ -29,16 +31,32 @@ const EmojiList = memo(function EmojiList({ onSelect }: Props) {
       showsHorizontalScrollIndicator={Platform.OS === 'web'}
       data={emoji}
       keyExtractor={( _item, index ) => index.toString()} // Use index as key and ignore item by using the underscore
-      contentContainerStyle={styles.listContainer}
+      contentContainerStyle={[
+        styles.listContainer,
+        {
+          borderTopRightRadius: themeContext?.radius.lg,
+          borderTopLeftRadius: themeContext?.radius.lg,
+          paddingHorizontal: themeContext?.spacing.lg,
+        },
+      ]}
       renderItem={({ item, index }) => (
         <Pressable
           onPress={() => {            
             onSelect(item); // Pass the selected emoji
           }}>
           {typeof item === 'string' ? (
-            <Text style={styles.textEmote}>{item}</Text>
+            <Text style={{
+              fontSize: (themeContext?.fontSize.xl ?? 20)*4,
+              width: ((themeContext?.size.xl ?? 40)+10)*2,
+              height: ((themeContext?.size.xl ?? 40)+10)*2,
+              marginRight: ((themeContext?.spacing.md ?? 20)+4),
+            }}>{item}</Text> // Render text emoji directly
           ) : (
-            <Image source={item} style={styles.image} />
+            <Image source={item} style={{
+              width: ((themeContext?.size.xl ?? 40)+10)*2,
+              height: ((themeContext?.size.xl ?? 40)+10)*2,
+              marginRight: ((themeContext?.spacing.md ?? 20)+4),
+            }} /> // Render image emoji
           )}         
         </Pressable>
       )}
@@ -52,22 +70,9 @@ export default EmojiList;
 
 const styles = StyleSheet.create({
   listContainer: {
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  textEmote: {
-    fontSize: 80,
-    width: 100,
-    height: 100,
-    marginRight: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginRight: 20,
-  },
 });
+

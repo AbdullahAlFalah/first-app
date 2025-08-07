@@ -1,14 +1,16 @@
 import React, { memo, useImperativeHandle, useState, forwardRef, useRef } from 'react';
 import { View, Animated, Text, Pressable, StyleSheet, Easing } from 'react-native';
-import { PropsWithChildren } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { ThemeContextType } from '@/hooks/ThemeContext';
 
-type Props = PropsWithChildren<{
+type Props = {
+  children: React.ReactElement<{ themeContext: ThemeContextType }>;
   onClose: () => void;
-}>;
+  themeContext: ThemeContextType;
+};
 
 const EmojiPicker = memo(
-  forwardRef(function EmojiPicker({ children, onClose }: Props, ref) { // Use `forwardRef` to expose methods to the parent component
+  forwardRef(function EmojiPicker({ children, onClose, themeContext }: Props, ref) { // Use `forwardRef` to expose methods to the parent component
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
@@ -47,15 +49,41 @@ const EmojiPicker = memo(
     console.log("EmojiPicker children:", children, "type:", typeof children);
 
     return (
-      <View style={styles.overlay} pointerEvents="box-none">
-        <Animated.View style={[styles.pickerContainer, { transform: [{ translateY: slideAnim }] } ]}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Choose a sticker</Text>
+      <View style={[
+        styles.overlay, 
+        { 
+          backgroundColor: themeContext.colors.transparentColor, // Transparent background
+        }
+      ]} 
+      pointerEvents="box-none">
+        <Animated.View style={[
+          styles.pickerContainer, 
+          {
+            backgroundColor: themeContext?.colors.background, 
+            borderTopRightRadius: ((themeContext?.radius.md ?? 9)+1)*2,
+            borderTopLeftRadius: ((themeContext?.radius.md ?? 9)+1)*2, 
+            transform: [{ translateY: slideAnim }] 
+          } 
+        ]}>
+          <View style={[
+            styles.titleContainer,
+            {
+              backgroundColor: '#464C55', // Static background color for the title container
+              borderTopRightRadius: ((themeContext?.radius.md ?? 9)+2),
+              borderTopLeftRadius: ((themeContext?.radius.md ?? 9)+2),
+              paddingHorizontal: ((themeContext?.spacing.md ?? 20)+4),
+            },
+          ]}>
+            <Text style={{ color: themeContext?.colors.primaryText2, fontSize: themeContext?.fontSize.md }}>Choose a sticker</Text>
             <Pressable onPress={handleClose}>
               <MaterialIcons name="close" color="#fff" size={22} />
             </Pressable>
           </View>          
-          {children}
+          {React.Children.map(children, (child) =>
+            React.isValidElement(child)
+              ? React.cloneElement(child, { themeContext })
+              : child
+          )}
         </Animated.View>
       </View>
     );
@@ -71,28 +99,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0)', // Transparent background
     justifyContent: 'flex-end',
   },
   pickerContainer: {
     height: '25%',
     width: '100%',
-    backgroundColor: '#25292e',
-    borderTopRightRadius: 18,
-    borderTopLeftRadius: 18,
   },
   titleContainer: {
     height: '16%',
-    backgroundColor: '#464C55',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  title: {
-    color: '#fff',
-    fontSize: 16,
   },
 });
