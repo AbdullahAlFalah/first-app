@@ -72,7 +72,7 @@ export default function Wallet() {
                             borderRadius: themeContext.radius.sm, 
                             padding: (themeContext.spacing.sm-2),
                             marginBottom: themeContext.spacing.md, 
-                            width: themeContext.size.xl*4,                                                         
+                            width: (themeContext.size.xl)*4,                                                         
                         }}
                         placeholder="Amount to add"
                         keyboardType="numeric"
@@ -87,7 +87,7 @@ export default function Wallet() {
                             borderRadius: themeContext.radius.sm,
                             padding: themeContext.spacing.sm, 
                             marginBottom: themeContext.spacing.md, 
-                            width: (themeContext.size.xl+10)*2, 
+                            width: (themeContext.size.xl)*4, 
                             alignItems: "center",
                         }}
                         onPress={handleAddFunds} 

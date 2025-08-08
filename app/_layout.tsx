@@ -52,7 +52,7 @@ export default function RootLayout() {
                 <Stack>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="(entry)" options={{ headerShown: false }} />
-                  <Stack.Screen name="(films)" options={{ headerShown: false}} />
+                  <Stack.Screen name="(films)" options={{ headerShown: false }} />
                   <Stack.Screen name="(adsAndrewards)" options={{ headerShown: false }} />
                   {/* Your two new screens */}
                   <Stack.Screen 

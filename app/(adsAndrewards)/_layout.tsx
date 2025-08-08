@@ -1,4 +1,5 @@
-import { Tabs } from 'expo-router';
+import { TouchableOpacity } from "react-native";
+import { Tabs, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AdsRewardsLayout() {
@@ -37,6 +38,14 @@ export default function AdsRewardsLayout() {
               color={color}
               size={24}
             />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{ marginLeft: 14, marginRight: 28, }}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
           ),
         }}
       />

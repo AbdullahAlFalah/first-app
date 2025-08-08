@@ -1,4 +1,5 @@
-import { router, Tabs } from 'expo-router';
+import { TouchableOpacity } from "react-native";
+import { Tabs, router } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Ionicons } from '@expo/vector-icons';
@@ -35,7 +36,15 @@ export default function EntryLayout() {
             options={{ 
                 title: 'Main Account', 
                 tabBarIcon: ({ color, focused }) => 
-                    ( <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} /> ),  
+                    ( <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} /> ),
+                headerLeft: () => (
+                        <TouchableOpacity
+                          style={{ marginLeft: 14, marginRight: 28, }}
+                          onPress={() => router.back()}
+                        >
+                          <Ionicons name="arrow-back" size={24} color="#fff" />
+                        </TouchableOpacity>
+                ),
             }} 
         />
         <Tabs.Screen name="Reset" 
