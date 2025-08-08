@@ -128,6 +128,7 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         backgroundColor: colors.card,
         borderRadius: radius.sm,
         padding: spacing.sm,
+        shadowColor: colors.border,
       },
       tableOuterBorder: {
         borderRadius: radius.sm,

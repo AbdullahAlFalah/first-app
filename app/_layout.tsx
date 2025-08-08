@@ -54,6 +54,25 @@ export default function RootLayout() {
                   <Stack.Screen name="(entry)" options={{ headerShown: false }} />
                   <Stack.Screen name="(films)" options={{ headerShown: false}} />
                   <Stack.Screen name="(adsAndrewards)" options={{ headerShown: false }} />
+                  {/* Your two new screens */}
+                  <Stack.Screen 
+                    name="Wallet"  
+                    options={{
+                      title: 'Wallet',
+                      headerShadowVisible: false,
+                      headerTintColor: '#fff',
+                      headerStyle: { backgroundColor: '#25292e' },
+                    }}
+                  />
+                  <Stack.Screen 
+                    name="PhaseDemo"  
+                    options={{
+                      title: 'Phase Demo',
+                      headerShadowVisible: false,                      
+                      headerTintColor: '#fff',
+                      headerStyle: { backgroundColor: '#25292e' },
+                    }}
+                  />
                   <Stack.Screen name="+not-found"  options={{ title: 'Page not found...', headerShadowVisible: false, headerTintColor: '#fff', headerStyle: {backgroundColor: '#25292e'} }} />
                 </Stack> 
               </CartProvider>

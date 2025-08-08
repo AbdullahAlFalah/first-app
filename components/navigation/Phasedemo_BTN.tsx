@@ -9,15 +9,23 @@ export default function Phasedemo_BTN({ themeContext }: { themeContext: ThemeCon
 
         <Pressable
             style={{
+                width: '45%',
+                justifyContent: 'center',
+                alignItems: 'center',
                 backgroundColor: themeContext.colors.buttonColor2,
-                marginVertical: themeContext.spacing.md,
+                borderRadius: themeContext.radius.sm,
+                margin: themeContext.spacing.sm, // Affects outer spacing
+                marginTop: themeContext.spacing.lg, // Affects outer spacing on top of the button
+                padding: themeContext.spacing.sm, // Affects inner spacing
             }}
             onPress={() => router.push('/PhaseDemo')}
         >
             <Text
                 style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
                     color: themeContext.colors.primaryText2,
-                    fontSize: themeContext.fontSize.sm,
+                    fontSize: themeContext.fontSize.md,
                 }}
             >
                 Open Phase Demo

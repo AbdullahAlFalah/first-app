@@ -11,6 +11,13 @@ export default function PhaseDemo() {
     const [phase, setPhase] = useState(0);    
     const bars = [1, 2, 3]; // We have 3 bars, but 4 phases (phase 0 = idle)
 
+    const phaseNames = [
+        "No phase", // phase 0
+        "Accepting Order", // Phase 1
+        "Preparation", // Phase 2
+        "Delivery", // Phase 3
+    ];
+
     // Access the theme context for styling
     const themeContext = useThemeMode();
 
@@ -23,7 +30,7 @@ export default function PhaseDemo() {
         <View style={[themeContext.container, { flex: 1, justifyContent: 'center', alignItems: 'center', padding: (themeContext.spacing.md+4) }]}>
 
             {/* Page title */}
-            <Text style={[styles.title, { fontSize: themeContext.fontSize.xl, marginBottom: (themeContext.spacing.md+4) }]}>Phase Demo</Text>
+            <Text style={[styles.title, { color: themeContext.colors.primaryText, fontSize: themeContext.fontSize.xl, marginBottom: (themeContext.spacing.md+4) }]}>Phase Demo</Text>
 
             {/* Progress bars row */}
             <View style={[styles.barRow, { gap: themeContext.spacing.sm }]}>
@@ -31,6 +38,16 @@ export default function PhaseDemo() {
                     <ProgressBar key={barNum} active={phase === barNum} ThemeContext={themeContext} />
                 ))}
             </View>
+
+            {/* Phase name label */}
+            <Text style={{
+                color: themeContext.colors.primaryText,
+                fontSize: themeContext.fontSize.lg,
+                marginVertical: themeContext.spacing.md,
+                fontWeight: "bold",
+            }}>
+                {phaseNames[phase]}
+            </Text>
 
             {/* Shared animation space */}
             <View style={[styles.animationContainer, { width: (themeContext.size.xl)*5, height: (themeContext.size.xl)*5,  marginTop: themeContext.spacing.xl }]}>

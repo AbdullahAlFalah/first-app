@@ -35,11 +35,24 @@ export default function MainAccount() {
         Togglebutton: {
             backgroundColor: themeContext.colors.card,
             borderRadius: themeContext.radius.sm,
-            padding: themeContext.spacing.sm,
+            margin: themeContext.spacing.sm, // Affects outer spacing
+            marginTop: themeContext.spacing.lg, // Affects outer spacing on top of the button
+            padding: themeContext.spacing.sm, // Affects inner spacing
         },
         Togglebuttontext: {
             color: themeContext.colors.primaryText,
             fontSize: themeContext.fontSize.sm,
+        },
+        Filmsbutton: {        
+            backgroundColor: themeContext.colors.buttonColor2,
+            borderRadius: themeContext.radius.sm,
+            margin: themeContext.spacing.sm, // Affects outer spacing
+            marginTop: themeContext.spacing.lg, // Affects outer spacing on top of the button
+            padding: themeContext.spacing.sm, // Affects inner spacing
+        },
+        Filmsbuttontext: {
+            color: themeContext.colors.primaryText2,
+            fontSize: themeContext.fontSize.md,
         },
     });
 
@@ -129,8 +142,8 @@ export default function MainAccount() {
             ) : (
                 <Text style={[styles.text, themeContext.primaryText]}>No data available: Error fetching data on the front-end side</Text>
             )}
-            <Pressable style={styles.Filmsbutton} onPress={() => router.push('/(films)/Films')}>
-                <Text style={styles.Filmsbuttontext}>Open Films</Text>
+            <Pressable style={[styles.Filmsbutton, dynamicStyles.Filmsbutton]} onPress={() => router.push('/(films)/Films')}>
+                <Text style={[styles.Filmsbuttontext, dynamicStyles.Filmsbuttontext]}>Open Films</Text>
             </Pressable>
             <Phasedemo_BTN themeContext={themeContext}/>
             <Ads_BTN themeContext={themeContext}/>
@@ -146,16 +159,21 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       padding: 20,
     },
+    Togglebutton: {
+        width: '45%',
+        justifyContent: 'center',
+        alignItems: 'center',  
+    },
+    Togglebuttontext: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     tableContainer: {
-        width: "90%",
-        padding: 10,
-        backgroundColor: "#fff",
-        borderRadius: 10,
-        elevation: 3,
-        shadowColor: "#000",
+        width: "90%",     
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
+        elevation: 3,
     },
     tableTitle: {
         fontSize: 20,
@@ -164,9 +182,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     table: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 5,
         overflow: "hidden",
     },
     row: {
@@ -185,47 +200,23 @@ const styles = StyleSheet.create({
         color: "#333",
     },
     cell: {
-        fontSize: 16,
-        color: "#666",
         flex: 1,
         flexWrap: "wrap",
+        fontSize: 16,
+        color: "#666",    
     },
     text: {
       fontSize: 18,
       color: '#333',
     },
     Filmsbutton: {
+        width: '45%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
-        backgroundColor: '#1e90ff',
-        width: '45%',
-        margin: 12, // Affects outer spacing
-        marginTop: 24, // Affects outer spacing on top of the button
-        padding: 12, // Affects inner spacing
     },
     Filmsbuttontext: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    Togglebutton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-        backgroundColor: '#1e90ff',
-        width: '45%',
-        margin: 12, // Affects outer spacing
-        marginTop: 24, // Affects outer spacing on top of the button
-        padding: 12, // Affects inner spacing
-    },
-    Togglebuttontext: {
-        color: '#fff',
-        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
     },
   });
-
 

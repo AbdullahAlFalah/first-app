@@ -31,11 +31,17 @@ export default function ProgressBar({ active, ThemeContext }: ProgressBarProps) 
             );
             loopAnim.current?.start();
         } else {
-            translateX.setValue(-40); // reset position
-            loopAnim.current?.stop();
+            translateX.stopAnimation(() => { // stop animation before clearing the highlight
+                translateX.setValue(-40); // reset position to hide highlight immediately
+            });  
         }
 
-        return () => loopAnim.current?.stop();
+        return () => {
+            // Only stop if it's a loop that would continue after unmount
+            if (loopAnim.current) {
+                loopAnim.current.stop();
+            }
+        }
 
     }, [active]);
 

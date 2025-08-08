@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     pickerContainer: {  
-        backgroundColor: "#8fbc8f", // Dark sea green
+        backgroundColor: "#8fbc8f", // Dark sea green for both themes
         borderWidth: 1,        
     },
 });

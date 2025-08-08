@@ -56,12 +56,12 @@ export default function Wallet() {
 
     return (
         <View style={[styles.container, themeContext.container, { padding: themeContext.spacing.lg } ]}>
-            <Text style={{ fontSize: (themeContext.fontSize.xxxl+4), fontWeight: "bold", marginBottom: themeContext.spacing.lg }}>Wallet</Text>
+            <Text style={{ color: themeContext.colors.primaryText, fontSize: (themeContext.fontSize.xxxl+4), fontWeight: "bold", marginBottom: themeContext.spacing.lg }}>Wallet</Text>
             {loading ? (                
                     <ActivityIndicator style={themeContext.loadWrapper as ViewStyle} size="large" color={themeContext.colors.loadIndicator2} />              
             ) : wallet ? (
                 <>
-                    <Text style={{ fontSize: themeContext.fontSize.xl, marginBottom: themeContext.spacing.sm }}>Balance: {wallet.balance} {wallet.currency}</Text>                   
+                    <Text style={{ color: themeContext.colors.primaryText, fontSize: themeContext.fontSize.xl, marginBottom: themeContext.spacing.sm }}>Balance: {wallet.balance} {wallet.currency}</Text>                   
                     <StatusRB value={status||wallet?.status} onChange={setStatus} themeContext={themeContext} />
                     <CurrencyCB value={currency||wallet?.currency} onChange={setCurrency} themeContext={themeContext} />
                     <TextInput
@@ -72,7 +72,7 @@ export default function Wallet() {
                             borderRadius: themeContext.radius.sm, 
                             padding: (themeContext.spacing.sm-2),
                             marginBottom: themeContext.spacing.md, 
-                            width: (themeContext.size.xl+10)*2,                                                         
+                            width: themeContext.size.xl*4,                                                         
                         }}
                         placeholder="Amount to add"
                         keyboardType="numeric"
