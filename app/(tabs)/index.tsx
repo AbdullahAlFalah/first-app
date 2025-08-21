@@ -62,12 +62,12 @@ export default function Home() {
     <GestureHandlerRootView style={[styles.container, themeContext.container]}>
       <View style={styles.imageContainer}>
         <View ref={imageRef} collapsable={false}>
-          <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage}/>
+          <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} themeContext={themeContext} />
           {stickers.map((sticker) => {
             console.log(sticker.emoji); // Log the emoji for debugging
             console.log(typeof sticker.emoji); // Log the type of emoji
             return (
-              <EmojiSticker key={sticker.id} imageSize={(themeContext.size.md+4)*2} stickerSource={sticker.emoji} />
+              <EmojiSticker key={sticker.id} imageSize={(themeContext.size.md+4)*2} stickerSource={sticker.emoji} containerWidth={themeContext.size.md*10} containerHeight={themeContext.size.xxl*10} />
             );
           })} 
         </View>        

@@ -6,9 +6,11 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 type Props = {
   imageSize: number;
   stickerSource: ImageSourcePropType;
+  containerWidth: number;
+  containerHeight: number;
 };
 
-const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource }: Props) {
+const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource, containerWidth, containerHeight }: Props) {
 
   const imageSource = stickerSource;
 
@@ -33,8 +35,20 @@ const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource }: Pr
   });
 
   const drag = Gesture.Pan().onChange(event => {
-    translateX.value += event.changeX;
-    translateY.value += event.changeY;
+    // Calculate new position
+    let newX = translateX.value += event.changeX;
+    let newY = translateY.value += event.changeY;
+
+    // Constrain within container bounds
+    const halfSize = imageSize / 2;
+    const minX = -containerWidth / 2 + halfSize;
+    const maxX = containerWidth / 2 - halfSize;
+    const minY = -containerHeight / 2 + halfSize;
+    const maxY = containerHeight / 2 - halfSize;
+
+    // Calculate new position within the image conatiner
+    translateX.value = Math.min(Math.max(newX, minX), maxX);
+    translateY.value = Math.min(Math.max(newY, minY), maxY);
   }).onEnd(() => {
     console.log("Drag ended for sticker");
   });
