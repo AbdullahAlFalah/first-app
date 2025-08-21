@@ -54,7 +54,7 @@ export default function RootLayout() {
                   <Stack.Screen name="(entry)" options={{ headerShown: false }} />
                   <Stack.Screen name="(films)" options={{ headerShown: false }} />
                   <Stack.Screen name="(adsAndrewards)" options={{ headerShown: false }} />
-                  {/* Your two new screens */}
+                  {/* My two new screens */}
                   <Stack.Screen 
                     name="Wallet"  
                     options={{

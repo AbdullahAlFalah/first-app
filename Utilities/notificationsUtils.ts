@@ -1,11 +1,8 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
-import { Linking, Platform } from 'react-native';
-import * as IntentLauncher from 'expo-intent-launcher';
-import * as Application from 'expo-application';
-
-import { showAlertWithAction } from './showAlertWithAction';
+import { Platform } from 'react-native';
+import ensureExpoNotificationPermission from './notificationsPermission';
 
 /**
  * Configures notification channels, categories, and handlers for both platforms.
@@ -74,32 +71,9 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
 
     let token;
     if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        console.log('📛 Existing notification permission status:', existingStatus);
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-            console.log('Notification permission status:', finalStatus);
-        }
-        if (finalStatus !== 'granted') {
-            console.log('Failed to get push token for push notification!');
-            showAlertWithAction(
-                'Notification Permission Required',
-                'To receive important updates, please enable notifications in settings.',
-                'Open Settings',
-                () => {
-                    // deep link to app settings
-                    if (Platform.OS === 'ios') {
-                        Linking.openURL('app-settings:');
-                    } else {
-                        IntentLauncher.startActivityAsync(
-                            IntentLauncher.ActivityAction.APPLICATION_DETAILS_SETTINGS,
-                            { data: `package:${Application.applicationId}` }
-                        );
-                    }
-                }
-            );
+        const granted = await ensureExpoNotificationPermission();
+        if (!granted) {
+            console.log('❌ Permission denied, cannot register for push notifications.');
             return;
         }
         

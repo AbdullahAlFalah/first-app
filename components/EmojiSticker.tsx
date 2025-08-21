@@ -46,7 +46,7 @@ const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource, cont
     const minY = -containerHeight / 2 + halfSize;
     const maxY = containerHeight / 2 - halfSize;
 
-    // Calculate new position within the image conatiner
+    // Clamp the sticker's position so it stays fully within the image boundaries
     translateX.value = Math.min(Math.max(newX, minX), maxX);
     translateY.value = Math.min(Math.max(newY, minY), maxY);
   }).onEnd(() => {
