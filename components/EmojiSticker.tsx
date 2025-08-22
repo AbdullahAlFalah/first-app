@@ -13,17 +13,24 @@ type Props = {
 const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource, containerWidth, containerHeight }: Props) {
 
   const imageSource = stickerSource;
-
   const scaleImage = useSharedValue(imageSize);
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
+
+  // New center position
+  const centerX = useSharedValue(containerWidth / 2);
+  const centerY = useSharedValue(containerHeight / 2);
 
   const doubleTap = Gesture.Tap().numberOfTaps(2).onStart(() => {
-    if (scaleImage.value !== imageSize*2) {
-      scaleImage.value = scaleImage.value*2;
-    } else {
-      scaleImage.value = Math.round(scaleImage.value/2);
-    }
+    // Determine the new scale
+    const newScale = scaleImage.value !== imageSize * 2 ? scaleImage.value * 2 : Math.round(scaleImage.value / 2);
+
+    // Clamp center so sticker stays fully inside the image after scaling
+    const halfSize = newScale / 2;
+    centerX.value = Math.min(Math.max(centerX.value, halfSize), containerWidth - halfSize);
+    centerY.value = Math.min(Math.max(centerY.value, halfSize), containerHeight - halfSize);
+
+    // **Update the shared value** — the spring animation is applied automatically in imageStyle
+    scaleImage.value = newScale;
+
     console.log("Double tap detected for sticker");
   });
 
@@ -36,36 +43,29 @@ const EmojiSticker = memo(function EmojiSticker({ imageSize, stickerSource, cont
 
   const drag = Gesture.Pan().onChange(event => {
     // Calculate new position
-    let newX = translateX.value += event.changeX;
-    let newY = translateY.value += event.changeY;
-
-    // Constrain within container bounds
-    const halfSize = imageSize / 2;
-    const minX = -containerWidth / 2 + halfSize;
-    const maxX = containerWidth / 2 - halfSize;
-    const minY = -containerHeight / 2 + halfSize;
-    const maxY = containerHeight / 2 - halfSize;
+    let newCenterX = centerX.value + event.changeX;
+    let newCenterY = centerY.value + event.changeY;
 
     // Clamp the sticker's position so it stays fully within the image boundaries
-    translateX.value = Math.min(Math.max(newX, minX), maxX);
-    translateY.value = Math.min(Math.max(newY, minY), maxY);
+    const halfSize = scaleImage.value / 2;
+    centerX.value = Math.min(Math.max(newCenterX, halfSize), containerWidth - halfSize);
+    centerY.value = Math.min(Math.max(newCenterY, halfSize), containerHeight - halfSize);
   }).onEnd(() => {
     console.log("Drag ended for sticker");
   });
 
-  const containerStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value, },
-        { translateY: translateY.value, },
-      ],
-    };
-  });
+  const containerStyle = useAnimatedStyle(() => ({
+    position: 'absolute',
+    left: centerX.value - scaleImage.value / 2,
+    top: centerY.value - scaleImage.value / 2,
+    width: scaleImage.value,
+    height: scaleImage.value,
+  }));
 
   return (
    
     <GestureDetector gesture={drag}>     
-      <Animated.View style={ [containerStyle, { position: 'absolute' }] }>
+      <Animated.View style={containerStyle}>
         <GestureDetector gesture={doubleTap}>
           <Animated.Image source={imageSource} resizeMode='contain' style={ [imageStyle, { width: imageSize, height: imageSize }] } />
         </GestureDetector>     
