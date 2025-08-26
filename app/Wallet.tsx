@@ -72,7 +72,8 @@ export default function Wallet() {
                             borderRadius: themeContext.radius.sm, 
                             padding: (themeContext.spacing.sm-2),
                             marginBottom: themeContext.spacing.md, 
-                            width: (themeContext.size.xl)*4,                                                         
+                            width: (themeContext.size.xl)*4,
+                            color: themeContext.colors.primaryText,                                                         
                         }}
                         placeholder="Amount to add"
                         keyboardType="numeric"

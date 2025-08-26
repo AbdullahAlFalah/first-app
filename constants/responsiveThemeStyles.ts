@@ -46,6 +46,7 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         primaryText2: '#ffffff', // pure white color for both dark and light themes
         secondaryText: '#bbbbbb', // muted off-white color
         secondaryText2: '#999999', // darker muted off-white color
+        secondaryText3: '#ebebebff', // Almost white color
         tertiaryText: '#777777', // deeper muted gray color (for disabled/hint text)
         card: '#1e1e1e', // soft black color used for cards, buttons, etc....
         card2: '#f0f0f0', // ultra light gray color used for cards, buttons, etc... (Variant 2).
@@ -68,7 +69,8 @@ export function useResponsiveThemeStyles(theme: 'light' | 'dark') {
         primaryText: '#000000',  // pure black color
         primaryText2: '#ffffff', // pure white color for both dark and light themes
         secondaryText: '#6e6e6e', // muted dark gray color
-        secondaryText2: '#333333', // darker gray color 
+        secondaryText2: '#333333', // darker gray color
+        secondaryText3: '#111111', // Almost black color 
         tertiaryText: '#aaaaaa', // soft light gray color (for disabled/hint text)
         card: '#f0f0f0', // ultra light gray color used for cards, buttons, etc...
         card2: '#1e1e1e', // soft black color used for cards, buttons, etc... (Variant 2).

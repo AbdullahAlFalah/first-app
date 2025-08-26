@@ -66,7 +66,7 @@ export default function FilmsCard({ id, title, description, length, cost, rating
             <Text style={{ fontSize: themeContext?.fontSize.xs, color: themeContext?.colors.secondaryText2 }}>Cost: {cost}$</Text>
             <Text style={{ fontSize: themeContext?.fontSize.xs, color: themeContext?.colors.secondaryText2 }}>Rating: {rating}</Text>
             <Pressable style={[styles.actorInfoButton, themeContext?.filmCardButton, { backgroundColor: themeContext?.colors.card2 }]} onPress={handleMoreInfo}>
-                <Text style={[styles.actorInfoText, { fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText2 }]}>More Details</Text>
+                <Text style={[styles.actorInfoText, { fontSize: themeContext?.fontSize.sm, color: themeContext?.colors.secondaryText3 }]}>More Details</Text>
             </Pressable>
             {expanded && (
                 <View style={[styles.extraInfo, { borderTopColor: themeContext?.colors.border, paddingTop: themeContext?.spacing.xs, marginTop: themeContext?.spacing.md }]}>
