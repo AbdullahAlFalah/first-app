@@ -6,6 +6,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { saveBackgroundUrl, loadBackgroundUrl } from '@/Utilities/persistantBackgroundUtils';
 import { useThemeMode } from '@/hooks/ThemeContext';
+import { showMsg } from '@/Utilities/ApiUtils';
 
 const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
     requestNonPersonalizedAdsOnly: true,
@@ -57,11 +58,30 @@ export default function AdsScreen() {
             }
         );
 
+        // Error Listeners
+        const interstitialErrorListener = interstitial.addAdEventListener(
+            AdEventType.ERROR,
+            (error) => {
+                console.error('Interstitial failed to load:', error);
+                showMsg("Interstitial Ad", "Ad failed to load. Please try again later by re-opening this screen!");
+            }
+        );
+
+        const rewardedErrorListener = rewardedAd.addAdEventListener(
+            AdEventType.ERROR,
+            (error) => {
+                console.error('Rewarded ad failed to load:', error);
+                showMsg("Rewarded Ad", "Ad failed to load. Please try again later by re-opening this screen!");
+            }
+        );
+
         return () => { 
             // Cleanup listeners on unmount 
             rewardedEarnedListener();
             rewardedCloseListener(); 
-            interstitialCloseListener();          
+            interstitialCloseListener(); 
+            interstitialErrorListener();
+            rewardedErrorListener();         
         }; 
 
     }, []);
