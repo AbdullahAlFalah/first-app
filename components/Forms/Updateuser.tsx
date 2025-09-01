@@ -37,17 +37,15 @@ export default function Updateuser({ themeContext }: UpdateUserProps) {
                 setNewUsername('');
                 setNewEmail('');
                 router.push('/(entry)/MainAccount');
-            } else {
-                console.log("Response data:", response.data);
-                showMsg("User Info Update Failed", response.data.ServerNote);
-            }
-            
-        } catch (error) {
-            console.error("Error updating info:", error);
-            showMsg("Error updating info", "Please try again later!");
+            }             
+        } catch (error: any) {
+            console.log("API error:", error);
+            // Extract backend error message if available
+            const ServerNote = error?.response?.data?.ServerNote || error.message;
+            showMsg("Updating Info Failed", ServerNote);
         }
 
-        };
+    };
 
     return (
         

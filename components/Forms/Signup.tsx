@@ -69,17 +69,16 @@ export default function Signup ({ themeContext }: SignupProps) {
                 setGlobalemail(email); // Set the global email in context
                 await signin(email, password); // Call signin function after successful signup
                 // router.push('/(entry)/MainAccount'); // not needed here, as signin will handle navigation
-            } else {
-                console.log("Response data:", data);
-                showMsg("Signup Failed", data.ServerNote);
-            }
+            } 
 
-        } catch (error) {
-            console.error("Error submitting signup data:", error);
-            showMsg("Network Error", "Server error... Please try again later.");
+        } catch (error: any) {
+            console.log("API error:", error);
+            // Extract backend error message if available
+            const ServerNote = error?.response?.data?.ServerNote || error.message;
+            showMsg("Sign-up Failed", ServerNote);
         }
 
-      };
+    };
 
     return (
         <View style={[styles.container, themeContext?.container]}>

@@ -45,14 +45,12 @@ export const signin = async ( email: string, password: string ) => {
             // Navigate to the main account page
             router.push('/(entry)/MainAccount');
 
-        } else {
-            console.log("Response data:", data);
-            showMsg("Login Failed", data.ServerNote);
         }
-    } catch (error) {
-        console.error("Error submitting login data:", error);
-        showMsg("Network Error", "Unable to connect to the server. Please try again later.");
+    } catch (error: any) {
+        console.log("API error:", error);
+        // Extract backend error message if available
+        const ServerNote = error?.response?.data?.ServerNote || error.message;
+        showMsg("Login Failed", ServerNote);
     }
 
 };
-

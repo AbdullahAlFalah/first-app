@@ -34,14 +34,13 @@ export default function Resetpassword({ themeContext }: ResetProps) {
                 showMsg("Password Reset", "Password has been reset successfully!");
                 setOldPassword('');
                 setNewPassword('');
-            } else {
-                console.log("Response data:", response.data);
-                showMsg("Reset Failed", response.data.ServerNote);
             }
 
-        } catch (error) {
-            console.error("Error resetting password:", error);
-            showMsg("Error resetting password", "Please try again later!");
+        } catch (error: any) {
+            console.log("API error:", error);
+            // Extract backend error message if available
+            const ServerNote = error?.response?.data?.ServerNote || error.message;
+            showMsg("Password Reset Failed", ServerNote);
         }
 
     };
