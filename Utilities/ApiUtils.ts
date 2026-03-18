@@ -1,9 +1,10 @@
 import { Platform, Alert } from 'react-native';
 
+// Change http to https on Vercel deployment for secure communication.
 export const getApiUrl = (path: string) => {
     
     // const baseUrl = `http://52.59.130.11:3000/api/users/`; // Using the public IP of my EC2 instance
-    const baseUrl = `http://my-node-express.vercel.app/api/users/`; // Using the public domain name of my Vercel deployment for the users API
+    const baseUrl = `https://my-node-express.vercel.app/api/users/`; // Using the public domain name of my Vercel deployment for the users API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); // Fallback for unsupported platforms
     }
@@ -14,7 +15,7 @@ export const getApiUrl = (path: string) => {
 export const getFilmApiUrl = (path: string) => {
 
     // const baseUrl = `http://52.59.130.11:3000/api/films/`; 
-    const baseUrl = `http://my-node-express.vercel.app/api/films/`; // Using the public domain name of my Vercel deployment for the films API
+    const baseUrl = `https://my-node-express.vercel.app/api/films/`; // Using the public domain name of my Vercel deployment for the films API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); 
     }
@@ -24,7 +25,7 @@ export const getFilmApiUrl = (path: string) => {
 
 export const getWalletApiUrl = (path: string) => {
     // const baseUrl = `http://52.59.130.11:3000/api/wallet/`;
-    const baseUrl = `http://my-node-express.vercel.app/api/wallet/`; // Using the public domain name of my Vercel deployment for the wallet API
+    const baseUrl = `https://my-node-express.vercel.app/api/wallet/`; // Using the public domain name of my Vercel deployment for the wallet API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); 
     }
@@ -33,7 +34,7 @@ export const getWalletApiUrl = (path: string) => {
 
 export const getPurchaseApiUrl = (path: string) => {
     // const baseUrl = `http://52.59.130.11:3000/api/purchase/`;
-    const baseUrl = `http://my-node-express.vercel.app/api/purchase/`; // Using the public domain name of my Vercel deployment for the purchase API
+    const baseUrl = `https://my-node-express.vercel.app/api/purchase/`; // Using the public domain name of my Vercel deployment for the purchase API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); 
     }
@@ -42,7 +43,7 @@ export const getPurchaseApiUrl = (path: string) => {
 
 export const getRewardApiUrl = (path: string) => {
     // const baseUrl = `http://52.59.130.11:3000/api/rewards/`;
-    const baseUrl = `http://my-node-express.vercel.app/api/rewards/`; // Using the public domain name of my Vercel deployment for the rewards API
+    const baseUrl = `https://my-node-express.vercel.app/api/rewards/`; // Using the public domain name of my Vercel deployment for the rewards API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); 
     }
@@ -51,7 +52,7 @@ export const getRewardApiUrl = (path: string) => {
 
 export const getBackgroundApiUrl = (path: string) => {
     // const baseUrl = `http://52.59.130.11:3000/api/background/`;
-    const baseUrl = `http://my-node-express.vercel.app/api/background/`; // Using the public domain name of my Vercel deployment for the background API
+    const baseUrl = `https://my-node-express.vercel.app/api/background/`; // Using the public domain name of my Vercel deployment for the background API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!"); 
     }       
@@ -60,7 +61,7 @@ export const getBackgroundApiUrl = (path: string) => {
 
 export const getRemoteNotificationApiUrl = (path: string) => {
     // const baseUrl = `http://52.59.130.11:3000/api/notification/`;
-    const baseUrl = `http://my-node-express.vercel.app/api/notification/`; // Using the public domain name of my Vercel deployment for the notification API
+    const baseUrl = `https://my-node-express.vercel.app/api/notification/`; // Using the public domain name of my Vercel deployment for the notification API
     if (!baseUrl) {
         throw new Error("Platform Unsupported!");
     }
