@@ -32,7 +32,6 @@ export const signin = async ( email: string, password: string ) => {
         }
 
         if (response.ok) {
-
             // Store the JWT (for React Native)
             await AsyncStorage.setItem('token', data.token); 
             console.log("JWT token stored successfully:", data.token);
@@ -44,8 +43,13 @@ export const signin = async ( email: string, password: string ) => {
 
             // Navigate to the main account page
             router.push('/(entry)/MainAccount');
-
+        } else {
+            // Handle 400 and 500 codes here!
+            // Fetch stays in the 'try' block for these codes.
+            console.log("Response data:", data);
+            showMsg("Login Failed", data.ServerNote);
         }
+
     } catch (error: any) {
         console.log("API error:", error);
         // Extract backend error message if available

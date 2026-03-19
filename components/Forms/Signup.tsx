@@ -69,7 +69,13 @@ export default function Signup ({ themeContext }: SignupProps) {
                 setGlobalemail(email); // Set the global email in context
                 await signin(email, password); // Call signin function after successful signup
                 // router.push('/(entry)/MainAccount'); // not needed here, as signin will handle navigation
-            } 
+            }
+            else {
+                // Handle 400 and 500 codes here!
+                // Fetch stays in the 'try' block for these codes.
+                console.log("Response data:", data);
+                showMsg("Signup Failed", data.ServerNote);
+            }
 
         } catch (error: any) {
             console.log("API error:", error);
